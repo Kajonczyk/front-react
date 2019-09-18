@@ -7,6 +7,7 @@ export const StyledInput = styled.input`
   border: 0px;
   border-bottom: 2px solid ${({ theme }) => theme.green};
   margin-bottom: 15px;
+  color: ${({ theme }) => theme.green};
   &::placeholder {
     color: ${({ theme }) => theme.green};
     transition: transform 0.3s;

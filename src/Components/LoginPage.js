@@ -46,6 +46,12 @@ class LoginPage extends Component {
   state = {
     isAccount: false
   };
+
+  handleSwitchForm = () => {
+    this.setState({
+      isAccount: !this.state.isAccount
+    });
+  };
   render() {
     return (
       <Wrapper>
@@ -53,7 +59,14 @@ class LoginPage extends Component {
           <StyledH1>Junior Start</StyledH1>
         </StyledGreetingDiv>
         <StyledLoginWrapper>
-          {this.state.isAccount ? <LoginForm /> : <RegisterForm />}
+          {this.state.isAccount ? (
+            <LoginForm
+              switch={this.handleSwitchForm}
+              active={this.state.isAccount}
+            />
+          ) : (
+            <RegisterForm switch={this.handleSwitchForm} />
+          )}
         </StyledLoginWrapper>
       </Wrapper>
     );

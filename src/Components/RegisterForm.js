@@ -1,7 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 import { StyledInput } from "./Input";
 import { StyledButton } from "./Button";
+import * as validator from "./Validator";
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.green};
   text-align: center;
@@ -34,25 +35,87 @@ const StyledFormText = styled.span`
 const Button = styled(StyledButton)`
   margin-bottom: -20px;
 `;
+class RegisterForm extends Component {
+  state = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    login: "",
+    password: "",
+    errors: {
+      firstNameError: false,
+      lastNameError: false,
+      emailError: false,
+      loginError: false,
+      passwordError: false
+    }
+  };
+  handleChange = e => {
+    const type = e.target.id;
+    const value = e.target.value;
+    this.setState({
+      [type]: value
+    });
+  };
 
-const RegisterForm = () => {
-  return (
-    <StyledLoginBox>
-      <StyledLoginP>CREATE YOUR ACCOUNT</StyledLoginP>
-      <StyledInput type="text" placeholder="First Name" />
+  handleSubmit = e => {
+    const { firstName, lastName, email, login, password } = this.state;
+    e.preventDefault();
+    validator.validateRegister(
+      firstName,
+      lastName,
+      email,
+      login,
+      password,
+      this
+    );
+  };
+  render() {
+    return (
+      <StyledLoginBox>
+        <StyledLoginP>CREATE YOUR ACCOUNT</StyledLoginP>
+        <StyledInput
+          type="text"
+          placeholder="First Name"
+          id="firstName"
+          onChange={this.handleChange}
+        />
 
-      <StyledInput type="text" placeholder="Last Name" />
+        <StyledInput
+          type="text"
+          placeholder="Last Name"
+          id="lastName"
+          onChange={this.handleChange}
+        />
 
-      <StyledInput type="email" placeholder="E-mail" />
-      <StyledInput type="text" placeholder="Login" />
+        <StyledInput
+          type="email"
+          placeholder="E-mail"
+          id="email"
+          onChange={this.handleChange}
+        />
+        <StyledInput
+          type="text"
+          placeholder="Login"
+          id="login"
+          onChange={this.handleChange}
+        />
 
-      <StyledInput type="password" placeholder="Password" />
-      <StyledFormText>Have an account already? Log in here</StyledFormText>
-      <StyledButtonWrapper>
-        <Button>Create</Button>
-      </StyledButtonWrapper>
-    </StyledLoginBox>
-  );
-};
+        <StyledInput
+          type="password"
+          placeholder="Password"
+          id="password"
+          onChange={this.handleChange}
+        />
+        <StyledFormText onClick={this.props.switch}>
+          Have an account already? Log in here
+        </StyledFormText>
+        <StyledButtonWrapper>
+          <Button onClick={this.handleSubmit}>Create</Button>
+        </StyledButtonWrapper>
+      </StyledLoginBox>
+    );
+  }
+}
 
 export default RegisterForm;

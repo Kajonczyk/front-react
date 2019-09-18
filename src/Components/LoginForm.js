@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React, { Component } from "react";
+import styled, { keyframes, css } from "styled-components";
 import { StyledInput } from "./Input";
 import { StyledButton } from "./Button";
 const StyledLoginP = styled.p`
@@ -21,6 +21,7 @@ const StyledLoginBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: all 1s 1s;
 `;
 const StyledButtonWrapper = styled.div`
   display: flex;
@@ -32,19 +33,60 @@ const StyledFormText = styled.span`
   cursor: pointer;
 `;
 
-const LoginForm = () => {
-  return (
-    <StyledLoginBox>
-      <StyledLoginP>Log In</StyledLoginP>
-      <StyledInput type="text" placeholder="Login" />
+const fadeIn = keyframes`
+from{
+  transform:translateX(40px);
+  opacity:0;
+}
+to{
+  transform:translateX(0px);
+  opacity:1;
+}
+`;
+class LoginForm extends Component {
+  state = {
+    login: "",
+    password: ""
+  };
+  handleChange = e => {
+    const type = e.target.id;
+    const value = e.target.value;
+    this.setState({
+      [type]: value
+    });
+  };
+  render() {
+    return (
+      <StyledLoginBox active={this.props.active}>
+        <StyledLoginP>LOG IN</StyledLoginP>
+        <StyledInput
+          type="text"
+          placeholder="Login"
+          id="login"
+          onChange={this.handleChange}
+        />
 
-      <StyledInput type="password" placeholder="Password" />
-      <StyledFormText>Dont have an account? Register here!</StyledFormText>
-      <StyledButtonWrapper>
-        <StyledButton>Create</StyledButton>
-      </StyledButtonWrapper>
-    </StyledLoginBox>
-  );
-};
+        <StyledInput
+          type="password"
+          placeholder="Password"
+          id="password"
+          onChange={this.handleChange}
+        />
+        <StyledFormText onClick={this.props.switch}>
+          Dont have an account? Register here!
+        </StyledFormText>
+        <StyledButtonWrapper>
+          <StyledButton>Create</StyledButton>
+        </StyledButtonWrapper>
+      </StyledLoginBox>
+    );
+  }
+}
 
 export default LoginForm;
+// // ${props =>
+// props.active
+// ? `animation: ${css`
+//     ${fadeIn} 3s ease infinite
+//   `}`
+// : "transform: translateX(100px); opacity: 0"}
