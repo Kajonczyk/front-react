@@ -1,5 +1,3 @@
-import React from "react";
-
 export const validateRegister = (
   firstName,
   lastName,
@@ -24,16 +22,13 @@ export const validateRegister = (
   } else {
     if (firstName.length < 2) {
       firstNameError = true;
-      console.log("works");
     }
 
     if (lastName.length < 2) {
       lastNameError = true;
-      console.log("works");
     }
     if (email.length < 5 && email.indexOf("@") === -1) {
       emailError = true;
-      console.log("works");
     }
     if (login.length < 5) {
       loginError = true;
@@ -46,6 +41,26 @@ export const validateRegister = (
         firstNameError,
         lastNameError,
         emailError,
+        loginError,
+        passwordError
+      }
+    });
+  }
+};
+export const validateLogin = (login, password, self) => {
+  let loginError = false;
+  let passwordError = false;
+  if (login.length > 5 && password.length > 6) {
+    return true;
+  } else {
+    if (login.length < 5) {
+      loginError = true;
+    }
+    if (password.length < 6) {
+      passwordError = true;
+    }
+    return self.setState({
+      errors: {
         loginError,
         passwordError
       }

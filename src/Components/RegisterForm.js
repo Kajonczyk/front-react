@@ -61,14 +61,41 @@ class RegisterForm extends Component {
   handleSubmit = e => {
     const { firstName, lastName, email, login, password } = this.state;
     e.preventDefault();
-    validator.validateRegister(
-      firstName,
-      lastName,
-      email,
-      login,
-      password,
-      this
-    );
+
+    if (
+      validator.validateRegister(
+        firstName,
+        lastName,
+        email,
+        login,
+        password,
+        this
+      )
+    ) {
+      const obj = {
+        user: {
+          id: 1,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          login: login,
+          password: password
+        }
+      };
+      const objJSON = JSON.stringify(obj);
+      console.log(objJSON);
+      //
+      const URL = `http://localhost:5001/Register`;
+      fetch(URL, {
+        method: `POST`,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: objJSON
+      }).then(response => console.log(response.ok));
+    } else {
+      console.log("COOO");
+    }
   };
   render() {
     return (

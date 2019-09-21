@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { StyledInput } from "./Input";
 import { StyledButton } from "./Button";
+import * as validator from "./Validator";
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.green};
   text-align: center;
@@ -9,7 +10,6 @@ const StyledLoginP = styled.p`
   font-size: ${({ theme }) => theme.font.size.formMobile};
   padding-top: 10px;
   margin-bottom: 20px;
-  margin-top: -50px;
 `;
 
 const StyledLoginBox = styled.div`
@@ -46,14 +46,42 @@ to{
 class LoginForm extends Component {
   state = {
     login: "",
-    password: ""
+    password: "",
+    errors: {
+      loginError: false,
+      passwordError: false
+    }
   };
   handleChange = e => {
     const type = e.target.id;
     const value = e.target.value;
+    console.log(this.state.login);
     this.setState({
       [type]: value
     });
+  };
+
+  handleSubmit = e => {
+    const { login, password } = this.state;
+    e.preventDefault();
+    if (validator.validateLogin(login, password, this)) {
+      const obj = {
+        login: login,
+        password: password
+      };
+      const objJSON = JSON.stringify(obj);
+      console.log(objJSON);
+      const URL = `http://localhost:5001/Login`;
+      fetch(URL, {
+        method: `POST`,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: objJSON
+      }).then(response => console.log(response.ok));
+    }
+
+    //
   };
   render() {
     return (
@@ -76,7 +104,7 @@ class LoginForm extends Component {
           Dont have an account? Register here!
         </StyledFormText>
         <StyledButtonWrapper>
-          <StyledButton>Create</StyledButton>
+          <StyledButton onClick={this.handleSubmit}>Create</StyledButton>
         </StyledButtonWrapper>
       </StyledLoginBox>
     );
