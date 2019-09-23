@@ -3,6 +3,7 @@ import styled, { keyframes, css } from "styled-components";
 import { StyledInput } from "./Input";
 import { StyledButton } from "./Button";
 import * as validator from "./Validator";
+import * as Fetch from "./Fetch";
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.green};
   text-align: center;
@@ -72,15 +73,8 @@ class LoginForm extends Component {
       const objJSON = JSON.stringify(obj);
       console.log(objJSON);
       const URL = `http://localhost:5001/Login`;
-      fetch(URL, {
-        method: `POST`,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: objJSON
-      }).then(response => console.log(response.ok));
+      Fetch.authenticationFetch(URL, objJSON);
     }
-
     //
   };
   render() {

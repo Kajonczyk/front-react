@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { StyledInput } from "./Input";
-import { StyledButton } from "./Button";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 
