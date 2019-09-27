@@ -21,6 +21,7 @@ const StyledGreetingWrapper = styled.div`
   justify-content: center;
 `;
 const StyledGreeting = styled(StyledH1)`
+  font-size: ${({ theme }) => theme.font.size.juniorStartMobile};
   &::after {
     content: "DASHBOARD";
     position: absolute;
@@ -59,6 +60,7 @@ const SectionDescription = styled(SectionInfo)`
 
 class User extends Component {
   state = {};
+
   render() {
     return (
       <StyledWrapper>

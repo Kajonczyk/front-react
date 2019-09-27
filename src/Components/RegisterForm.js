@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { StyledInput } from "./Input";
 import { StyledButton } from "./Button";
 import * as validator from "./Validator";
-import * as Fetch from "./Fetch";
+import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
 
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.green};
@@ -87,7 +87,7 @@ class RegisterForm extends Component {
       const objJSON = JSON.stringify(obj);
 
       const URL = `http://localhost:5001/Register`;
-      Fetch.authenticationFetch(URL, objJSON);
+      AuthenticationFetch.authenticationFetch(URL, objJSON);
     }
   };
   render() {

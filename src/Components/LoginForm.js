@@ -3,7 +3,7 @@ import styled, { keyframes, css } from "styled-components";
 import { StyledInput } from "./Input";
 import { StyledButton } from "./Button";
 import * as validator from "./Validator";
-import * as Fetch from "./Fetch";
+import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.green};
   text-align: center;
@@ -46,8 +46,8 @@ to{
 `;
 class LoginForm extends Component {
   state = {
-    login: "",
-    password: "",
+    login: "Kajonczyk3",
+    password: "K@jonczyk3",
     errors: {
       loginError: false,
       passwordError: false
@@ -56,7 +56,6 @@ class LoginForm extends Component {
   handleChange = e => {
     const type = e.target.id;
     const value = e.target.value;
-    console.log(this.state.login);
     this.setState({
       [type]: value
     });
@@ -71,11 +70,9 @@ class LoginForm extends Component {
         password: password
       };
       const objJSON = JSON.stringify(obj);
-      console.log(objJSON);
       const URL = `http://localhost:5001/Login`;
-      Fetch.authenticationFetch(URL, objJSON);
+      AuthenticationFetch.authenticationFetch(URL, objJSON);
     }
-    //
   };
   render() {
     return (
@@ -85,6 +82,7 @@ class LoginForm extends Component {
           type="text"
           placeholder="Login"
           id="login"
+          value={this.state.login}
           onChange={this.handleChange}
         />
 
@@ -92,6 +90,7 @@ class LoginForm extends Component {
           type="password"
           placeholder="Password"
           id="password"
+          value={this.state.password}
           onChange={this.handleChange}
         />
         <StyledFormText onClick={this.props.switch}>

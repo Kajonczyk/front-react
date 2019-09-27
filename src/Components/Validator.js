@@ -67,3 +67,45 @@ export const validateLogin = (login, password, self) => {
     });
   }
 };
+export const validateAddRecruitment = (
+  companyName,
+  cityName,
+  positionName,
+  applicationDate,
+  self
+) => {
+  let companyNameError = false;
+  let cityNameError = false;
+  let positionNameError = false;
+
+  let applicationDateError = false;
+  if (
+    (!companyNameError,
+    !cityNameError,
+    !positionNameError,
+    !applicationDateError)
+  ) {
+    return true;
+  } else {
+    if (companyName.length <= 3) {
+      companyNameError = true;
+    }
+    if (cityName.length <= 3) {
+      cityNameError = true;
+    }
+    if (positionName.length <= 3) {
+      positionNameError = true;
+    }
+    if (applicationDate === "") {
+      applicationDateError = true;
+    }
+    return self.setState({
+      errors: {
+        companyNameError,
+        cityNameError,
+        positionNameError,
+        applicationDateError
+      }
+    });
+  }
+};
