@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import CreateRectuitment from "./CreateRecruitment";
-
+import ShowRecruitment from "./ShowRecruitment";
+import * as GetRecruitmentFetch from "./Fetches/GetRecruitmentFetch";
+import StyledPlus from "./StyledPlus";
 const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.green};
   overflow: hidden;
@@ -34,7 +36,6 @@ const StyledGreeting = styled(StyledH1)`
 `;
 
 const RecruitmentWrapper = styled.section`
-  margin-top: 50px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -44,22 +45,74 @@ const RecruitmentWrapper = styled.section`
 
 const SectionInfo = styled(StyledH1)`
   color: ${({ theme }) => theme.green};
-  padding: 5px 15px;
+  padding: 15px;
   font-family: ${({ theme }) => theme.font.family.Didact};
-  margin-bottom: 30px;
+
   border: 2px solid ${({ theme }) => theme.green};
-  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 
   text-align: center;
+  &:nth-child(1) {
+    margin-top: 40px;
+  }
 `;
 const SectionDescription = styled(SectionInfo)`
   margin: 0px;
   border: 0px;
   border-bottom: 2px solid ${({ theme }) => theme.green};
 `;
+const StyledRecruitmentWrapper = styled.div`
+  background-color: ${({ theme }) => theme.lightgreen};
+  width: 250px;
+`;
+// const StyledPlus = styled(Plus)`
+//   height: 20px;
+//   width: 20px;
+//   color: ${({ theme }) => theme.green};
+//   transition: all 1s;
+//   &:hover {
+//     transform: rotateZ(180deg);
+//   }
+// `;
 
 class User extends Component {
-  state = {};
+  state = {
+    isRecruitmentBeingCreated: false,
+    isRecruitmentBeingBrowsed: false,
+    isRecruitmentArchiveBeingBrowsed: false,
+    recruitments: []
+  };
+  handleToggleRecruitment = type => {
+    if (type === "add") {
+      this.setState({
+        isRecruitmentBeingCreated: !this.state.isRecruitmentBeingCreated
+      });
+    } else if (type === "browse") {
+      this.setState({
+        isRecruitmentBeingBrowsed: !this.state.isRecruitmentBeingBrowsed
+      });
+
+      if (this.state.recruitments.length === 0) {
+        const URL = "http://localhost:5001/api/recruitment";
+
+        GetRecruitmentFetch.getRecruitmentFetch(
+          URL,
+          localStorage.getItem("token"),
+          this.state.recruitments
+        );
+
+        setTimeout(() => this.forceUpdate(), 500);
+      }
+      //
+    } else if (type === "archive") {
+      this.setState({
+        isRecruitmentArchiveBeingBrowsed: !this.state
+          .isRecruitmentArchiveBeingBrowsed
+      });
+    }
+  };
 
   render() {
     return (
@@ -69,9 +122,38 @@ class User extends Component {
         </StyledGreetingWrapper>
 
         <RecruitmentWrapper>
-          <SectionInfo>Recruitment</SectionInfo>
-          <SectionDescription>Add new recruitment info</SectionDescription>
-          <CreateRectuitment />
+          <StyledRecruitmentWrapper>
+            <SectionInfo>
+              Add Recruitment
+              <StyledPlus onClick={() => this.handleToggleRecruitment("add")} />
+            </SectionInfo>
+            {/* <SectionDescription>Add new recruitment info</SectionDescription> */}
+            {this.state.isRecruitmentBeingCreated ? (
+              <CreateRectuitment />
+            ) : null}
+          </StyledRecruitmentWrapper>
+          <StyledRecruitmentWrapper>
+            <SectionInfo>
+              Show Recruitments
+              <StyledPlus
+                onClick={() => this.handleToggleRecruitment("browse")}
+              />
+            </SectionInfo>
+            {this.state.isRecruitmentBeingBrowsed ? (
+              this.state.recruitments.length === 0 ? null : (
+                <ShowRecruitment recruitments={this.state.recruitments} />
+              )
+            ) : null}
+          </StyledRecruitmentWrapper>
+          <StyledRecruitmentWrapper>
+            <SectionInfo>
+              Show Archived Recruitments
+              <StyledPlus
+                onClick={() => this.handleToggleRecruitment("archive")}
+              />
+            </SectionInfo>
+            {this.state.isRecruitmentArchiveBeingBrowsed ? true : null}
+          </StyledRecruitmentWrapper>
         </RecruitmentWrapper>
       </StyledWrapper>
     );

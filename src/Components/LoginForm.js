@@ -46,8 +46,8 @@ to{
 `;
 class LoginForm extends Component {
   state = {
-    login: "Kajonczyk3",
-    password: "K@jonczyk3",
+    login: "",
+    password: "",
     errors: {
       loginError: false,
       passwordError: false
