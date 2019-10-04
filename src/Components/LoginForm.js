@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled, { keyframes, css } from "styled-components";
-import { StyledInput } from "./Input";
-import { StyledButton } from "./Button";
+import { StyledInput } from "./StyledComponents/Input";
+import { StyledButton } from "./StyledComponents/Button";
 import * as validator from "./Validator";
 import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
 const StyledLoginP = styled.p`
@@ -54,24 +54,30 @@ class LoginForm extends Component {
     }
   };
   handleChange = e => {
-    const type = e.target.id;
-    const value = e.target.value;
+    const { id, value } = e.target;
     this.setState({
-      [type]: value
+      [id]: value
     });
+  };
+  validateForm = (login, password) => {
+    if (validator.validateLogin(login, password, this)) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   handleSubmit = e => {
     const { login, password } = this.state;
     e.preventDefault();
-    if (validator.validateLogin(login, password, this)) {
+    const validatorHasNoErrors = this.validateForm(login, password);
+    if (validatorHasNoErrors) {
       const obj = {
-        login: login,
-        password: password
+        login,
+        password
       };
-      const objJSON = JSON.stringify(obj);
       const URL = `http://localhost:5001/Login`;
-      AuthenticationFetch.authenticationFetch(URL, objJSON);
+      AuthenticationFetch.authenticationFetch(URL, obj);
     }
   };
   render() {

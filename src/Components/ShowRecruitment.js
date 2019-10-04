@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import StyledPlus from "./StyledPlus";
+import StyledPlus from "./StyledComponents/StyledPlus";
 
 const StyledDiv = styled.div`
   height: 350px;
@@ -9,6 +9,7 @@ const StyledDiv = styled.div`
 const StyledWrapper = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.lightgreen};
+  flex-direction: column;
 `;
 
 const SectionInfo = styled.h1`
@@ -23,19 +24,37 @@ const SectionInfo = styled.h1`
   margin-top: 30px;
 `;
 const ShowRecruitment = ({ recruitments }) => {
+  const [recruitmentItems, setRecruitmentItems] = useState(recruitments);
+  const recruitmentItemsCopy = [...recruitments];
   return (
     <StyledDiv>
-      {recruitments[0].map(item => (
+      {recruitmentItems.map((item, id) => (
         <StyledWrapper key={item.id}>
           <SectionInfo>
             {item.companyName}
-
-            <StyledPlus />
+            <StyledPlus
+              onClick={() => {
+                recruitmentItemsCopy[id].isExpanded = !recruitmentItemsCopy[id]
+                  .isExpanded;
+                setRecruitmentItems(recruitmentItemsCopy);
+              }}
+            />
           </SectionInfo>
+          {recruitmentItemsCopy[id].isExpanded ? (
+            <StyledWrapper>
+              <p>Hello</p>
+              <p>{item.id}</p>
+              <p>{item.city}</p>
+              <p>{item.workPlace}</p>
+            </StyledWrapper>
+          ) : null}
         </StyledWrapper>
       ))}
     </StyledDiv>
   );
+};
+ShowRecruitment.defaultProps = {
+  recruitments: []
 };
 
 export default ShowRecruitment;

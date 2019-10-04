@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { StyledInput } from "./Input";
-import { StyledButton } from "./Button";
+import { StyledInput } from "./StyledComponents/Input";
+import { StyledButton } from "./StyledComponents/Button";
 import * as validator from "./Validator";
 import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
 
@@ -53,17 +53,13 @@ class RegisterForm extends Component {
     }
   };
   handleChange = e => {
-    const type = e.target.id;
-    const value = e.target.value;
+    const { id, value } = e.target;
     this.setState({
-      [type]: value
+      [id]: value
     });
   };
 
-  handleSubmit = e => {
-    const { firstName, lastName, email, login, password } = this.state;
-    e.preventDefault();
-
+  validateForm = (firstName, lastName, email, login, password) => {
     if (
       validator.validateRegister(
         firstName,
@@ -74,20 +70,36 @@ class RegisterForm extends Component {
         this
       )
     ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+  handleSubmit = e => {
+    const { firstName, lastName, email, login, password } = this.state;
+    e.preventDefault();
+    const validatorHasErrors = this.validateForm(
+      firstName,
+      lastName,
+      email,
+      login,
+      password
+    );
+    if (!validatorHasErrors) {
       const obj = {
         user: {
-          id: 1,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          login: login,
-          password: password
+          id: 1, //API
+          firstName,
+          lastName,
+          email,
+          login,
+          password
         }
       };
-      const objJSON = JSON.stringify(obj);
+      // const objJSON = JSON.stringify(obj);
 
       const URL = `http://localhost:5001/Register`;
-      AuthenticationFetch.authenticationFetch(URL, objJSON);
+      AuthenticationFetch.authenticationFetch(URL, obj);
     }
   };
   render() {

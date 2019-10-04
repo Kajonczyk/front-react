@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { StyledInput } from "./Input";
-import { StyledButton } from "./Button";
+import { StyledInput } from "./StyledComponents/Input";
+import { StyledButton } from "./StyledComponents/Button";
 import * as AddRecruitmentFetch from "./Fetches/AddRecruitmentFetch";
 import * as Validator from "./Validator";
 
@@ -25,7 +25,7 @@ const ButtonWrapper = styled.div`
   margin: 0px auto;
   text-align: center;
 `;
-const Button = styled(StyledButton)`
+const SubmitButton = styled(StyledButton)`
   margin-top: -20px;
 `;
 const StyledTextArea = styled.textarea`
@@ -73,35 +73,33 @@ class CreateRecruitment extends Component {
     }
   };
   handleChange = e => {
-    const id = e.target.id;
-    const value = e.target.value;
+    const { id, value, type } = e.target;
+
     this.setState({
       [id]: value
     });
-    if (e.target.type === "date") {
+    if (type === "date") {
       this.setState({
         [id]: value
       });
     }
   };
-
-  handleSubmit = () => {
-    const URL = "http://localhost:5001/api/recruitment";
-    const { companyName, cityName, positionName, applicationDate } = this.state;
-    const obj = {
-      id: 1,
-      companyName,
-      city: cityName,
-      workPlace: positionName,
-      dateOfCompanyReply: "",
-      applicationDate,
-      companyReply: false,
-      notes: "Good interview",
-      linkToApplication: "",
-      ownerId: 1
-    };
-
-    const objJSON = JSON.stringify(obj);
+  cleanForm = () => {
+    this.setState({
+      companyName: "",
+      cityName: "",
+      positionName: "",
+      applicationDate: "",
+      notes: "",
+      errors: {
+        companyNameError: false,
+        cityNameError: false,
+        positionNameError: false,
+        applicationDateError: false
+      }
+    });
+  };
+  validateForm = (companyName, cityName, positionName, applicationDate) => {
     if (
       Validator.validateAddRecruitment(
         companyName,
@@ -111,21 +109,42 @@ class CreateRecruitment extends Component {
         this
       )
     ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  handleSubmit = () => {
+    const {
+      companyName,
+      cityName,
+      positionName,
+      applicationDate,
+      notes
+    } = this.state;
+    const obj = {
+      id: 1,
+      companyName,
+      city: cityName,
+      workPlace: positionName,
+      dateOfCompanyReply: "",
+      applicationDate,
+      companyReply: false,
+      notes,
+      linkToApplication: "",
+      ownerId: 1
+    };
+    const validatorHasErrors = this.validateForm(
+      companyName,
+      cityName,
+      positionName,
+      applicationDate
+    );
+    if (!validatorHasErrors) {
       const token = localStorage.getItem("token");
-      AddRecruitmentFetch.addRecruitmentFetch(URL, objJSON, token);
-      this.setState({
-        companyName: "",
-        cityName: "",
-        positionName: "",
-        applicationDate: "",
-        notes: "",
-        errors: {
-          companyNameError: false,
-          cityNameError: false,
-          positionNameError: false,
-          applicationDateError: false
-        }
-      });
+      AddRecruitmentFetch.addRecruitmentFetch(obj, token);
+      this.cleanForm();
     }
   };
   render() {
@@ -169,7 +188,7 @@ class CreateRecruitment extends Component {
           </label>
         </InputWrapper>
         <ButtonWrapper>
-          <Button onClick={this.handleSubmit}>Submit</Button>
+          <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
         </ButtonWrapper>
       </div>
     );

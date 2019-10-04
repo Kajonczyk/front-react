@@ -1,10 +1,10 @@
-export const addRecruitmentFetch = (URL, payload, token) => {
-  fetch(URL, {
+export const addRecruitmentFetch = (payload, token) => {
+  fetch("http://localhost:5001/api/recruitment", {
     method: `POST`,
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
     },
-    body: payload
+    body: JSON.stringify(payload)
   }).then(response => console.log(response.ok));
 };

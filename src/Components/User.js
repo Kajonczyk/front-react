@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CreateRectuitment from "./CreateRecruitment";
 import ShowRecruitment from "./ShowRecruitment";
 import * as GetRecruitmentFetch from "./Fetches/GetRecruitmentFetch";
-import StyledPlus from "./StyledPlus";
+import StyledPlus from "./StyledComponents/StyledPlus";
 const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.green};
   overflow: hidden;
@@ -67,15 +67,6 @@ const StyledRecruitmentWrapper = styled.div`
   background-color: ${({ theme }) => theme.lightgreen};
   width: 250px;
 `;
-// const StyledPlus = styled(Plus)`
-//   height: 20px;
-//   width: 20px;
-//   color: ${({ theme }) => theme.green};
-//   transition: all 1s;
-//   &:hover {
-//     transform: rotateZ(180deg);
-//   }
-// `;
 
 class User extends Component {
   state = {
@@ -84,33 +75,50 @@ class User extends Component {
     isRecruitmentArchiveBeingBrowsed: false,
     recruitments: []
   };
-  handleToggleRecruitment = type => {
-    if (type === "add") {
-      this.setState({
-        isRecruitmentBeingCreated: !this.state.isRecruitmentBeingCreated
-      });
-    } else if (type === "browse") {
-      this.setState({
-        isRecruitmentBeingBrowsed: !this.state.isRecruitmentBeingBrowsed
-      });
 
-      if (this.state.recruitments.length === 0) {
-        const URL = "http://localhost:5001/api/recruitment";
+  handleFetchRecruitments = () => {
+    const fetchResult = GetRecruitmentFetch.getRecruitmentFetch(
+      localStorage.getItem("token"),
+      this
+    );
+    this.setState({
+      recruitments: fetchResult,
+      areRecruitmentsEmpty: false
+    });
+  };
+  handleRecruitmentSectionStateUpdate = type => {
+    const property = {
+      add: "isRecruitmentBeingCreated",
+      browse: "isRecruitmentBeingBrowsed",
+      archive: "isRecruitmentArchiveBeingBrowsed"
+    }[type];
 
-        GetRecruitmentFetch.getRecruitmentFetch(
-          URL,
-          localStorage.getItem("token"),
-          this.state.recruitments
-        );
-
-        setTimeout(() => this.forceUpdate(), 500);
+    this.setState(prevState => ({
+      [property]: !prevState[property]
+    }));
+  };
+  handleToggleRecruitmentSection = type => {
+    switch (type) {
+      case "add": {
+        this.handleRecruitmentSectionStateUpdate("add");
+        break;
       }
-      //
-    } else if (type === "archive") {
-      this.setState({
-        isRecruitmentArchiveBeingBrowsed: !this.state
-          .isRecruitmentArchiveBeingBrowsed
-      });
+      case "browse": {
+        this.handleRecruitmentSectionStateUpdate("browse");
+
+        if (this.state.recruitments.length === 0) {
+          this.handleFetchRecruitments();
+          setTimeout(() => this.forceUpdate(), 1500);
+        }
+        break;
+      }
+      case "archive": {
+        this.handleRecruitmentSectionStateUpdate("archive");
+        break;
+      }
+      default: {
+        break;
+      }
     }
   };
 
@@ -125,7 +133,9 @@ class User extends Component {
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Add Recruitment
-              <StyledPlus onClick={() => this.handleToggleRecruitment("add")} />
+              <StyledPlus
+                onClick={() => this.handleToggleRecruitmentSection("add")}
+              />
             </SectionInfo>
             {/* <SectionDescription>Add new recruitment info</SectionDescription> */}
             {this.state.isRecruitmentBeingCreated ? (
@@ -136,11 +146,11 @@ class User extends Component {
             <SectionInfo>
               Show Recruitments
               <StyledPlus
-                onClick={() => this.handleToggleRecruitment("browse")}
+                onClick={() => this.handleToggleRecruitmentSection("browse")}
               />
             </SectionInfo>
             {this.state.isRecruitmentBeingBrowsed ? (
-              this.state.recruitments.length === 0 ? null : (
+              typeof this.state.recruitments === null ? null : (
                 <ShowRecruitment recruitments={this.state.recruitments} />
               )
             ) : null}
@@ -149,7 +159,7 @@ class User extends Component {
             <SectionInfo>
               Show Archived Recruitments
               <StyledPlus
-                onClick={() => this.handleToggleRecruitment("archive")}
+                onClick={() => this.handleToggleRecruitmentSection("archive")}
               />
             </SectionInfo>
             {this.state.isRecruitmentArchiveBeingBrowsed ? true : null}

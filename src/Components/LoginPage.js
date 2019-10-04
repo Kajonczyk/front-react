@@ -42,12 +42,12 @@ const StyledLoginWrapper = styled.div`
 
 class LoginPage extends Component {
   state = {
-    isAccount: false
+    isAccountCreated: false
   };
 
   handleSwitchForm = () => {
     this.setState({
-      isAccount: !this.state.isAccount
+      isAccountCreated: !this.state.isAccountCreated
     });
   };
   render() {
@@ -57,10 +57,10 @@ class LoginPage extends Component {
           <StyledH1>Junior Start</StyledH1>
         </StyledGreetingDiv>
         <StyledLoginWrapper>
-          {this.state.isAccount ? (
+          {this.state.isAccountCreated ? (
             <LoginForm
               switch={this.handleSwitchForm}
-              active={this.state.isAccount}
+              active={this.state.isAccountCreated}
             />
           ) : (
             <RegisterForm switch={this.handleSwitchForm} />

@@ -4,7 +4,7 @@ export const authenticationFetch = (URL, payload) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: payload
+    body: JSON.stringify(payload)
   })
     .then(response => response.json())
     .then(data => localStorage.setItem("token", data));
