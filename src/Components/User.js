@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import CreateRectuitment from "./CreateRecruitment";
+import CreateRecruitment from "./CreateRecruitment";
 import ShowRecruitment from "./ShowRecruitment";
 import * as GetRecruitmentFetch from "./Fetches/GetRecruitmentFetch";
 import StyledPlus from "./StyledComponents/StyledPlus";
 const StyledWrapper = styled.div`
-  background-color: ${({ theme }) => theme.green};
+  background-image: linear-gradient(0deg, #093028, #237a57);
   overflow: hidden;
+  min-height: 100vh;
 `;
 const StyledH1 = styled.h1`
   color: ${({ theme }) => theme.lightgreen};
   text-align: center;
   font-family: ${({ theme }) => theme.font.family.Sofia};
   position: relative;
+  font-weight: 100;
 `;
 const StyledGreetingWrapper = styled.div`
   height: 300px;
@@ -40,15 +42,15 @@ const RecruitmentWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${({ theme }) => theme.lightgreen};
+  margin-top: -20px;
 `;
 
 const SectionInfo = styled(StyledH1)`
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   padding: 15px;
   font-family: ${({ theme }) => theme.font.family.Didact};
 
-  border: 2px solid ${({ theme }) => theme.green};
+  border: 2px solid ${({ theme }) => theme.lightgreen};
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -64,7 +66,6 @@ const SectionDescription = styled(SectionInfo)`
   border-bottom: 2px solid ${({ theme }) => theme.green};
 `;
 const StyledRecruitmentWrapper = styled.div`
-  background-color: ${({ theme }) => theme.lightgreen};
   width: 250px;
 `;
 
@@ -108,7 +109,6 @@ class User extends Component {
 
         if (this.state.recruitments.length === 0) {
           this.handleFetchRecruitments();
-          setTimeout(() => this.forceUpdate(), 1500);
         }
         break;
       }
@@ -139,7 +139,7 @@ class User extends Component {
             </SectionInfo>
             {/* <SectionDescription>Add new recruitment info</SectionDescription> */}
             {this.state.isRecruitmentBeingCreated ? (
-              <CreateRectuitment />
+              <CreateRecruitment />
             ) : null}
           </StyledRecruitmentWrapper>
           <StyledRecruitmentWrapper>
@@ -150,9 +150,7 @@ class User extends Component {
               />
             </SectionInfo>
             {this.state.isRecruitmentBeingBrowsed ? (
-              typeof this.state.recruitments === null ? null : (
-                <ShowRecruitment recruitments={this.state.recruitments} />
-              )
+              <ShowRecruitment recruitments={this.state.recruitments} />
             ) : null}
           </StyledRecruitmentWrapper>
           <StyledRecruitmentWrapper>

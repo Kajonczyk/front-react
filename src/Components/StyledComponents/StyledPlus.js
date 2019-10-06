@@ -3,7 +3,7 @@ import { Plus } from "styled-icons/boxicons-regular/Plus";
 const StyledPlus = styled(Plus)`
   height: 20px;
   width: 20px;
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   transition: all 1s;
   &:hover {
     transform: rotateZ(180deg);

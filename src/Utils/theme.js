@@ -1,14 +1,14 @@
 const theme = {
   white: "#F6E4D8",
-  lightgreen: "#CEF5C7",
-
+  lightergreen: "#CEF5C7",
+  lightgreen: "#BDEFE5",
   green: "#2EB041",
 
   font: {
     size: {
       s: "1.3rem",
       m: "1.9rem",
-      juniorStartMobile: "3.4rem",
+      juniorStartMobile: "3.8rem",
       formMobile: "1rem",
       formMobileText: ".75rem"
     },

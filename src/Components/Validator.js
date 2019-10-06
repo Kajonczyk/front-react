@@ -80,10 +80,10 @@ export const validateAddRecruitment = (
 
   let applicationDateError = false;
   if (
-    (!companyNameError,
-    !cityNameError,
-    !positionNameError,
-    !applicationDateError)
+    companyName.length > 3 &&
+    cityName.length > 3 &&
+    positionName.length > 3 &&
+    applicationDate !== ""
   ) {
     return true;
   } else {

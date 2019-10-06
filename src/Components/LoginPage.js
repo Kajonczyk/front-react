@@ -4,13 +4,12 @@ import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.green};
+  background-image: linear-gradient(0deg, #093028, #237a57);
   min-height: 100vh;
 `;
 const StyledH1 = styled.h1`
-  padding-top: 100px;
-  padding-bottom: 100px;
   text-align: center;
+  font-weight: 100;
   font-size: ${({ theme }) => theme.font.size.juniorStartMobile};
   color: ${({ theme }) => theme.lightgreen};
   font-family: ${({ theme }) => theme.font.family.Sofia};

@@ -6,19 +6,18 @@ import * as validator from "./Validator";
 import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
 
 const StyledLoginP = styled.p`
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   text-align: center;
   font-family: ${({ theme }) => theme.font.family.Didact};
-  font-size: ${({ theme }) => theme.font.size.formMobile};
+  font-size: ${({ theme }) => theme.font.size.s};
   padding-top: 10px;
   margin-bottom: 20px;
   margin-top: -50px;
 `;
 
 const StyledLoginBox = styled.div`
-  background-color: ${({ theme }) => theme.lightgreen};
-  height: 450px;
-  box-shadow: 0px 0px 4px ${({ theme }) => theme.lightgreen};
+  // background-color: ${({ theme }) => theme.lightgreen};
+  // box-shadow: 0px 0px 4px ${({ theme }) => theme.lightgreen};
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -30,11 +29,11 @@ const StyledButtonWrapper = styled.div`
 `;
 const StyledFormText = styled.span`
   font-size: ${({ theme }) => theme.font.size.formMobileText};
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   text-decoration: underline;
   cursor: pointer;
 `;
-const Button = styled(StyledButton)`
+const SubmitButton = styled(StyledButton)`
   margin-bottom: -20px;
 `;
 class RegisterForm extends Component {
@@ -143,7 +142,7 @@ class RegisterForm extends Component {
           Have an account already? Log in here
         </StyledFormText>
         <StyledButtonWrapper>
-          <Button onClick={this.handleSubmit}>Create</Button>
+          <SubmitButton onClick={this.handleSubmit}>Create</SubmitButton>
         </StyledButtonWrapper>
       </StyledLoginBox>
     );

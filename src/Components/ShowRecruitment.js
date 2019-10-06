@@ -8,16 +8,15 @@ const StyledDiv = styled.div`
 `;
 const StyledWrapper = styled.div`
   display: flex;
-  background-color: ${({ theme }) => theme.lightgreen};
   flex-direction: column;
 `;
 
 const SectionInfo = styled.h1`
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   margin: 0px auto;
   padding: 10px;
   font-family: ${({ theme }) => theme.font.family.Didact};
-  border: 2px solid ${({ theme }) => theme.green};
+  border: 2px solid ${({ theme }) => theme.lightgreen};
   width: 100%;
   display: flex;
   justify-content: space-between;

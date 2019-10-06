@@ -5,7 +5,7 @@ import { StyledButton } from "./StyledComponents/Button";
 import * as validator from "./Validator";
 import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
 const StyledLoginP = styled.p`
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   text-align: center;
   font-family: ${({ theme }) => theme.font.family.Didact};
   font-size: ${({ theme }) => theme.font.size.formMobile};
@@ -14,9 +14,8 @@ const StyledLoginP = styled.p`
 `;
 
 const StyledLoginBox = styled.div`
-  background-color: ${({ theme }) => theme.lightgreen};
-  height: 450px;
-  box-shadow: 0px 0px 4px ${({ theme }) => theme.lightgreen};
+  // background-color: ${({ theme }) => theme.lightgreen};
+  // box-shadow: 0px 0px 4px ${({ theme }) => theme.lightgreen};
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -29,7 +28,7 @@ const StyledButtonWrapper = styled.div`
 `;
 const StyledFormText = styled.span`
   font-size: ${({ theme }) => theme.font.size.formMobileText};
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   text-decoration: underline;
   cursor: pointer;
 `;
@@ -60,11 +59,7 @@ class LoginForm extends Component {
     });
   };
   validateForm = (login, password) => {
-    if (validator.validateLogin(login, password, this)) {
-      return true;
-    } else {
-      return false;
-    }
+    return validator.validateLogin(login, password, this);
   };
 
   handleSubmit = e => {

@@ -6,7 +6,7 @@ import * as AddRecruitmentFetch from "./Fetches/AddRecruitmentFetch";
 import * as Validator from "./Validator";
 
 const StyledDescription = styled.span`
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.lightgreen};
   font-family: ${({ theme }) => theme.font.family.Didact};
   font-weight: bold;
   text-align: center;
@@ -15,31 +15,36 @@ const StyledDescription = styled.span`
 const InputWrapper = styled.div`
   margin: 30px;
 `;
+const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const Input = styled(StyledInput)`
   margin-bottom: 5px;
 `;
-const DataInput = styled(Input)`
-  width: 100%;
-`;
+
 const ButtonWrapper = styled.div`
   margin: 0px auto;
   text-align: center;
 `;
 const SubmitButton = styled(StyledButton)`
   margin-top: -20px;
+  position: relative;
+  &::after {
+  }
 `;
 const StyledTextArea = styled.textarea`
-  padding: 5px;
   padding-bottom: 30px;
   background: none;
   border: 0px;
-  border-bottom: 2px solid ${({ theme }) => theme.green};
+  border-bottom: 2px solid ${({ theme }) => theme.lightgreen};
   margin-bottom: 15px;
-  color: ${({ theme }) => theme.green};
-  width: 100%;
+  color: ${({ theme }) => theme.lightgreen};
+  width: 220px;
   resize: none;
   &::placeholder {
-    color: ${({ theme }) => theme.green};
+    color: ${({ theme }) => theme.lightgreen};
   }
 `;
 
@@ -100,19 +105,13 @@ class CreateRecruitment extends Component {
     });
   };
   validateForm = (companyName, cityName, positionName, applicationDate) => {
-    if (
-      Validator.validateAddRecruitment(
-        companyName,
-        cityName,
-        positionName,
-        applicationDate,
-        this
-      )
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    return Validator.validateAddRecruitment(
+      companyName,
+      cityName,
+      positionName,
+      applicationDate,
+      this
+    );
   };
 
   handleSubmit = () => {
@@ -135,13 +134,13 @@ class CreateRecruitment extends Component {
       linkToApplication: "",
       ownerId: 1
     };
-    const validatorHasErrors = this.validateForm(
+    const validatorHasNoErrors = this.validateForm(
       companyName,
       cityName,
       positionName,
       applicationDate
     );
-    if (!validatorHasErrors) {
+    if (validatorHasNoErrors) {
       const token = localStorage.getItem("token");
       AddRecruitmentFetch.addRecruitmentFetch(obj, token);
       this.cleanForm();
@@ -149,7 +148,7 @@ class CreateRecruitment extends Component {
   };
   render() {
     return (
-      <div>
+      <StyledWrapper>
         {InputTextData.map(data => (
           <InputWrapper key={data.desc}>
             <label>
@@ -167,7 +166,7 @@ class CreateRecruitment extends Component {
         <InputWrapper>
           <label>
             <StyledDescription>Application date</StyledDescription>
-            <DataInput
+            <Input
               type="date"
               id="applicationDate"
               onChange={this.handleChange}
@@ -190,7 +189,7 @@ class CreateRecruitment extends Component {
         <ButtonWrapper>
           <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
         </ButtonWrapper>
-      </div>
+      </StyledWrapper>
     );
   }
 }
