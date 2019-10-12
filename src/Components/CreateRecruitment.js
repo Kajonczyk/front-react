@@ -13,7 +13,7 @@ const StyledDescription = styled.span`
   display: block;
 `;
 const InputWrapper = styled.div`
-  margin: 30px;
+  margin: 20px;
 `;
 const StyledWrapper = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ const StyledTextArea = styled.textarea`
   background: none;
   border: 0px;
   border-bottom: 2px solid ${({ theme }) => theme.lightgreen};
-  margin-bottom: 15px;
+  margin: 15px 0px;
   color: ${({ theme }) => theme.lightgreen};
   width: 220px;
   resize: none;

@@ -4,6 +4,7 @@ import CreateRecruitment from "./CreateRecruitment";
 import ShowRecruitment from "./ShowRecruitment";
 import * as GetRecruitmentFetch from "./Fetches/GetRecruitmentFetch";
 import StyledPlus from "./StyledComponents/StyledPlus";
+import StyledKeyboardArrowDown from "./StyledComponents/StyledArrow";
 const StyledWrapper = styled.div`
   background-image: linear-gradient(0deg, #093028, #237a57);
   overflow: hidden;
@@ -54,6 +55,7 @@ const SectionInfo = styled(StyledH1)`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  font-weight: bold;
 
   text-align: center;
   &:nth-child(1) {
@@ -145,7 +147,7 @@ class User extends Component {
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Show Recruitments
-              <StyledPlus
+              <StyledKeyboardArrowDown
                 onClick={() => this.handleToggleRecruitmentSection("browse")}
               />
             </SectionInfo>
@@ -156,7 +158,7 @@ class User extends Component {
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Show Archived Recruitments
-              <StyledPlus
+              <StyledKeyboardArrowDown
                 onClick={() => this.handleToggleRecruitmentSection("archive")}
               />
             </SectionInfo>

@@ -10,7 +10,7 @@ const theme = {
       m: "1.9rem",
       juniorStartMobile: "3.8rem",
       formMobile: "1rem",
-      formMobileText: ".75rem"
+      formMobileText: ".85rem"
     },
     family: {
       Sofia: "'Sofia', cursive;",

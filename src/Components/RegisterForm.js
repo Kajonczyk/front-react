@@ -32,6 +32,7 @@ const StyledFormText = styled.span`
   color: ${({ theme }) => theme.lightgreen};
   text-decoration: underline;
   cursor: pointer;
+  margin: 10px;
 `;
 const SubmitButton = styled(StyledButton)`
   margin-bottom: -20px;

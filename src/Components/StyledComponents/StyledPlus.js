@@ -7,6 +7,7 @@ const StyledPlus = styled(Plus)`
   transition: all 1s;
   &:hover {
     transform: rotateZ(180deg);
+    cursor: pointer;
   }
 `;
 export default StyledPlus;

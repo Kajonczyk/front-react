@@ -31,6 +31,7 @@ const StyledFormText = styled.span`
   color: ${({ theme }) => theme.lightgreen};
   text-decoration: underline;
   cursor: pointer;
+  margin: 10px;
 `;
 
 const fadeIn = keyframes`
@@ -106,9 +107,3 @@ class LoginForm extends Component {
 }
 
 export default LoginForm;
-// // ${props =>
-// props.active
-// ? `animation: ${css`
-//     ${fadeIn} 3s ease infinite
-//   `}`
-// : "transform: translateX(100px); opacity: 0"}
