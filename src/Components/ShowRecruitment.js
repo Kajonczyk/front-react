@@ -4,6 +4,7 @@ import StyledKeyboardArrowDown from "./StyledComponents/StyledArrow";
 import StyledTrash from "./StyledComponents/StyledTrash";
 import StyledPencil from "./StyledComponents/StyledPencil";
 import DeleteRecruitmentFetch from "./Fetches/DeleteRecruitmentFetch";
+import CreateRecruitment from "./CreateRecruitment";
 
 const StyledDiv = styled.div`
   height: 200px;
@@ -41,15 +42,18 @@ const StyledP = styled.p`
   font-size: ${({ theme }) => theme.font.size.formMobileText};
   margin-top: 30px;
   border: 0px;
-  border-bottom: 2px solid;
   border-bottom: 1px solid;
   border-style: dotted;
   padding: 5px;
   text-align: center;
+  word-break: break-word;
 `;
 
 const ShowRecruitment = ({ recruitments }) => {
   const [recruitmentItems, setRecruitmentItems] = useState(recruitments);
+  const [isRecruitmentBeingEdited, setRecruitmentBeingEditedStatus] = useState(
+    false
+  );
   const recruitmentItemsCopy = [...recruitments];
   return (
     <StyledDiv>
@@ -61,6 +65,7 @@ const ShowRecruitment = ({ recruitments }) => {
               onClick={() => {
                 recruitmentItemsCopy[id].isExpanded = !recruitmentItemsCopy[id]
                   .isExpanded;
+                recruitmentItemsCopy[id].isBeingEdited = false;
                 setRecruitmentItems(recruitmentItemsCopy);
               }}
             />
@@ -69,6 +74,11 @@ const ShowRecruitment = ({ recruitments }) => {
             <StyledWrapper>
               <StyledP>City: {item.city}</StyledP>
               <StyledP>Position: {item.workPlace}</StyledP>
+              <StyledP>
+                Application date: {item.applicationDate.substr(0, 10)}
+              </StyledP>
+              <StyledP>Company Reply: {item.companyReply}</StyledP>
+              <StyledP>Notes: {item.notes}</StyledP>
               <StyledIconWrapper>
                 <StyledTrash
                   onClick={() =>
@@ -79,7 +89,22 @@ const ShowRecruitment = ({ recruitments }) => {
                     )
                   }
                 />
-                <StyledPencil />
+                <StyledPencil
+                  onClick={() => {
+                    recruitmentItemsCopy[
+                      id
+                    ].isBeingEdited = !recruitmentItemsCopy[id].isBeingEdited;
+                    setRecruitmentBeingEditedStatus(
+                      recruitmentItemsCopy[id].isBeingEdited
+                    );
+                  }}
+                />
+                {recruitmentItemsCopy[id].isBeingEdited ? (
+                  <CreateRecruitment
+                    editRecruitment={isRecruitmentBeingEdited}
+                    recruitmentId={recruitmentItemsCopy[id].id}
+                  />
+                ) : null}
               </StyledIconWrapper>
             </StyledWrapper>
           ) : null}

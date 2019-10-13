@@ -139,7 +139,6 @@ class User extends Component {
                 onClick={() => this.handleToggleRecruitmentSection("add")}
               />
             </SectionInfo>
-            {/* <SectionDescription>Add new recruitment info</SectionDescription> */}
             {this.state.isRecruitmentBeingCreated ? (
               <CreateRecruitment />
             ) : null}

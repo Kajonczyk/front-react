@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { StyledInput } from "./StyledComponents/Input";
 import { StyledButton } from "./StyledComponents/Button";
 import * as AddRecruitmentFetch from "./Fetches/AddRecruitmentFetch";
+import UpdateRecruitmentFetch from "./Fetches/UpdateRecruitmentFetch";
 import * as Validator from "./Validator";
 
 const StyledDescription = styled.span`
@@ -142,7 +143,11 @@ class CreateRecruitment extends Component {
     );
     if (validatorHasNoErrors) {
       const token = localStorage.getItem("token");
-      AddRecruitmentFetch.addRecruitmentFetch(obj, token);
+      const { editRecruitment, recruitmentId } = this.props;
+      editRecruitment
+        ? UpdateRecruitmentFetch(obj, token, recruitmentId)
+        : AddRecruitmentFetch.addRecruitmentFetch(obj, token);
+
       this.cleanForm();
     }
   };
