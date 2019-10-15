@@ -99,7 +99,7 @@ class LoginForm extends Component {
           Dont have an account? Register here!
         </StyledFormText>
         <StyledButtonWrapper>
-          <StyledButton onClick={this.handleSubmit}>Create</StyledButton>
+          <StyledButton onClick={this.handleSubmit}>Log In</StyledButton>
         </StyledButtonWrapper>
       </StyledLoginBox>
     );

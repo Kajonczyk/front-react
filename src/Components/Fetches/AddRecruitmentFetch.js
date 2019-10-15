@@ -6,5 +6,5 @@ export const addRecruitmentFetch = (payload, token) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
-  }).then(response => console.log(response.ok));
+  });
 };

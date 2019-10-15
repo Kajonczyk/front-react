@@ -144,9 +144,13 @@ class CreateRecruitment extends Component {
     if (validatorHasNoErrors) {
       const token = localStorage.getItem("token");
       const { editRecruitment, recruitmentId } = this.props;
+      //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
+      //That's why I'm using two different fetches below \/
       editRecruitment
         ? UpdateRecruitmentFetch(obj, token, recruitmentId)
         : AddRecruitmentFetch.addRecruitmentFetch(obj, token);
+      //After adding a new recruitment there's a need to update ShowRecruitment component to make newly created recruitment visible
+      setTimeout(this.props.updateShowRecruitments, 200);
 
       this.cleanForm();
     }

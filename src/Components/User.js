@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import CreateRecruitment from "./CreateRecruitment";
 import ShowRecruitment from "./ShowRecruitment";
+import ToDoList from "./ToDoList";
 import * as GetRecruitmentFetch from "./Fetches/GetRecruitmentFetch";
 import StyledPlus from "./StyledComponents/StyledPlus";
 import StyledKeyboardArrowDown from "./StyledComponents/StyledArrow";
@@ -62,11 +63,6 @@ const SectionInfo = styled(StyledH1)`
     margin-top: 40px;
   }
 `;
-const SectionDescription = styled(SectionInfo)`
-  margin: 0px;
-  border: 0px;
-  border-bottom: 2px solid ${({ theme }) => theme.green};
-`;
 const StyledRecruitmentWrapper = styled.div`
   width: 250px;
 `;
@@ -79,8 +75,8 @@ class User extends Component {
     recruitments: []
   };
 
-  handleFetchRecruitments = () => {
-    const fetchResult = GetRecruitmentFetch.getRecruitmentFetch(
+  handleFetchRecruitments = async () => {
+    const fetchResult = await GetRecruitmentFetch.getRecruitmentFetch(
       localStorage.getItem("token"),
       this
     );
@@ -89,6 +85,9 @@ class User extends Component {
       areRecruitmentsEmpty: false
     });
   };
+  componentDidMount() {
+    this.handleFetchRecruitments();
+  }
   handleRecruitmentSectionStateUpdate = type => {
     const property = {
       add: "isRecruitmentBeingCreated",
@@ -140,7 +139,9 @@ class User extends Component {
               />
             </SectionInfo>
             {this.state.isRecruitmentBeingCreated ? (
-              <CreateRecruitment />
+              <CreateRecruitment
+                updateShowRecruitments={this.handleFetchRecruitments}
+              />
             ) : null}
           </StyledRecruitmentWrapper>
           <StyledRecruitmentWrapper>
@@ -164,6 +165,7 @@ class User extends Component {
             {this.state.isRecruitmentArchiveBeingBrowsed ? true : null}
           </StyledRecruitmentWrapper>
         </RecruitmentWrapper>
+        <ToDoList />
       </StyledWrapper>
     );
   }
