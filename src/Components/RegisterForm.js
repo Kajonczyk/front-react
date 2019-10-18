@@ -96,7 +96,6 @@ class RegisterForm extends Component {
           password
         }
       };
-      // const objJSON = JSON.stringify(obj);
 
       const URL = `http://localhost:5001/Register`;
       AuthenticationFetch.authenticationFetch(URL, obj);

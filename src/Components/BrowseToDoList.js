@@ -6,11 +6,16 @@ import { StyledButton } from "./StyledComponents/Button";
 import styled from "styled-components";
 import StyledKeyboardArrowDown from "./StyledComponents/StyledArrow";
 import * as AddNewToDoListTask from "./Fetches/AddNewToDoListTask";
+import StyledTrash from "./StyledComponents/StyledTrash";
+import DeleteToDoListTask from "./Fetches/DeleteToDoListTask";
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+const StyledTaskWrapper = styled(StyledWrapper)`
+  width: 250px;
 `;
 const StyledDescription = styled.span`
   color: ${({ theme }) => theme.lightgreen};
@@ -18,10 +23,23 @@ const StyledDescription = styled.span`
   font-weight: bold;
   text-align: center;
   display: block;
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
 `;
 const TaskInput = styled(StyledInput)`
   margin: 0px;
+`;
+const StyledTaskDescription = styled.p`
+  color: ${({ theme }) => theme.lightgreen};
+  border-bottom: 2px solid ${({ theme }) => theme.lightgreen};
+  padding: 15px;
+  padding-left: 0px;
+  margin: 15px;
+  width: 250px;
+  text-align: left;
+  font-size: ${({ theme }) => theme.font.size.taskMobileDescription};
+  display: flex;
+  justify-content: space-between;
 `;
 
 class BrowseToDoList extends Component {
@@ -40,6 +58,11 @@ class BrowseToDoList extends Component {
       })
     );
   }
+  setSectionExpansion = array => {
+    this.setState({
+      toDoLists: array
+    });
+  };
   componentDidMount() {
     this.getToDoListsFromApi();
   }
@@ -47,34 +70,56 @@ class BrowseToDoList extends Component {
     const { value } = e.target;
     const currentItem = this.state.toDoListsInputValue[id];
     currentItem.value = value;
-
-    this.setState({
-      [currentItem]: currentItem
-    });
   };
+
   handleAddNewTask = id => {
     const obj = {
       description: this.state.toDoListsInputValue[id].value,
       todoListId: id + 1
     };
-    AddNewToDoListTask.AddNewToDoListTask(obj, localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
+    AddNewToDoListTask.AddNewToDoListTask(obj, token);
+  };
+  handleDeleteTask = (payload, id) => {
+    const token = localStorage.getItem("token");
+    DeleteToDoListTask(payload, token, id);
   };
   render() {
     const { toDoLists } = this.state;
+    const toDoListArrayCopy = [...toDoLists];
     return (
       <div>
-        {toDoLists.map((item, id) => (
-          <StyledWrapper key={id}>
+        {toDoListArrayCopy.map((item, id) => (
+          <StyledTaskWrapper key={id}>
             <SectionInfo>
               {item.id} {item.name}
-              <StyledKeyboardArrowDown onClick={() => console.log(id)} />
+              <StyledKeyboardArrowDown
+                onClick={() => {
+                  item.isExpanded = !item.isExpanded;
+                  this.setSectionExpansion(toDoListArrayCopy);
+                }}
+              />
             </SectionInfo>
-            <StyledDescription>Add Task</StyledDescription>
-            <TaskInput onChange={e => this.handleChange(e, id)} taskId={id} />
-            <StyledButton onClick={() => this.handleAddNewTask(id)}>
-              Add task
-            </StyledButton>
-          </StyledWrapper>
+
+            {item.isExpanded ? (
+              <StyledWrapper>
+                <StyledDescription>Add Task</StyledDescription>
+                <TaskInput onChange={e => this.handleChange(e, id)} />
+                <StyledButton onClick={() => this.handleAddNewTask(id)}>
+                  Add task
+                </StyledButton>
+                <StyledDescription>Tasks</StyledDescription>
+                {item.tasks.map(item => (
+                  <StyledTaskDescription key={item.id}>
+                    {item.description}
+                    <StyledTrash
+                      onClick={() => this.handleDeleteTask(item, item.id)}
+                    />
+                  </StyledTaskDescription>
+                ))}
+              </StyledWrapper>
+            ) : null}
+          </StyledTaskWrapper>
         ))}
       </div>
     );
