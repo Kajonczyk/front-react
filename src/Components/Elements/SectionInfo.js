@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SectionInfo = styled.h2`
+export const SectionInfo = styled.h2`
   color: ${({ theme }) => theme.lightgreen};
   padding: 15px;
   font-family: ${({ theme }) => theme.font.family.Didact};
@@ -14,4 +14,3 @@ const SectionInfo = styled.h2`
   text-align: center;
   margin-top: 20px;
 `;
-export default SectionInfo;

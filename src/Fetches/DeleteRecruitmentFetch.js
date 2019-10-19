@@ -1,7 +1,7 @@
-const DeleteToDoListTask = (payload, token, id) => {
-  const baseURL = `http://localhost:5001/api/todolists/task/${id}`;
+export const deleteRecruitmentFetch = (payload, token, id) => {
+  const baseURL = `http://localhost:5001/api/recruitment/${id}`;
   fetch(baseURL, {
-    method: "DELETE",
+    method: `DELETE`,
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
@@ -9,4 +9,3 @@ const DeleteToDoListTask = (payload, token, id) => {
     body: JSON.stringify(payload)
   }).then(response => response.text());
 };
-export default DeleteToDoListTask;

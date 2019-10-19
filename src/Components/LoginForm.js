@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled, { keyframes, css } from "styled-components";
-import { StyledInput } from "./StyledComponents/Input";
-import { StyledButton } from "./StyledComponents/Button";
-import * as validator from "./Validator";
-import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
+import { StyledInput } from "./Elements/Input";
+import { StyledButton } from "./Elements/Button";
+import { validateLogin } from "./Validator";
+import { authenticationFetch } from "../Fetches/AuthenticationFetch";
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.lightgreen};
   text-align: center;
@@ -14,8 +14,6 @@ const StyledLoginP = styled.p`
 `;
 
 const StyledLoginBox = styled.div`
-  // background-color: ${({ theme }) => theme.lightgreen};
-  // box-shadow: 0px 0px 4px ${({ theme }) => theme.lightgreen};
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -60,20 +58,31 @@ class LoginForm extends Component {
     });
   };
   validateForm = (login, password) => {
-    return validator.validateLogin(login, password, this);
+    let validatorHasErrors;
+    const validateLoginForm = validateLogin(login, password);
+    console.log(validateLoginForm);
+    if (typeof validateLoginForm === "boolean") {
+      validatorHasErrors = false;
+    } else {
+      this.setState({
+        errors: validateLoginForm
+      });
+      validatorHasErrors = true;
+    }
+    return validatorHasErrors;
   };
 
   handleSubmit = e => {
     const { login, password } = this.state;
     e.preventDefault();
-    const validatorHasNoErrors = this.validateForm(login, password);
-    if (validatorHasNoErrors) {
+    const validatorHasErrors = this.validateForm(login, password);
+    if (!validatorHasErrors) {
       const obj = {
         login,
         password
       };
       const URL = `http://localhost:5001/Login`;
-      AuthenticationFetch.authenticationFetch(URL, obj);
+      authenticationFetch(URL, obj);
     }
   };
   render() {

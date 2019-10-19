@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Plus } from "styled-icons/boxicons-regular/Plus";
-const StyledPlus = styled(Plus)`
+export const StyledPlusIcon = styled(Plus)`
   height: 20px;
   width: 20px;
   color: ${({ theme }) => theme.lightgreen};
@@ -10,4 +10,3 @@ const StyledPlus = styled(Plus)`
     cursor: pointer;
   }
 `;
-export default StyledPlus;

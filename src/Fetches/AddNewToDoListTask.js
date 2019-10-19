@@ -1,4 +1,4 @@
-export const AddNewToDoListTask = (payload, token) => {
+export const addNewToDoListTask = (payload, token) => {
   const baseURL = "http://localhost:5001/api/todolists/task";
   fetch(baseURL, {
     method: "POST",

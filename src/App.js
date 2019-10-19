@@ -1,7 +1,7 @@
 import React from "react";
 import LoginPage from "./Components/LoginPage";
 import User from "./Components/User";
-import GlobalStyle from "./Utils/GlobalStyle";
+import GlobalStyle from "./Utils/globalStyle";
 import theme from "./Utils/theme";
 import { ThemeProvider } from "styled-components";
 import { withRouter } from "react-router";
@@ -12,14 +12,12 @@ function App() {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <>
-          <Router history={history}>
-            <Switch>
-              <Route path="/user" render={() => <User />} />
-              <Route exact path="/" render={() => <LoginPage />} />
-            </Switch>
-          </Router>
-        </>
+        <Router history={history}>
+          <Switch>
+            <Route path="/user" render={() => <User />} />
+            <Route exact path="/" render={() => <LoginPage />} />
+          </Switch>
+        </Router>
       </ThemeProvider>
     </>
   );

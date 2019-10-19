@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import StyledKeyboardArrowDown from "./StyledComponents/StyledArrow";
-import StyledTrash from "./StyledComponents/StyledTrash";
-import StyledPencil from "./StyledComponents/StyledPencil";
-import DeleteRecruitmentFetch from "./Fetches/DeleteRecruitmentFetch";
+import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
+import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
+import { StyledPencilIcon } from "./Elements/StyledPencilIcon";
+import { deleteRecruitmentFetch } from "../Fetches/DeleteRecruitmentFetch";
 import CreateRecruitment from "./CreateRecruitment";
 
 const StyledDiv = styled.div`
@@ -48,7 +48,10 @@ const StyledP = styled.p`
   text-align: center;
   word-break: break-word;
 `;
-
+const handleDeleteRecruitment = item => {
+  const token = localStorage.getItem("token");
+  deleteRecruitmentFetch(item, token, item.id);
+};
 const ShowRecruitment = ({ recruitments }) => {
   const [recruitmentItems, setRecruitmentItems] = useState(recruitments);
   const [isRecruitmentBeingEdited, setRecruitmentBeingEditedStatus] = useState(
@@ -61,7 +64,7 @@ const ShowRecruitment = ({ recruitments }) => {
         <StyledWrapper key={item.id}>
           <SectionInfo>
             {item.companyName}
-            <StyledKeyboardArrowDown
+            <StyledKeyboardArrowDownIcon
               onClick={() => {
                 recruitmentItemsCopy[id].isExpanded = !recruitmentItemsCopy[id]
                   .isExpanded;
@@ -80,16 +83,12 @@ const ShowRecruitment = ({ recruitments }) => {
               <StyledP>Company Reply: {item.companyReply}</StyledP>
               <StyledP>Notes: {item.notes}</StyledP>
               <StyledIconWrapper>
-                <StyledTrash
+                <StyledTrashIcon
                   onClick={() =>
-                    DeleteRecruitmentFetch(
-                      recruitmentItemsCopy[id],
-                      localStorage.getItem("token"),
-                      recruitmentItemsCopy[id].id
-                    )
+                    handleDeleteRecruitment(recruitmentItemsCopy[id])
                   }
                 />
-                <StyledPencil
+                <StyledPencilIcon
                   onClick={() => {
                     recruitmentItemsCopy[
                       id

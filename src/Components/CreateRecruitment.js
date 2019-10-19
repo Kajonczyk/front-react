@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { StyledInput } from "./StyledComponents/Input";
-import { StyledButton } from "./StyledComponents/Button";
-import * as AddRecruitmentFetch from "./Fetches/AddRecruitmentFetch";
-import UpdateRecruitmentFetch from "./Fetches/UpdateRecruitmentFetch";
+import { StyledInput } from "./Elements/Input";
+import { StyledButton } from "./Elements/Button";
+import { addRecruitmentFetch } from "../Fetches/AddRecruitmentFetch";
+import { updateRecruitmentFetch } from "../Fetches/UpdateRecruitmentFetch";
 import * as Validator from "./Validator";
 
 const StyledDescription = styled.span`
@@ -90,13 +90,17 @@ class CreateRecruitment extends Component {
       });
     }
   };
-  cleanForm = () => {
+  cleanFormInputs = () => {
     this.setState({
       companyName: "",
       cityName: "",
       positionName: "",
       applicationDate: "",
-      notes: "",
+      notes: ""
+    });
+  };
+  cleanFormErrors = () => {
+    this.setState({
       errors: {
         companyNameError: false,
         cityNameError: false,
@@ -105,14 +109,27 @@ class CreateRecruitment extends Component {
       }
     });
   };
+  cleanForm = () => {
+    this.cleanFormInputs();
+    this.cleanFormErrors();
+  };
   validateForm = (companyName, cityName, positionName, applicationDate) => {
-    return Validator.validateAddRecruitment(
+    let validateHasErrors;
+    const validateAddRecruitmentForm = Validator.validateAddRecruitment(
       companyName,
       cityName,
       positionName,
-      applicationDate,
-      this
+      applicationDate
     );
+    if (typeof validateAddRecruitmentForm === "boolean") {
+      validateHasErrors = false;
+    } else {
+      this.setState({
+        errors: validateAddRecruitmentForm[1]
+      });
+      validateHasErrors = true;
+    }
+    return validateHasErrors;
   };
 
   handleSubmit = () => {
@@ -135,20 +152,22 @@ class CreateRecruitment extends Component {
       linkToApplication: "",
       ownerId: 1
     };
-    const validatorHasNoErrors = this.validateForm(
+    const validatorHasErrors = this.validateForm(
       companyName,
       cityName,
       positionName,
       applicationDate
     );
-    if (validatorHasNoErrors) {
+    if (!validatorHasErrors) {
       const token = localStorage.getItem("token");
       const { editRecruitment, recruitmentId } = this.props;
       //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
       //That's why I'm using two different fetches below \/
-      editRecruitment
-        ? UpdateRecruitmentFetch(obj, token, recruitmentId)
-        : AddRecruitmentFetch.addRecruitmentFetch(obj, token);
+      if (editRecruitment) {
+        updateRecruitmentFetch(obj, token, recruitmentId);
+      } else {
+        addRecruitmentFetch(obj, token);
+      }
       //After adding a new recruitment there's a need to update ShowRecruitment component to make newly created recruitment visible
       setTimeout(this.props.updateShowRecruitments, 200);
 

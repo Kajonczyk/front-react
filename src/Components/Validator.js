@@ -3,8 +3,7 @@ export const validateRegister = (
   lastName,
   email,
   login,
-  password,
-  self
+  password
 ) => {
   let firstNameError = false;
   let lastNameError = false;
@@ -14,7 +13,7 @@ export const validateRegister = (
   if (
     firstName.length > 2 &&
     lastName.length > 2 &&
-    (email.length > 5 && email.indexOf("@") !== -1) &&
+    (email.length > 5 && email.includes("@")) &&
     login.length > 5 &&
     password.length > 6
   ) {
@@ -27,7 +26,7 @@ export const validateRegister = (
     if (lastName.length < 2) {
       lastNameError = true;
     }
-    if (email.length < 5 && email.indexOf("@") === -1) {
+    if (email.length < 5 || !email.includes("@")) {
       emailError = true;
     }
     if (login.length < 5) {
@@ -36,18 +35,16 @@ export const validateRegister = (
     if (password.length < 6) {
       passwordError = true;
     }
-    return self.setState({
-      errors: {
-        firstNameError,
-        lastNameError,
-        emailError,
-        loginError,
-        passwordError
-      }
-    });
+    return {
+      firstNameError,
+      lastNameError,
+      emailError,
+      loginError,
+      passwordError
+    };
   }
 };
-export const validateLogin = (login, password, self) => {
+export const validateLogin = (login, password) => {
   let loginError = false;
   let passwordError = false;
   if (login.length > 5 && password.length > 6) {
@@ -59,20 +56,17 @@ export const validateLogin = (login, password, self) => {
     if (password.length < 6) {
       passwordError = true;
     }
-    return self.setState({
-      errors: {
-        loginError,
-        passwordError
-      }
-    });
+    return {
+      loginError,
+      passwordError
+    };
   }
 };
 export const validateAddRecruitment = (
   companyName,
   cityName,
   positionName,
-  applicationDate,
-  self
+  applicationDate
 ) => {
   let companyNameError = false;
   let cityNameError = false;
@@ -99,13 +93,14 @@ export const validateAddRecruitment = (
     if (applicationDate === "") {
       applicationDateError = true;
     }
-    return self.setState({
-      errors: {
+    return [
+      false,
+      {
         companyNameError,
         cityNameError,
         positionNameError,
         applicationDateError
       }
-    });
+    ];
   }
 };

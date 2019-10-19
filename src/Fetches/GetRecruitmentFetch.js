@@ -1,5 +1,6 @@
-export const getRecruitmentFetch = async (token, self) => {
-  const response = await fetch("http://localhost:5001/api/recruitment", {
+export const getRecruitmentFetch = async token => {
+  const baseURL = "http://localhost:5001/api/recruitment";
+  const response = await fetch(baseURL, {
     method: `GET`,
     headers: {
       Authorization: `Bearer ${token}`,

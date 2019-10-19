@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { KeyboardArrowDown } from "styled-icons/material/KeyboardArrowDown";
 
-const StyledKeyboardArrowDown = styled(KeyboardArrowDown)`
+export const StyledKeyboardArrowDownIcon = styled(KeyboardArrowDown)`
   height: 20px;
   width: 20px;
   color: ${({ theme }) => theme.lightgreen};
@@ -11,4 +11,3 @@ const StyledKeyboardArrowDown = styled(KeyboardArrowDown)`
     cursor: pointer;
   }
 `;
-export default StyledKeyboardArrowDown;

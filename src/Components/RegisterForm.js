@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { StyledInput } from "./StyledComponents/Input";
-import { StyledButton } from "./StyledComponents/Button";
-import * as validator from "./Validator";
-import * as AuthenticationFetch from "./Fetches/AuthenticationFetch";
+import { StyledInput } from "./Elements/Input";
+import { StyledButton } from "./Elements/Button";
+import { validateRegister } from "./Validator";
+import { authenticationFetch } from "../Fetches/AuthenticationFetch";
 
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.lightgreen};
@@ -13,11 +13,10 @@ const StyledLoginP = styled.p`
   padding-top: 10px;
   margin-bottom: 20px;
   margin-top: -50px;
+  text-transform: uppercase;
 `;
 
 const StyledLoginBox = styled.div`
-  // background-color: ${({ theme }) => theme.lightgreen};
-  // box-shadow: 0px 0px 4px ${({ theme }) => theme.lightgreen};
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -59,32 +58,32 @@ class RegisterForm extends Component {
     });
   };
 
-  validateForm = (firstName, lastName, email, login, password) => {
-    if (
-      validator.validateRegister(
-        firstName,
-        lastName,
-        email,
-        login,
-        password,
-        this
-      )
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-  handleSubmit = e => {
+  validateForm = () => {
+    let validateHasErrors;
     const { firstName, lastName, email, login, password } = this.state;
-    e.preventDefault();
-    const validatorHasErrors = this.validateForm(
+    const validateRegisterForm = validateRegister(
       firstName,
       lastName,
       email,
       login,
       password
     );
+    console.log(validateRegisterForm);
+    if (typeof validateRegisterForm === "boolean") {
+      validateHasErrors = false;
+    } else {
+      this.setState({
+        errors: validateRegisterForm
+      });
+      validateHasErrors = true;
+    }
+    return validateHasErrors;
+  };
+  handleSubmit = e => {
+    const { firstName, lastName, email, login, password } = this.state;
+    e.preventDefault();
+    const validatorHasErrors = this.validateForm();
+
     if (!validatorHasErrors) {
       const obj = {
         user: {
@@ -98,13 +97,13 @@ class RegisterForm extends Component {
       };
 
       const URL = `http://localhost:5001/Register`;
-      AuthenticationFetch.authenticationFetch(URL, obj);
+      authenticationFetch(URL, obj);
     }
   };
   render() {
     return (
       <StyledLoginBox>
-        <StyledLoginP>CREATE YOUR ACCOUNT</StyledLoginP>
+        <StyledLoginP>Create your account</StyledLoginP>
         <StyledInput
           type="text"
           placeholder="First Name"

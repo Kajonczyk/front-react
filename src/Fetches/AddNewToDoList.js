@@ -1,4 +1,4 @@
-export const AddNewToDoList = (payload, token) => {
+export const addNewToDoList = (payload, token) => {
   const obj = {
     id: 1,
     name: payload,
@@ -6,7 +6,8 @@ export const AddNewToDoList = (payload, token) => {
     ownerId: 1,
     status: true
   };
-  fetch("http://localhost:5001/api/todolists/todolist", {
+  const baseURL = "http://localhost:5001/api/todolists/todolist";
+  fetch(baseURL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

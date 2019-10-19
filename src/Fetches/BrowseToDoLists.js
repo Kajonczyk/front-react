@@ -1,5 +1,6 @@
-const BrowseToDoLists = async token => {
-  const response = await fetch("http://localhost:5001/api/todolists", {
+export const browseToDoLists = async token => {
+  const baseURL = "http://localhost:5001/api/todolists";
+  const response = await fetch(baseURL, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -9,4 +10,3 @@ const BrowseToDoLists = async token => {
   const data = await response.json();
   return data;
 };
-export default BrowseToDoLists;

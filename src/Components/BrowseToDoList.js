@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import SectionInfo from "./StyledComponents/SectionInfo";
-import BrowseToDoLists from "./Fetches/BrowseToDoLists";
-import { StyledInput } from "./StyledComponents/Input";
-import { StyledButton } from "./StyledComponents/Button";
+import { SectionInfo } from "./Elements/SectionInfo";
+import { browseToDoLists } from "../Fetches/BrowseToDoLists";
+import { StyledInput } from "./Elements/Input";
+import { StyledButton } from "./Elements/Button";
 import styled from "styled-components";
-import StyledKeyboardArrowDown from "./StyledComponents/StyledArrow";
-import * as AddNewToDoListTask from "./Fetches/AddNewToDoListTask";
-import StyledTrash from "./StyledComponents/StyledTrash";
-import DeleteToDoListTask from "./Fetches/DeleteToDoListTask";
+import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
+import { addNewToDoListTask } from "../Fetches/AddNewToDoListTask";
+import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
+import { deleteToDoListTask } from "../Fetches/DeleteToDoListTask";
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,15 +48,20 @@ class BrowseToDoList extends Component {
     toDoListsInputValue: []
   };
   async getToDoListsFromApi() {
-    const toDoLists = await BrowseToDoLists(localStorage.getItem("token"));
+    const toDoLists = await browseToDoLists(localStorage.getItem("token"));
+
+    console.log(toDoLists);
     this.setState({
       toDoLists
     });
-    toDoLists.forEach(item =>
-      this.setState({
-        toDoListsInputValue: [...this.state.toDoListsInputValue, { value: "" }]
-      })
-    );
+    let toDoListsInputValue = toDoLists.map(item => [
+      ...this.state.toDoListsInputValue,
+      { value: "" }
+    ]);
+    toDoListsInputValue = toDoListsInputValue.flatMap(item => item);
+    this.setState({
+      toDoListsInputValue
+    });
   }
   setSectionExpansion = array => {
     this.setState({
@@ -78,11 +83,11 @@ class BrowseToDoList extends Component {
       todoListId: id + 1
     };
     const token = localStorage.getItem("token");
-    AddNewToDoListTask.AddNewToDoListTask(obj, token);
+    addNewToDoListTask(obj, token);
   };
   handleDeleteTask = (payload, id) => {
     const token = localStorage.getItem("token");
-    DeleteToDoListTask(payload, token, id);
+    deleteToDoListTask(payload, token, id);
   };
   render() {
     const { toDoLists } = this.state;
@@ -93,7 +98,7 @@ class BrowseToDoList extends Component {
           <StyledTaskWrapper key={id}>
             <SectionInfo>
               {item.id} {item.name}
-              <StyledKeyboardArrowDown
+              <StyledKeyboardArrowDownIcon
                 onClick={() => {
                   item.isExpanded = !item.isExpanded;
                   this.setSectionExpansion(toDoListArrayCopy);
@@ -112,7 +117,7 @@ class BrowseToDoList extends Component {
                 {item.tasks.map(item => (
                   <StyledTaskDescription key={item.id}>
                     {item.description}
-                    <StyledTrash
+                    <StyledTrashIcon
                       onClick={() => this.handleDeleteTask(item, item.id)}
                     />
                   </StyledTaskDescription>

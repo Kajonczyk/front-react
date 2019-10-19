@@ -3,9 +3,9 @@ import styled from "styled-components";
 import CreateRecruitment from "./CreateRecruitment";
 import ShowRecruitment from "./ShowRecruitment";
 import ToDoList from "./ToDoList";
-import * as GetRecruitmentFetch from "./Fetches/GetRecruitmentFetch";
-import StyledPlus from "./StyledComponents/StyledPlus";
-import StyledKeyboardArrowDown from "./StyledComponents/StyledArrow";
+import { getRecruitmentFetch } from "../Fetches/GetRecruitmentFetch";
+import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
+import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
 const StyledWrapper = styled.div`
   background-image: linear-gradient(0deg, #093028, #237a57);
   overflow: hidden;
@@ -76,9 +76,8 @@ class User extends Component {
   };
 
   handleFetchRecruitments = async () => {
-    const fetchResult = await GetRecruitmentFetch.getRecruitmentFetch(
-      localStorage.getItem("token"),
-      this
+    const fetchResult = await getRecruitmentFetch(
+      localStorage.getItem("token")
     );
     this.setState({
       recruitments: fetchResult,
@@ -134,7 +133,7 @@ class User extends Component {
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Add Recruitment
-              <StyledPlus
+              <StyledPlusIcon
                 onClick={() => this.handleToggleRecruitmentSection("add")}
               />
             </SectionInfo>
@@ -147,7 +146,7 @@ class User extends Component {
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Show Recruitments
-              <StyledKeyboardArrowDown
+              <StyledKeyboardArrowDownIcon
                 onClick={() => this.handleToggleRecruitmentSection("browse")}
               />
             </SectionInfo>
@@ -158,7 +157,7 @@ class User extends Component {
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Show Archived Recruitments
-              <StyledKeyboardArrowDown
+              <StyledKeyboardArrowDownIcon
                 onClick={() => this.handleToggleRecruitmentSection("archive")}
               />
             </SectionInfo>

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { StyledInput } from "./StyledComponents/Input";
-import StyledPlus from "./StyledComponents/StyledPlus";
-import SectionInfo from "./StyledComponents/SectionInfo";
-import { StyledButton } from "./StyledComponents/Button";
-import { AddNewToDoList } from "./Fetches/AddNewToDoList";
+import { StyledInput } from "./Elements/Input";
+import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
+import { SectionInfo } from "./Elements/SectionInfo";
+import { StyledButton } from "./Elements/Button";
+import { addNewToDoList } from "../Fetches/AddNewToDoList";
 import BrowseToDoList from "./BrowseToDoList";
 const StyledWrapper = styled.div`
   width: 100%;
@@ -86,7 +86,7 @@ class ToDoList extends Component {
         <StyledTaskWrapper>
           <SectionInfo>
             Add To Do List
-            <StyledPlus
+            <StyledPlusIcon
               onClick={() => this.handleSectionToggle("addToDoList")}
             />
           </SectionInfo>
@@ -99,7 +99,7 @@ class ToDoList extends Component {
               />
               <StyledButton
                 onClick={() =>
-                  AddNewToDoList(
+                  addNewToDoList(
                     this.state.toDoListName,
                     localStorage.getItem("token")
                   )
