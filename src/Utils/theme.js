@@ -11,7 +11,8 @@ const theme = {
       juniorStartMobile: "3.8rem",
       formMobile: "1rem",
       formMobileText: ".85rem",
-      taskMobileDescription: "0.75rem"
+      taskMobileDescription: "0.75rem",
+      spanFormError: ".75rem"
     },
     family: {
       Sofia: "'Sofia', cursive;",

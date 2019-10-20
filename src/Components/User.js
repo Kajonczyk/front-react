@@ -6,6 +6,7 @@ import ToDoList from "./ToDoList";
 import { getRecruitmentFetch } from "../Fetches/GetRecruitmentFetch";
 import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
 import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
+import { withRouter } from "react-router";
 const StyledWrapper = styled.div`
   background-image: linear-gradient(0deg, #093028, #237a57);
   overflow: hidden;
@@ -170,4 +171,4 @@ class User extends Component {
   }
 }
 
-export default User;
+export default withRouter(User);

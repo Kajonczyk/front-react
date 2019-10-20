@@ -8,6 +8,8 @@ import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
 import { addNewToDoListTask } from "../Fetches/AddNewToDoListTask";
 import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
 import { deleteToDoListTask } from "../Fetches/DeleteToDoListTask";
+import { deleteToDoList } from "../Fetches/DeleteToDoList";
+import { validateAddTask } from "./Validator";
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -23,8 +25,7 @@ const StyledDescription = styled.span`
   font-weight: bold;
   text-align: center;
   display: block;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  margin: 30px 0px 10px;
 `;
 const TaskInput = styled(StyledInput)`
   margin: 0px;
@@ -32,8 +33,7 @@ const TaskInput = styled(StyledInput)`
 const StyledTaskDescription = styled.p`
   color: ${({ theme }) => theme.lightgreen};
   border-bottom: 2px solid ${({ theme }) => theme.lightgreen};
-  padding: 15px;
-  padding-left: 0px;
+  padding: 15px 15px 15px 0px;
   margin: 15px;
   width: 250px;
   text-align: left;
@@ -41,7 +41,11 @@ const StyledTaskDescription = styled.p`
   display: flex;
   justify-content: space-between;
 `;
-
+const StyledButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 class BrowseToDoList extends Component {
   state = {
     toDoLists: [],
@@ -49,8 +53,6 @@ class BrowseToDoList extends Component {
   };
   async getToDoListsFromApi() {
     const toDoLists = await browseToDoLists(localStorage.getItem("token"));
-
-    console.log(toDoLists);
     this.setState({
       toDoLists
     });
@@ -68,6 +70,9 @@ class BrowseToDoList extends Component {
       toDoLists: array
     });
   };
+  handleDeleteToDoList = item => {
+    deleteToDoList(item);
+  };
   componentDidMount() {
     this.getToDoListsFromApi();
   }
@@ -82,50 +87,64 @@ class BrowseToDoList extends Component {
       description: this.state.toDoListsInputValue[id].value,
       todoListId: id + 1
     };
-    const token = localStorage.getItem("token");
-    addNewToDoListTask(obj, token);
+    const validationError = validateAddTask(obj.description);
+    if (!validationError) {
+      addNewToDoListTask(obj);
+    }
   };
   handleDeleteTask = (payload, id) => {
-    const token = localStorage.getItem("token");
-    deleteToDoListTask(payload, token, id);
+    deleteToDoListTask(payload, id);
   };
   render() {
     const { toDoLists } = this.state;
     const toDoListArrayCopy = [...toDoLists];
     return (
       <div>
-        {toDoListArrayCopy.map((item, id) => (
-          <StyledTaskWrapper key={id}>
-            <SectionInfo>
-              {item.id} {item.name}
-              <StyledKeyboardArrowDownIcon
-                onClick={() => {
-                  item.isExpanded = !item.isExpanded;
-                  this.setSectionExpansion(toDoListArrayCopy);
-                }}
-              />
-            </SectionInfo>
+        {toDoLists.length === 0 ? (
+          <p>You have no lists</p>
+        ) : (
+          toDoListArrayCopy.map((item, id) => (
+            <StyledTaskWrapper key={id}>
+              <SectionInfo>
+                {item.id} {item.name}
+                <StyledKeyboardArrowDownIcon
+                  onClick={() => {
+                    item.isExpanded = !item.isExpanded;
+                    this.setSectionExpansion(toDoListArrayCopy);
+                  }}
+                />
+              </SectionInfo>
 
-            {item.isExpanded ? (
-              <StyledWrapper>
-                <StyledDescription>Add Task</StyledDescription>
-                <TaskInput onChange={e => this.handleChange(e, id)} />
-                <StyledButton onClick={() => this.handleAddNewTask(id)}>
-                  Add task
-                </StyledButton>
-                <StyledDescription>Tasks</StyledDescription>
-                {item.tasks.map(item => (
-                  <StyledTaskDescription key={item.id}>
-                    {item.description}
+              {item.isExpanded ? (
+                <StyledWrapper>
+                  <StyledDescription>Add Task</StyledDescription>
+                  <TaskInput onChange={e => this.handleChange(e, id)} />
+                  <StyledButtonWrapper>
+                    <StyledButton onClick={() => this.handleAddNewTask(id)}>
+                      Add task
+                    </StyledButton>
+
                     <StyledTrashIcon
-                      onClick={() => this.handleDeleteTask(item, item.id)}
+                      onClick={() => this.handleDeleteToDoList(item)}
                     />
-                  </StyledTaskDescription>
-                ))}
-              </StyledWrapper>
-            ) : null}
-          </StyledTaskWrapper>
-        ))}
+                  </StyledButtonWrapper>
+
+                  {item.tasks.length === 0 ? null : (
+                    <StyledDescription>Tasks</StyledDescription>
+                  )}
+                  {item.tasks.map(item => (
+                    <StyledTaskDescription key={item.id}>
+                      {item.description}
+                      <StyledTrashIcon
+                        onClick={() => this.handleDeleteTask(item, item.id)}
+                      />
+                    </StyledTaskDescription>
+                  ))}
+                </StyledWrapper>
+              ) : null}
+            </StyledTaskWrapper>
+          ))
+        )}
       </div>
     );
   }

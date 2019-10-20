@@ -1,11 +1,13 @@
-export const authenticationFetch = (URL, payload) => {
-  fetch(URL, {
+export const authenticationFetch = async (URL, payload) => {
+  const response = await fetch(URL, {
     method: `POST`,
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
-  })
-    .then(response => response.json())
-    .then(data => localStorage.setItem("token", data));
+  });
+  const status = response.ok;
+  const data = await response.json();
+  localStorage.setItem("token", data);
+  return status;
 };

@@ -104,3 +104,10 @@ export const validateAddRecruitment = (
     ];
   }
 };
+export const validateAddTask = taskName => {
+  let nameError = true;
+  if (taskName.length >= 1) {
+    nameError = false;
+  }
+  return nameError;
+};

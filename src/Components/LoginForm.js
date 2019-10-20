@@ -4,6 +4,8 @@ import { StyledInput } from "./Elements/Input";
 import { StyledButton } from "./Elements/Button";
 import { validateLogin } from "./Validator";
 import { authenticationFetch } from "../Fetches/AuthenticationFetch";
+import { StyledSpanError } from "./Elements/SpanError";
+
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.lightgreen};
   text-align: center;
@@ -49,7 +51,8 @@ class LoginForm extends Component {
     errors: {
       loginError: false,
       passwordError: false
-    }
+    },
+    validateError: false
   };
   handleChange = e => {
     const { id, value } = e.target;
@@ -57,10 +60,27 @@ class LoginForm extends Component {
       [id]: value
     });
   };
+  handleFormInputsClear = () => {
+    this.setState({
+      login: "",
+      password: ""
+    });
+  };
+  handleFormErrorsClear = () => {
+    this.setState({
+      errors: {
+        loginError: false,
+        passwordError: false
+      }
+    });
+  };
+  handleFormClear = () => {
+    this.handleFormInputsClear();
+    this.handleFormErrorsClear();
+  };
   validateForm = (login, password) => {
     let validatorHasErrors;
     const validateLoginForm = validateLogin(login, password);
-    console.log(validateLoginForm);
     if (typeof validateLoginForm === "boolean") {
       validatorHasErrors = false;
     } else {
@@ -72,7 +92,7 @@ class LoginForm extends Component {
     return validatorHasErrors;
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     const { login, password } = this.state;
     e.preventDefault();
     const validatorHasErrors = this.validateForm(login, password);
@@ -82,10 +102,19 @@ class LoginForm extends Component {
         password
       };
       const URL = `http://localhost:5001/Login`;
-      authenticationFetch(URL, obj);
+      const responseStatus = await authenticationFetch(URL, obj);
+      if (responseStatus) {
+        this.props.history.push("/user");
+        this.handleFormClear();
+      } else {
+        this.setState({
+          validateError: true
+        });
+      }
     }
   };
   render() {
+    const { loginError, passwordError } = this.state.errors;
     return (
       <StyledLoginBox active={this.props.active}>
         <StyledLoginP>LOG IN</StyledLoginP>
@@ -96,6 +125,9 @@ class LoginForm extends Component {
           value={this.state.login}
           onChange={this.handleChange}
         />
+        {loginError ? (
+          <StyledSpanError>Login is too short!</StyledSpanError>
+        ) : null}
 
         <StyledInput
           type="password"
@@ -104,6 +136,12 @@ class LoginForm extends Component {
           value={this.state.password}
           onChange={this.handleChange}
         />
+        {passwordError ? (
+          <StyledSpanError>Password doesn't match the rules</StyledSpanError>
+        ) : null}
+        {this.state.validateError ? (
+          <StyledSpanError>Incorrect username or password</StyledSpanError>
+        ) : null}
         <StyledFormText onClick={this.props.switch}>
           Dont have an account? Register here!
         </StyledFormText>

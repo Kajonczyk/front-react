@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
-
+import { withRouter } from "react-router";
 const Wrapper = styled.div`
   background-image: linear-gradient(0deg, #093028, #237a57);
   min-height: 100vh;
@@ -60,6 +60,7 @@ class LoginPage extends Component {
             <LoginForm
               switch={this.handleSwitchForm}
               active={this.state.isAccountCreated}
+              history={this.props.history}
             />
           ) : (
             <RegisterForm switch={this.handleSwitchForm} />
@@ -70,4 +71,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default withRouter(LoginPage);

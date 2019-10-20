@@ -1,5 +1,5 @@
-export const deleteToDoListTask = (payload, id) => {
-  const baseURL = `http://localhost:5001/api/todolists/task/${id}`;
+export const deleteToDoList = payload => {
+  const baseURL = `http://localhost:5001/api/todolists/${payload.id}`;
   const token = localStorage.getItem("token");
   fetch(baseURL, {
     method: "DELETE",
