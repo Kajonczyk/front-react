@@ -73,7 +73,9 @@ class User extends Component {
     isRecruitmentBeingCreated: false,
     isRecruitmentBeingBrowsed: false,
     isRecruitmentArchiveBeingBrowsed: false,
-    recruitments: []
+    recruitments: [],
+    isRecruitmentSuccessfullyDeleted: false,
+    isRecruitmentSuccessfullyEdited: false
   };
 
   handleFetchRecruitments = async () => {
@@ -85,9 +87,23 @@ class User extends Component {
       areRecruitmentsEmpty: false
     });
   };
+
   componentDidMount() {
     this.handleFetchRecruitments();
   }
+
+  handleUpdateStateBasedOnPropertyName = actionType => {
+    this.setState(prevState => ({
+      [actionType]: !prevState[actionType]
+    }));
+  };
+  handleChangeRecruitmentStatus = type => {
+    const property = {
+      delete: "isRecruitmentSuccessfullyDeleted",
+      edit: "isRecruitmentSuccessfullyEdited"
+    }[type];
+    this.handleUpdateStateBasedOnPropertyName(property);
+  };
   handleRecruitmentSectionStateUpdate = type => {
     const property = {
       add: "isRecruitmentBeingCreated",
@@ -95,9 +111,7 @@ class User extends Component {
       archive: "isRecruitmentArchiveBeingBrowsed"
     }[type];
 
-    this.setState(prevState => ({
-      [property]: !prevState[property]
-    }));
+    this.handleUpdateStateBasedOnPropertyName(property);
   };
   handleToggleRecruitmentSection = type => {
     switch (type) {
@@ -141,6 +155,12 @@ class User extends Component {
             {this.state.isRecruitmentBeingCreated ? (
               <CreateRecruitment
                 updateShowRecruitments={this.handleFetchRecruitments}
+                isRecruitmentSuccessfullyEdited={
+                  this.isRecruitmentSuccessfullyEdited
+                }
+                handleChangeEditRecruitmentStatus={
+                  this.handleChangeRecruitmentStatus
+                }
               />
             ) : null}
           </StyledRecruitmentWrapper>
@@ -152,7 +172,15 @@ class User extends Component {
               />
             </SectionInfo>
             {this.state.isRecruitmentBeingBrowsed ? (
-              <ShowRecruitment recruitments={this.state.recruitments} />
+              <ShowRecruitment
+                recruitments={this.state.recruitments}
+                deleteRecruitmentStatus={
+                  this.state.isRecruitmentSuccessfullyDeleted
+                }
+                handleChangeDeleteRecruitmentStatus={
+                  this.handleChangeRecruitmentStatus
+                }
+              />
             ) : null}
           </StyledRecruitmentWrapper>
           <StyledRecruitmentWrapper>

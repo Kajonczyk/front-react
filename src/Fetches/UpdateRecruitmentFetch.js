@@ -1,5 +1,6 @@
 export const updateRecruitmentFetch = (payload, token, id) => {
-  fetch(`http://localhost:5001/api/recruitment/${id}`, {
+  const baseURL = `http://localhost:5001/api/recruitment/${id}`;
+  fetch(baseURL, {
     method: `PUT`,
     headers: {
       Authorization: `Bearer ${token}`,

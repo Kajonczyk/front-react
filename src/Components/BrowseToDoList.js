@@ -92,8 +92,13 @@ class BrowseToDoList extends Component {
       addNewToDoListTask(obj);
     }
   };
-  handleDeleteTask = (payload, id) => {
-    deleteToDoListTask(payload, id);
+  handleDeleteTask = async (payload, id) => {
+    await deleteToDoListTask(payload, id);
+    const token = localStorage.getItem("token");
+    const updatedToDoListInfo = await browseToDoLists(token);
+    this.setState({
+      toDoLists: updatedToDoListInfo
+    });
   };
   render() {
     const { toDoLists } = this.state;
@@ -101,7 +106,7 @@ class BrowseToDoList extends Component {
     return (
       <div>
         {toDoLists.length === 0 ? (
-          <p>You have no lists</p>
+          <StyledDescription>You have no lists</StyledDescription>
         ) : (
           toDoListArrayCopy.map((item, id) => (
             <StyledTaskWrapper key={id}>

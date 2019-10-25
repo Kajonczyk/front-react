@@ -8,7 +8,7 @@ body{
 *, *::before, *::after{
     box-sizing:border-box;
 }
-p, h1,h2{
+p, h1,h2,h3,h4{
     margin:0px;
 }
 body{
