@@ -5,6 +5,7 @@ import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
 import { StyledPencilIcon } from "./Elements/StyledPencilIcon";
 import { deleteRecruitmentFetch } from "../Fetches/DeleteRecruitmentFetch";
 import CreateRecruitment from "./CreateRecruitment";
+import { StatusMessage } from "./StatusMessage";
 
 const StyledDiv = styled.div`
   height: 200px;
@@ -52,64 +53,78 @@ const handleDeleteRecruitment = item => {
   const token = localStorage.getItem("token");
   deleteRecruitmentFetch(item, token, item.id);
 };
-const ShowRecruitment = ({ recruitments }) => {
+const ShowRecruitment = ({
+  recruitments,
+  deleteRecruitmentStatus,
+  handleChangeDeleteRecruitmentStatus
+}) => {
   const [recruitmentItems, setRecruitmentItems] = useState(recruitments);
   const [isRecruitmentBeingEdited, setRecruitmentBeingEditedStatus] = useState(
     false
   );
   const recruitmentItemsCopy = [...recruitments];
   return (
-    <StyledDiv>
-      {recruitmentItems.map((item, id) => (
-        <StyledWrapper key={item.id}>
-          <SectionInfo>
-            {item.companyName}
-            <StyledKeyboardArrowDownIcon
-              onClick={() => {
-                recruitmentItemsCopy[id].isExpanded = !recruitmentItemsCopy[id]
-                  .isExpanded;
-                recruitmentItemsCopy[id].isBeingEdited = false;
-                setRecruitmentItems(recruitmentItemsCopy);
-              }}
-            />
-          </SectionInfo>
-          {recruitmentItemsCopy[id].isExpanded ? (
-            <StyledWrapper>
-              <StyledP>City: {item.city}</StyledP>
-              <StyledP>Position: {item.workPlace}</StyledP>
-              <StyledP>
-                Application date: {item.applicationDate.substr(0, 10)}
-              </StyledP>
-              <StyledP>Company Reply: {item.companyReply}</StyledP>
-              <StyledP>Notes: {item.notes}</StyledP>
-              <StyledIconWrapper>
-                <StyledTrashIcon
-                  onClick={() =>
-                    handleDeleteRecruitment(recruitmentItemsCopy[id])
-                  }
-                />
-                <StyledPencilIcon
-                  onClick={() => {
-                    recruitmentItemsCopy[
-                      id
-                    ].isBeingEdited = !recruitmentItemsCopy[id].isBeingEdited;
-                    setRecruitmentBeingEditedStatus(
-                      recruitmentItemsCopy[id].isBeingEdited
-                    );
-                  }}
-                />
-                {recruitmentItemsCopy[id].isBeingEdited ? (
-                  <CreateRecruitment
-                    editRecruitment={isRecruitmentBeingEdited}
-                    recruitmentId={recruitmentItemsCopy[id].id}
+    <>
+      <StyledDiv>
+        {recruitmentItems.map((item, id) => (
+          <StyledWrapper key={item.id}>
+            <SectionInfo>
+              {item.companyName}
+              <StyledKeyboardArrowDownIcon
+                onClick={() => {
+                  recruitmentItemsCopy[id].isExpanded = !recruitmentItemsCopy[
+                    id
+                  ].isExpanded;
+                  recruitmentItemsCopy[id].isBeingEdited = false;
+                  setRecruitmentItems(recruitmentItemsCopy);
+                }}
+              />
+            </SectionInfo>
+            {recruitmentItemsCopy[id].isExpanded ? (
+              <StyledWrapper>
+                <StyledP>City: {item.city}</StyledP>
+                <StyledP>Position: {item.workPlace}</StyledP>
+                <StyledP>
+                  Application date: {item.applicationDate.substr(0, 10)}
+                </StyledP>
+                <StyledP>Company Reply: {item.companyReply}</StyledP>
+                <StyledP>Notes: {item.notes}</StyledP>
+                <StyledIconWrapper>
+                  <StyledTrashIcon
+                    onClick={() => {
+                      handleChangeDeleteRecruitmentStatus("delete");
+                      handleDeleteRecruitment(recruitmentItemsCopy[id]);
+                    }}
                   />
-                ) : null}
-              </StyledIconWrapper>
-            </StyledWrapper>
-          ) : null}
-        </StyledWrapper>
-      ))}
-    </StyledDiv>
+                  <StyledPencilIcon
+                    onClick={() => {
+                      recruitmentItemsCopy[
+                        id
+                      ].isBeingEdited = !recruitmentItemsCopy[id].isBeingEdited;
+                      setRecruitmentBeingEditedStatus(
+                        recruitmentItemsCopy[id].isBeingEdited
+                      );
+                    }}
+                  />
+                  {recruitmentItemsCopy[id].isBeingEdited ? (
+                    <CreateRecruitment
+                      editRecruitment={isRecruitmentBeingEdited}
+                      recruitmentId={recruitmentItemsCopy[id].id}
+                    />
+                  ) : null}
+                </StyledIconWrapper>
+              </StyledWrapper>
+            ) : null}
+          </StyledWrapper>
+        ))}
+      </StyledDiv>
+      {deleteRecruitmentStatus && (
+        <StatusMessage
+          descriptionText="Recruitment info was successfully deleted"
+          closeAction={() => handleChangeDeleteRecruitmentStatus("delete")}
+        />
+      )}
+    </>
   );
 };
 ShowRecruitment.defaultProps = {

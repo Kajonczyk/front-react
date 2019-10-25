@@ -4,6 +4,7 @@ import { StyledInput } from "./Elements/Input";
 import { StyledButton } from "./Elements/Button";
 import { addRecruitmentFetch } from "../Fetches/AddRecruitmentFetch";
 import { updateRecruitmentFetch } from "../Fetches/UpdateRecruitmentFetch";
+import { StatusMessage } from "./StatusMessage";
 import * as Validator from "./Validator";
 
 const StyledDescription = styled.span`
@@ -76,7 +77,8 @@ class CreateRecruitment extends Component {
       cityNameError: false,
       positionNameError: false,
       applicationDateError: false
-    }
+    },
+    isTaskSuccessfullyAdded: false
   };
   handleChange = e => {
     const { id, value, type } = e.target;
@@ -89,6 +91,11 @@ class CreateRecruitment extends Component {
         [id]: value
       });
     }
+  };
+  handlePopUpStatusChange = () => {
+    this.setState({
+      isTaskSuccessfullyAdded: !this.state.isTaskSuccessfullyAdded
+    });
   };
   cleanFormInputs = () => {
     this.setState({
@@ -132,7 +139,7 @@ class CreateRecruitment extends Component {
     return validateHasErrors;
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const {
       companyName,
       cityName,
@@ -167,57 +174,67 @@ class CreateRecruitment extends Component {
         updateRecruitmentFetch(obj, token, recruitmentId);
       } else {
         addRecruitmentFetch(obj, token);
+        this.handlePopUpStatusChange();
       }
       //After adding a new recruitment there's a need to update ShowRecruitment component to make newly created recruitment visible
-      setTimeout(this.props.updateShowRecruitments, 200);
+
+      setTimeout(this.props.updateShowRecruitments, 100);
 
       this.cleanForm();
     }
   };
   render() {
     return (
-      <StyledWrapper>
-        {InputTextData.map(data => (
-          <InputWrapper key={data.desc}>
+      <>
+        <StyledWrapper>
+          {InputTextData.map(data => (
+            <InputWrapper key={data.desc}>
+              <label>
+                <StyledDescription>{data.desc}</StyledDescription>
+                <Input
+                  type="text"
+                  id={data.id}
+                  placeholder={data.desc}
+                  onChange={this.handleChange}
+                  value={this.state[data.id]}
+                />
+              </label>
+            </InputWrapper>
+          ))}
+          <InputWrapper>
             <label>
-              <StyledDescription>{data.desc}</StyledDescription>
+              <StyledDescription>Application date</StyledDescription>
               <Input
-                type="text"
-                id={data.id}
-                placeholder={data.desc}
+                type="date"
+                id="applicationDate"
                 onChange={this.handleChange}
-                value={this.state[data.id]}
+                value={this.state.applicationDate}
               />
             </label>
           </InputWrapper>
-        ))}
-        <InputWrapper>
-          <label>
-            <StyledDescription>Application date</StyledDescription>
-            <Input
-              type="date"
-              id="applicationDate"
-              onChange={this.handleChange}
-              value={this.state.applicationDate}
-            />
-          </label>
-        </InputWrapper>
 
-        <InputWrapper>
-          <label>
-            <StyledDescription>Notes</StyledDescription>
-            <StyledTextArea
-              id="notes"
-              placeholder="Your text goes here"
-              onChange={this.handleChange}
-              value={this.state.notes}
-            />
-          </label>
-        </InputWrapper>
-        <ButtonWrapper>
-          <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
-        </ButtonWrapper>
-      </StyledWrapper>
+          <InputWrapper>
+            <label>
+              <StyledDescription>Notes</StyledDescription>
+              <StyledTextArea
+                id="notes"
+                placeholder="Your text goes here"
+                onChange={this.handleChange}
+                value={this.state.notes}
+              />
+            </label>
+          </InputWrapper>
+          <ButtonWrapper>
+            <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
+          </ButtonWrapper>
+        </StyledWrapper>
+        {this.state.isTaskSuccessfullyAdded && (
+          <StatusMessage
+            descriptionText="Task was successfully added!"
+            closeAction={this.handlePopUpStatusChange}
+          />
+        )}
+      </>
     );
   }
 }
