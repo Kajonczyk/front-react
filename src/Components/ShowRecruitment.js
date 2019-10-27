@@ -49,16 +49,18 @@ const StyledP = styled.p`
   text-align: center;
   word-break: break-word;
 `;
-const handleDeleteRecruitment = item => {
+const handleDeleteRecruitment = (item, updateRecruitmentsFunction) => {
   const token = localStorage.getItem("token");
   deleteRecruitmentFetch(item, token, item.id);
+  updateRecruitmentsFunction();
 };
 const ShowRecruitment = ({
   recruitments,
   deleteRecruitmentStatus,
-  handleChangeDeleteRecruitmentStatus
+  handleChangeDeleteRecruitmentStatus,
+  handleUpdateRecruitments,
+  handleFetchRecruitments
 }) => {
-  const [recruitmentItems, setRecruitmentItems] = useState(recruitments);
   const [isRecruitmentBeingEdited, setRecruitmentBeingEditedStatus] = useState(
     false
   );
@@ -66,7 +68,7 @@ const ShowRecruitment = ({
   return (
     <>
       <StyledDiv>
-        {recruitmentItems.map((item, id) => (
+        {recruitments.map((item, id) => (
           <StyledWrapper key={item.id}>
             <SectionInfo>
               {item.companyName}
@@ -76,7 +78,7 @@ const ShowRecruitment = ({
                     id
                   ].isExpanded;
                   recruitmentItemsCopy[id].isBeingEdited = false;
-                  setRecruitmentItems(recruitmentItemsCopy);
+                  handleUpdateRecruitments(recruitmentItemsCopy);
                 }}
               />
             </SectionInfo>
@@ -93,7 +95,10 @@ const ShowRecruitment = ({
                   <StyledTrashIcon
                     onClick={() => {
                       handleChangeDeleteRecruitmentStatus("delete");
-                      handleDeleteRecruitment(recruitmentItemsCopy[id]);
+                      handleDeleteRecruitment(
+                        recruitmentItemsCopy[id],
+                        handleFetchRecruitments
+                      );
                     }}
                   />
                   <StyledPencilIcon

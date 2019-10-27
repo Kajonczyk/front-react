@@ -14,5 +14,5 @@ export const addNewToDoList = (payload, token) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(obj)
-  }).then(res => console.log(res, res.status, obj));
+  });
 };

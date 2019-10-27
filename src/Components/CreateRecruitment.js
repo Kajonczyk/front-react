@@ -66,9 +66,9 @@ const InputTextData = [
 ];
 class CreateRecruitment extends Component {
   state = {
-    companyName: "",
-    cityName: "",
-    positionName: "",
+    companyName: "handleFetchRecruitments",
+    cityName: "handleFetchRecruitments",
+    positionName: "handleFetchRecruitments",
     companyReplyDate: "",
     applicationDate: "",
     notes: "",
@@ -99,9 +99,9 @@ class CreateRecruitment extends Component {
   };
   cleanFormInputs = () => {
     this.setState({
-      companyName: "",
-      cityName: "",
-      positionName: "",
+      companyName: "handleFetchRecruitments",
+      cityName: "handleFetchRecruitments",
+      positionName: "handleFetchRecruitments",
       applicationDate: "",
       notes: ""
     });

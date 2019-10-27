@@ -111,7 +111,7 @@ class ToDoList extends Component {
           ) : null}
         </StyledTaskWrapper>
         <StyledHeading>Your Lists</StyledHeading>
-        <BrowseToDoList />
+        <BrowseToDoList history={this.props.history} />
       </StyledWrapper>
     );
   }
