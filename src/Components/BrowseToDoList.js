@@ -52,18 +52,22 @@ class BrowseToDoList extends Component {
     toDoListsInputValue: []
   };
   async getToDoListsFromApi() {
-    const toDoLists = await browseToDoLists(localStorage.getItem("token"));
-    this.setState({
-      toDoLists
-    });
-    let toDoListsInputValue = toDoLists.map(item => [
-      ...this.state.toDoListsInputValue,
-      { value: "" }
-    ]);
-    toDoListsInputValue = toDoListsInputValue.flatMap(item => item);
-    this.setState({
-      toDoListsInputValue
-    });
+    try {
+      const toDoLists = await browseToDoLists(localStorage.getItem("token"));
+      this.setState({
+        toDoLists
+      });
+      let toDoListsInputValue = toDoLists.map(item => [
+        ...this.state.toDoListsInputValue,
+        { value: "" }
+      ]);
+      toDoListsInputValue = toDoListsInputValue.flatMap(item => item);
+      this.setState({
+        toDoListsInputValue
+      });
+    } catch (e) {
+      this.props.history.push("/");
+    }
   }
   setSectionExpansion = array => {
     this.setState({

@@ -49,6 +49,9 @@ class LoginPage extends Component {
       isAccountCreated: !this.state.isAccountCreated
     });
   };
+  componentDidMount() {
+    localStorage.removeItem("token");
+  }
   render() {
     return (
       <Wrapper>

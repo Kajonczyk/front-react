@@ -79,12 +79,19 @@ class User extends Component {
   };
 
   handleFetchRecruitments = async () => {
-    const fetchResult = await getRecruitmentFetch(
-      localStorage.getItem("token")
-    );
+    const token = localStorage.getItem("token");
+    try {
+      const fetchResult = await getRecruitmentFetch(token);
+      this.setState({
+        recruitments: fetchResult
+      });
+    } catch (e) {
+      this.props.history.push("/");
+    }
+  };
+  handleUpdateRecruitments = recruitments => {
     this.setState({
-      recruitments: fetchResult,
-      areRecruitmentsEmpty: false
+      recruitments
     });
   };
 
@@ -180,6 +187,8 @@ class User extends Component {
                 handleChangeDeleteRecruitmentStatus={
                   this.handleChangeRecruitmentStatus
                 }
+                handleUpdateRecruitments={this.handleUpdateRecruitments}
+                handleFetchRecruitments={this.handleFetchRecruitments}
               />
             ) : null}
           </StyledRecruitmentWrapper>
@@ -193,7 +202,7 @@ class User extends Component {
             {this.state.isRecruitmentArchiveBeingBrowsed ? true : null}
           </StyledRecruitmentWrapper>
         </RecruitmentWrapper>
-        <ToDoList />
+        <ToDoList history={this.props.history} />
       </StyledWrapper>
     );
   }
