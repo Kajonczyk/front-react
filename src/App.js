@@ -1,6 +1,6 @@
 import React from "react";
-import LoginPage from "./Components/LoginPage";
-import User from "./Components/User";
+import LoginPage from "./Pages/LoginPage/LoginPage";
+import User from "./Pages/UserPage/User";
 import GlobalStyle from "./Utils/GlobalStyle";
 import theme from "./Utils/theme";
 import { ThemeProvider } from "styled-components";

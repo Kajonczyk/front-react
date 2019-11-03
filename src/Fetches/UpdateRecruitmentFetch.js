@@ -1,4 +1,5 @@
-export const updateRecruitmentFetch = (payload, token, id) => {
+export const updateRecruitmentFetch = (payload, id) => {
+  const token = localStorage.getItem("token");
   const baseURL = `http://localhost:5001/api/recruitment/${id}`;
   fetch(baseURL, {
     method: `PUT`,

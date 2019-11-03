@@ -1,43 +1,16 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import { StyledInput } from "./Elements/Input";
-import { StyledButton } from "./Elements/Button";
+import { StyledInput } from "../Shared/Input";
 import { StyledSpanError } from "./Elements/SpanError";
 import { validateRegister } from "./Validator";
 import { authenticationFetch } from "../Fetches/AuthenticationFetch";
 import { StatusMessage } from "./StatusMessage";
-
-const StyledLoginP = styled.p`
-  color: ${({ theme }) => theme.lightgreen};
-  text-align: center;
-  font-family: ${({ theme }) => theme.font.family.Didact};
-  font-size: ${({ theme }) => theme.font.size.s};
-  padding-top: 10px;
-  margin-bottom: 20px;
-  margin-top: -50px;
-  text-transform: uppercase;
-`;
-
-const StyledLoginBox = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const StyledButtonWrapper = styled.div`
-  display: flex;
-`;
-const StyledFormText = styled.span`
-  font-size: ${({ theme }) => theme.font.size.formMobileText};
-  color: ${({ theme }) => theme.lightgreen};
-  text-decoration: underline;
-  cursor: pointer;
-  margin: 10px;
-`;
-const SubmitButton = styled(StyledButton)`
-  margin-bottom: -20px;
-`;
+import {
+  StyledLoginP,
+  StyledLoginBox,
+  StyledButtonWrapper,
+  StyledFormText,
+  SubmitButton
+} from "../Styles/RegisterFormStyle";
 
 class RegisterForm extends Component {
   state = {
@@ -114,11 +87,6 @@ class RegisterForm extends Component {
     this.setState({
       isUserRegistered: responseStatus
     });
-    setTimeout(() => {
-      this.setState({
-        isUserRegistered: !responseStatus
-      });
-    }, 3500);
   };
   handleSubmit = async e => {
     const { firstName, lastName, email, login, password } = this.state;

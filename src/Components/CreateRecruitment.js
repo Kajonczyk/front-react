@@ -1,54 +1,17 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import { StyledInput } from "./Elements/Input";
-import { StyledButton } from "./Elements/Button";
 import { addRecruitmentFetch } from "../Fetches/AddRecruitmentFetch";
 import { updateRecruitmentFetch } from "../Fetches/UpdateRecruitmentFetch";
 import { StatusMessage } from "./StatusMessage";
 import * as Validator from "./Validator";
-
-const StyledDescription = styled.span`
-  color: ${({ theme }) => theme.lightgreen};
-  font-family: ${({ theme }) => theme.font.family.Didact};
-  font-weight: bold;
-  text-align: center;
-  display: block;
-`;
-const InputWrapper = styled.div`
-  margin: 20px;
-`;
-const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const Input = styled(StyledInput)`
-  margin-bottom: 5px;
-`;
-
-const ButtonWrapper = styled.div`
-  margin: 0px auto;
-  text-align: center;
-`;
-const SubmitButton = styled(StyledButton)`
-  margin-top: -20px;
-  position: relative;
-  &::after {
-  }
-`;
-const StyledTextArea = styled.textarea`
-  padding-bottom: 30px;
-  background: none;
-  border: 0px;
-  border-bottom: 2px solid ${({ theme }) => theme.lightgreen};
-  margin: 15px 0px;
-  color: ${({ theme }) => theme.lightgreen};
-  width: 220px;
-  resize: none;
-  &::placeholder {
-    color: ${({ theme }) => theme.lightgreen};
-  }
-`;
+import {
+  StyledDescription,
+  InputWrapper,
+  StyledWrapper,
+  Input,
+  ButtonWrapper,
+  SubmitButton,
+  StyledTextArea
+} from "../Styles/CreateRecruitmentStyle";
 
 const InputTextData = [
   {
@@ -66,9 +29,9 @@ const InputTextData = [
 ];
 class CreateRecruitment extends Component {
   state = {
-    companyName: "handleFetchRecruitments",
-    cityName: "handleFetchRecruitments",
-    positionName: "handleFetchRecruitments",
+    companyName: "",
+    cityName: "",
+    positionName: "",
     companyReplyDate: "",
     applicationDate: "",
     notes: "",
@@ -93,15 +56,16 @@ class CreateRecruitment extends Component {
     }
   };
   handlePopUpStatusChange = () => {
-    this.setState({
-      isTaskSuccessfullyAdded: !this.state.isTaskSuccessfullyAdded
-    });
+    //ref
+    this.setState(prevState => ({
+      isTaskSuccessfullyAdded: !prevState.isTaskSuccessfullyAdded
+    }));
   };
   cleanFormInputs = () => {
     this.setState({
-      companyName: "handleFetchRecruitments",
-      cityName: "handleFetchRecruitments",
-      positionName: "handleFetchRecruitments",
+      companyName: "",
+      cityName: "",
+      positionName: "",
       applicationDate: "",
       notes: ""
     });
@@ -171,15 +135,13 @@ class CreateRecruitment extends Component {
       //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
       //That's why I'm using two different fetches below \/
       if (editRecruitment) {
-        updateRecruitmentFetch(obj, token, recruitmentId);
+        updateRecruitmentFetch(obj, recruitmentId);
       } else {
         addRecruitmentFetch(obj, token);
         this.handlePopUpStatusChange();
       }
       //After adding a new recruitment there's a need to update ShowRecruitment component to make newly created recruitment visible
-
-      setTimeout(this.props.updateShowRecruitments, 100);
-
+      await this.props.updateShowRecruitments();
       this.cleanForm();
     }
   };

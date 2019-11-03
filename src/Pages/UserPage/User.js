@@ -1,72 +1,19 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import CreateRecruitment from "./CreateRecruitment";
-import ShowRecruitment from "./ShowRecruitment";
-import ToDoList from "./ToDoList";
-import { getRecruitmentFetch } from "../Fetches/GetRecruitmentFetch";
-import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
-import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
+import CreateRecruitment from "../../Components/CreateRecruitment";
+import ShowRecruitment from "../../Components/ShowRecruitment";
+import ToDoList from "../../Components/ToDoList";
+import { getRecruitmentFetch } from "../../Fetches/GetRecruitmentFetch";
+import { StyledPlusIcon } from "../../Components/Elements/StyledPlusIcon";
+import { StyledKeyboardArrowDownIcon } from "../../Components/Elements/StyledArrowIcon";
 import { withRouter } from "react-router";
-const StyledWrapper = styled.div`
-  background-image: linear-gradient(0deg, #093028, #237a57);
-  overflow: hidden;
-  min-height: 100vh;
-`;
-const StyledH1 = styled.h1`
-  color: ${({ theme }) => theme.lightgreen};
-  text-align: center;
-  font-family: ${({ theme }) => theme.font.family.Sofia};
-  position: relative;
-  font-weight: 100;
-`;
-const StyledGreetingWrapper = styled.div`
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  justify-content: center;
-`;
-const StyledGreeting = styled(StyledH1)`
-  font-size: ${({ theme }) => theme.font.size.juniorStartMobile};
-  &::after {
-    content: "DASHBOARD";
-    position: absolute;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.055;
-    font-size: calc(${({ theme }) => theme.font.size.juniorStartMobile} * 3);
-  }
-`;
-
-const RecruitmentWrapper = styled.section`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: -20px;
-`;
-
-const SectionInfo = styled(StyledH1)`
-  color: ${({ theme }) => theme.lightgreen};
-  padding: 15px;
-  font-family: ${({ theme }) => theme.font.family.Didact};
-
-  border: 2px solid ${({ theme }) => theme.lightgreen};
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font-weight: bold;
-
-  text-align: center;
-  &:nth-child(1) {
-    margin-top: 40px;
-  }
-`;
-const StyledRecruitmentWrapper = styled.div`
-  width: 250px;
-`;
+import {
+  StyledWrapper,
+  StyledGreetingWrapper,
+  StyledGreeting,
+  RecruitmentWrapper,
+  SectionInfo,
+  StyledRecruitmentWrapper
+} from "./style";
 
 class User extends Component {
   state = {
