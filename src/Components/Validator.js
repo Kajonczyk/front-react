@@ -5,62 +5,23 @@ export const validateRegister = (
   login,
   password
 ) => {
-  let firstNameError = false;
-  let lastNameError = false;
-  let emailError = false;
-  let loginError = false;
-  let passwordError = false;
-  if (
-    firstName.length > 2 &&
-    lastName.length > 2 &&
-    (email.length > 5 && email.includes("@")) &&
-    login.length > 5 &&
-    password.length > 6
-  ) {
-    return true;
-  } else {
-    if (firstName.length < 2) {
-      firstNameError = true;
-    }
+  const MIN_LENGTH = 3;
+  const MIN_LOGIN_AND_PASSWORD_LENGTH = 6;
 
-    if (lastName.length < 2) {
-      lastNameError = true;
-    }
-    if (email.length < 5 || !email.includes("@")) {
-      emailError = true;
-    }
-    if (login.length < 5) {
-      loginError = true;
-    }
-    if (password.length < 6) {
-      passwordError = true;
-    }
-    return {
-      firstNameError,
-      lastNameError,
-      emailError,
-      loginError,
-      passwordError
-    };
-  }
+  return {
+    firstNameError: firstName.length <= MIN_LENGTH,
+    lastNameError: lastName.length <= MIN_LENGTH,
+    emailError: email.length <= MIN_LENGTH || !email.includes("@"),
+    loginError: login.length <= MIN_LOGIN_AND_PASSWORD_LENGTH,
+    passwordError: password.length <= MIN_LOGIN_AND_PASSWORD_LENGTH
+  };
 };
 export const validateLogin = (login, password) => {
-  let loginError = false;
-  let passwordError = false;
-  if (login.length > 5 && password.length > 6) {
-    return true;
-  } else {
-    if (login.length < 5) {
-      loginError = true;
-    }
-    if (password.length < 6) {
-      passwordError = true;
-    }
-    return {
-      loginError,
-      passwordError
-    };
-  }
+  const MIN_LENGTH = 5;
+  return {
+    loginError: login.length < MIN_LENGTH,
+    passwordError: password.length < MIN_LENGTH
+  };
 };
 export const validateAddRecruitment = (
   companyName,
@@ -68,41 +29,14 @@ export const validateAddRecruitment = (
   positionName,
   applicationDate
 ) => {
-  let companyNameError = false;
-  let cityNameError = false;
-  let positionNameError = false;
+  const MIN_LENGTH = 3;
 
-  let applicationDateError = false;
-  if (
-    companyName.length > 3 &&
-    cityName.length > 3 &&
-    positionName.length > 3 &&
-    applicationDate !== ""
-  ) {
-    return true;
-  } else {
-    if (companyName.length <= 3) {
-      companyNameError = true;
-    }
-    if (cityName.length <= 3) {
-      cityNameError = true;
-    }
-    if (positionName.length <= 3) {
-      positionNameError = true;
-    }
-    if (applicationDate === "") {
-      applicationDateError = true;
-    }
-    return [
-      false,
-      {
-        companyNameError,
-        cityNameError,
-        positionNameError,
-        applicationDateError
-      }
-    ];
-  }
+  return {
+    companyNameError: companyName.length <= MIN_LENGTH,
+    cityNameError: cityName.length <= MIN_LENGTH,
+    positionNameError: positionName.length <= MIN_LENGTH,
+    applicationDateError: Boolean(applicationDate)
+  };
 };
 export const validateAddTask = taskName => {
   let nameError = true;

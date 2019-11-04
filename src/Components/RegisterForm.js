@@ -64,7 +64,7 @@ class RegisterForm extends Component {
     this.handleFormErrorsClear();
   };
   validateForm = () => {
-    let validateHasErrors;
+    let validatorHasErrors;
     const { firstName, lastName, email, login, password } = this.state;
     const validateRegisterForm = validateRegister(
       firstName,
@@ -73,15 +73,18 @@ class RegisterForm extends Component {
       login,
       password
     );
-    if (typeof validateRegisterForm === "boolean") {
-      validateHasErrors = false;
+    const isFormValidatedCorrectly = !Object.values(validateRegisterForm).some(
+      Boolean
+    );
+    if (isFormValidatedCorrectly) {
+      validatorHasErrors = false;
     } else {
       this.setState({
         errors: validateRegisterForm
       });
-      validateHasErrors = true;
+      validatorHasErrors = true;
     }
-    return validateHasErrors;
+    return validatorHasErrors;
   };
   handleFetchResponse = responseStatus => {
     this.setState({

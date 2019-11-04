@@ -56,7 +56,6 @@ class CreateRecruitment extends Component {
     }
   };
   handlePopUpStatusChange = () => {
-    //ref
     this.setState(prevState => ({
       isTaskSuccessfullyAdded: !prevState.isTaskSuccessfullyAdded
     }));
@@ -92,11 +91,14 @@ class CreateRecruitment extends Component {
       positionName,
       applicationDate
     );
-    if (typeof validateAddRecruitmentForm === "boolean") {
+    const isFormValidatedCorrectly = !Object.values(
+      validateAddRecruitmentForm
+    ).some(Boolean);
+    if (isFormValidatedCorrectly) {
       validateHasErrors = false;
     } else {
       this.setState({
-        errors: validateAddRecruitmentForm[1]
+        errors: validateAddRecruitmentForm
       });
       validateHasErrors = true;
     }

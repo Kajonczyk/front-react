@@ -48,7 +48,10 @@ class LoginForm extends Component {
   validateForm = (login, password) => {
     let validatorHasErrors;
     const validateLoginForm = validateLogin(login, password);
-    if (typeof validateLoginForm === "boolean") {
+    const isFormValidatedCorrectly = !Object.values(validateLoginForm).some(
+      Boolean
+    );
+    if (isFormValidatedCorrectly) {
       validatorHasErrors = false;
     } else {
       this.setState({
@@ -60,8 +63,8 @@ class LoginForm extends Component {
   };
 
   handleSubmit = async e => {
-    const { login, password } = this.state;
     e.preventDefault();
+    const { login, password } = this.state;
     const validatorHasErrors = this.validateForm(login, password);
     if (!validatorHasErrors) {
       const obj = {
@@ -75,7 +78,11 @@ class LoginForm extends Component {
         this.handleFormClear();
       } else {
         this.setState({
-          validateError: true
+          validateError: true,
+          errors: {
+            loginError: false,
+            passwordError: false
+          }
         });
       }
     }
