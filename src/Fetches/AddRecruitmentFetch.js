@@ -1,11 +1,5 @@
-export const addRecruitmentFetch = (payload, token) => {
+import { fetchWithMethodPostTemplate } from "./fetchTemplates";
+export const addRecruitmentFetch = payload => {
   const baseURL = "http://localhost:5001/api/recruitment";
-  fetch(baseURL, {
-    method: `POST`,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  fetchWithMethodPostTemplate(payload, baseURL);
 };

@@ -75,10 +75,8 @@ class User extends Component {
       }
       case "browse": {
         this.handleRecruitmentSectionStateUpdate("browse");
+        this.handleFetchRecruitments();
 
-        if (this.state.recruitments.length === 0) {
-          this.handleFetchRecruitments();
-        }
         break;
       }
       case "archive": {

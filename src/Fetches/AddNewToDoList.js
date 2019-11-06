@@ -1,4 +1,5 @@
-export const addNewToDoList = (payload, token) => {
+import { fetchWithMethodPostTemplate } from "./fetchTemplates";
+export const addNewToDoList = payload => {
   const obj = {
     id: 1,
     name: payload,
@@ -7,12 +8,5 @@ export const addNewToDoList = (payload, token) => {
     status: true
   };
   const baseURL = "http://localhost:5001/api/todolists/todolist";
-  fetch(baseURL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(obj)
-  });
+  fetchWithMethodPostTemplate(obj, baseURL);
 };

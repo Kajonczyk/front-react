@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { addRecruitmentFetch } from "../Fetches/AddRecruitmentFetch";
 import { updateRecruitmentFetch } from "../Fetches/UpdateRecruitmentFetch";
 import { StatusMessage } from "./StatusMessage";
-import * as Validator from "./Validator";
+import { validateAddRecruitment } from "./Validator";
 import {
   StyledDescription,
   InputWrapper,
@@ -85,7 +85,7 @@ class CreateRecruitment extends Component {
   };
   validateForm = (companyName, cityName, positionName, applicationDate) => {
     let validateHasErrors;
-    const validateAddRecruitmentForm = Validator.validateAddRecruitment(
+    const validateAddRecruitmentForm = validateAddRecruitment(
       companyName,
       cityName,
       positionName,

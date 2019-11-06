@@ -35,7 +35,7 @@ export const validateAddRecruitment = (
     companyNameError: companyName.length <= MIN_LENGTH,
     cityNameError: cityName.length <= MIN_LENGTH,
     positionNameError: positionName.length <= MIN_LENGTH,
-    applicationDateError: Boolean(applicationDate)
+    applicationDateError: !Boolean(applicationDate)
   };
 };
 export const validateAddTask = taskName => {
