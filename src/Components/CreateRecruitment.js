@@ -143,7 +143,6 @@ class CreateRecruitment extends Component {
         this.handlePopUpStatusChange();
       }
       //After adding a new recruitment there's a need to update ShowRecruitment component to make newly created recruitment visible
-      await this.props.updateShowRecruitments();
       this.cleanForm();
     }
   };

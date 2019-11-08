@@ -1,12 +1,9 @@
-export const browseToDoLists = async token => {
-  const baseURL = "http://localhost:5001/api/todolists";
-  const response = await fetch(baseURL, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
-  });
-  const data = await response.json();
-  return data;
+import { fetchRequestBody } from "./fetchTemplates";
+
+export const browseToDoLists = async () => {
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}todolists`,
+    fetchRequestBody("GET")
+  );
+  return await response.json();
 };

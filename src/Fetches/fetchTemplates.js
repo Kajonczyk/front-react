@@ -1,25 +1,13 @@
-export const fetchWithMethodPostTemplate = (payload, baseURL) => {
+export const fetchRequestBody = (methodType, payload) => {
   const token = localStorage.getItem("token");
-
-  const response = fetch(baseURL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
-  return response;
-};
-export const fetchWithMethodGetTemplate = async baseURL => {
-  const token = localStorage.getItem("token");
-  const response = await fetch(baseURL, {
-    method: `GET`,
+  const requestBody = {
+    method: methodType,
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
     }
-  });
-  const data = await response.json();
-  return data;
+  };
+  return Boolean(payload)
+    ? { ...requestBody, body: JSON.stringify(payload) }
+    : requestBody;
 };

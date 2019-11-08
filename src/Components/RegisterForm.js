@@ -108,8 +108,8 @@ class RegisterForm extends Component {
         }
       };
 
-      const URL = `http://localhost:5001/Register`;
-      const responseStatus = await authenticationFetch(URL, obj);
+      const envURL = `Register`;
+      const responseStatus = await authenticationFetch(envURL, obj);
       this.handleFetchResponse(responseStatus);
       this.handleFormClear();
     }

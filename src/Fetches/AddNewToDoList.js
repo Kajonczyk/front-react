@@ -1,4 +1,4 @@
-import { fetchWithMethodPostTemplate } from "./fetchTemplates";
+import { fetchRequestBody } from "./fetchTemplates";
 export const addNewToDoList = payload => {
   const obj = {
     id: 1,
@@ -7,6 +7,8 @@ export const addNewToDoList = payload => {
     ownerId: 1,
     status: true
   };
-  const baseURL = "http://localhost:5001/api/todolists/todolist";
-  fetchWithMethodPostTemplate(obj, baseURL);
+  const response = fetch(
+    `${process.env.REACT_APP_API_URL}todolists/todolist`,
+    fetchRequestBody("POST", obj)
+  );
 };

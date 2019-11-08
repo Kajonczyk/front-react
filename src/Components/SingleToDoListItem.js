@@ -84,7 +84,7 @@ class SingleToDoListItem extends Component {
                   <StyledTaskDescription key={item.id}>
                     {item.description}
                     <StyledTrashIcon
-                      onClick={() => this.handleDeleteTask(item)}
+                      onClick={() => this.handleDeleteListTask(item)}
                     />
                   </StyledTaskDescription>
                 ))

@@ -26,9 +26,8 @@ class User extends Component {
   };
 
   handleFetchRecruitments = async () => {
-    const token = localStorage.getItem("token");
     try {
-      const fetchResult = await getRecruitmentFetch(token);
+      const fetchResult = await getRecruitmentFetch();
       this.setState({
         recruitments: fetchResult
       });

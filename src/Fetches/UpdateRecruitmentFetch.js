@@ -1,12 +1,9 @@
-export const updateRecruitmentFetch = (payload, id) => {
-  const token = localStorage.getItem("token");
-  const baseURL = `http://localhost:5001/api/recruitment/${id}`;
-  fetch(baseURL, {
-    method: `PUT`,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  }).then(response => response.json());
+import { fetchRequestBody } from "./fetchTemplates";
+
+export const updateRecruitmentFetch = async (payload, id) => {
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}recruitment/${id}`,
+    fetchRequestBody("PUT", payload)
+  );
+  return response.json();
 };

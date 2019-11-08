@@ -15,7 +15,7 @@ import {
 
 const handleDeleteRecruitment = (item, updateRecruitmentsFunction) => {
   const token = localStorage.getItem("token");
-  deleteRecruitmentFetch(item, token, item.id);
+  deleteRecruitmentFetch(item, item.id);
   updateRecruitmentsFunction();
 };
 

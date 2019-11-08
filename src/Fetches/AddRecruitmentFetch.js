@@ -1,5 +1,7 @@
-import { fetchWithMethodPostTemplate } from "./fetchTemplates";
+import { fetchRequestBody } from "./fetchTemplates";
 export const addRecruitmentFetch = payload => {
-  const baseURL = "http://localhost:5001/api/recruitment";
-  fetchWithMethodPostTemplate(payload, baseURL);
+  const response = fetch(
+    `${process.env.REACT_APP_API_URL}recruitment`,
+    fetchRequestBody("POST", payload)
+  );
 };

@@ -71,8 +71,8 @@ class LoginForm extends Component {
         login,
         password
       };
-      const URL = `http://localhost:5001/Login`;
-      const responseStatus = await authenticationFetch(URL, obj);
+      const envURL = `Login`;
+      const responseStatus = await authenticationFetch(envURL, obj);
       if (responseStatus) {
         this.props.history.push("/user");
         this.handleFormClear();
