@@ -1,7 +1,22 @@
+<<<<<<< HEAD
 import styled from "styled-components";
 import React from "react";
 import { StyledTick } from "./Elements/StyledTick";
 import { StyledButton } from "./Elements/Button";
+=======
+import React from "react";
+import { StyledTick } from "./Elements/StyledTick";
+import {
+  StyledStatusMessage,
+  StyledTickWrapper,
+  StyledPopUpTextWrapper,
+  StyledPopUpHeading,
+  StyledClosePopUpButton,
+  StyledPopUpWrapper,
+  StyledPopUpText
+} from "../Styles/StatusMessageStyle";
+
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
 export const StatusMessage = ({ descriptionText, closeAction }) => {
   return (
     <>
@@ -23,6 +38,7 @@ export const StatusMessage = ({ descriptionText, closeAction }) => {
 };
 
 export default StatusMessage;
+<<<<<<< HEAD
 
 const StyledStatusMessage = styled.div`
   height: 350px;
@@ -80,3 +96,5 @@ const StyledPopUpWrapper = styled.div`
 const StyledPopUpText = styled.p`
   font-size: 0.95rem;
 `;
+=======
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5

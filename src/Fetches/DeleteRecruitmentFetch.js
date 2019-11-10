@@ -1,11 +1,9 @@
-export const deleteRecruitmentFetch = (payload, token, id) => {
-  const baseURL = `http://localhost:5001/api/recruitment/${id}`;
-  fetch(baseURL, {
-    method: `DELETE`,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  }).then(response => response.text());
+import { fetchRequestBody } from "./fetchTemplates";
+
+export const deleteRecruitmentFetch = async (payload, id) => {
+  const response = await fetch(
+    `${process.env.REACT_APP_API_URL}recruitment/${id}`,
+    fetchRequestBody("DELETE", payload)
+  );
+  return response.text();
 };

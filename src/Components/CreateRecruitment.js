@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import { StyledInput } from "./Elements/Input";
-import { StyledButton } from "./Elements/Button";
 import { addRecruitmentFetch } from "../Fetches/AddRecruitmentFetch";
 import { updateRecruitmentFetch } from "../Fetches/UpdateRecruitmentFetch";
 import { StatusMessage } from "./StatusMessage";
+<<<<<<< HEAD
 import * as Validator from "./Validator";
 
 const StyledDescription = styled.span`
@@ -49,6 +47,18 @@ const StyledTextArea = styled.textarea`
     color: ${({ theme }) => theme.lightgreen};
   }
 `;
+=======
+import { validateAddRecruitment } from "./Validator";
+import {
+  StyledDescription,
+  InputWrapper,
+  StyledWrapper,
+  Input,
+  ButtonWrapper,
+  SubmitButton,
+  StyledTextArea
+} from "../Styles/CreateRecruitmentStyle";
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
 
 const InputTextData = [
   {
@@ -93,9 +103,15 @@ class CreateRecruitment extends Component {
     }
   };
   handlePopUpStatusChange = () => {
+<<<<<<< HEAD
     this.setState({
       isTaskSuccessfullyAdded: !this.state.isTaskSuccessfullyAdded
     });
+=======
+    this.setState(prevState => ({
+      isTaskSuccessfullyAdded: !prevState.isTaskSuccessfullyAdded
+    }));
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
   };
   cleanFormInputs = () => {
     this.setState({
@@ -122,17 +138,20 @@ class CreateRecruitment extends Component {
   };
   validateForm = (companyName, cityName, positionName, applicationDate) => {
     let validateHasErrors;
-    const validateAddRecruitmentForm = Validator.validateAddRecruitment(
+    const validateAddRecruitmentForm = validateAddRecruitment(
       companyName,
       cityName,
       positionName,
       applicationDate
     );
-    if (typeof validateAddRecruitmentForm === "boolean") {
+    const isFormValidatedCorrectly = !Object.values(
+      validateAddRecruitmentForm
+    ).some(Boolean);
+    if (isFormValidatedCorrectly) {
       validateHasErrors = false;
     } else {
       this.setState({
-        errors: validateAddRecruitmentForm[1]
+        errors: validateAddRecruitmentForm
       });
       validateHasErrors = true;
     }
@@ -171,15 +190,18 @@ class CreateRecruitment extends Component {
       //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
       //That's why I'm using two different fetches below \/
       if (editRecruitment) {
-        updateRecruitmentFetch(obj, token, recruitmentId);
+        updateRecruitmentFetch(obj, recruitmentId);
       } else {
         addRecruitmentFetch(obj, token);
         this.handlePopUpStatusChange();
       }
       //After adding a new recruitment there's a need to update ShowRecruitment component to make newly created recruitment visible
+<<<<<<< HEAD
 
       setTimeout(this.props.updateShowRecruitments, 100);
 
+=======
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
       this.cleanForm();
     }
   };

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
 import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
 import { StyledPencilIcon } from "./Elements/StyledPencilIcon";
 import { deleteRecruitmentFetch } from "../Fetches/DeleteRecruitmentFetch";
 import CreateRecruitment from "./CreateRecruitment";
 import { StatusMessage } from "./StatusMessage";
+<<<<<<< HEAD
 
 const StyledDiv = styled.div`
   height: 200px;
@@ -54,6 +54,22 @@ const handleDeleteRecruitment = (item, updateRecruitmentsFunction) => {
   deleteRecruitmentFetch(item, token, item.id);
   updateRecruitmentsFunction();
 };
+=======
+import {
+  StyledDiv,
+  StyledWrapper,
+  StyledIconWrapper,
+  SectionInfo,
+  StyledP
+} from "../Styles/ShowRecruitmentStyle";
+
+const handleDeleteRecruitment = (item, updateRecruitmentsFunction) => {
+  const token = localStorage.getItem("token");
+  deleteRecruitmentFetch(item, item.id);
+  updateRecruitmentsFunction();
+};
+
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
 const ShowRecruitment = ({
   recruitments,
   deleteRecruitmentStatus,
@@ -100,6 +116,7 @@ const ShowRecruitment = ({
                         handleFetchRecruitments
                       );
                     }}
+<<<<<<< HEAD
                   />
                   <StyledPencilIcon
                     onClick={() => {
@@ -111,6 +128,19 @@ const ShowRecruitment = ({
                       );
                     }}
                   />
+=======
+                  />
+                  <StyledPencilIcon
+                    onClick={() => {
+                      recruitmentItemsCopy[
+                        id
+                      ].isBeingEdited = !recruitmentItemsCopy[id].isBeingEdited;
+                      setRecruitmentBeingEditedStatus(
+                        recruitmentItemsCopy[id].isBeingEdited
+                      );
+                    }}
+                  />
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
                   {recruitmentItemsCopy[id].isBeingEdited ? (
                     <CreateRecruitment
                       editRecruitment={isRecruitmentBeingEdited}

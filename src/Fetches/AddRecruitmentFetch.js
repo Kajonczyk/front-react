@@ -1,11 +1,7 @@
-export const addRecruitmentFetch = (payload, token) => {
-  const baseURL = "http://localhost:5001/api/recruitment";
-  fetch(baseURL, {
-    method: `POST`,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+import { fetchRequestBody } from "./fetchTemplates";
+export const addRecruitmentFetch = payload => {
+  const response = fetch(
+    `${process.env.REACT_APP_API_URL}recruitment`,
+    fetchRequestBody("POST", payload)
+  );
 };

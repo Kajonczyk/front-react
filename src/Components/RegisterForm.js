@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import { StyledInput } from "./Elements/Input";
-import { StyledButton } from "./Elements/Button";
+import { StyledInput } from "../Shared/Input";
 import { StyledSpanError } from "./Elements/SpanError";
 import { validateRegister } from "./Validator";
 import { authenticationFetch } from "../Fetches/AuthenticationFetch";
 import { StatusMessage } from "./StatusMessage";
+<<<<<<< HEAD
 
 const StyledLoginP = styled.p`
   color: ${({ theme }) => theme.lightgreen};
@@ -38,6 +37,15 @@ const StyledFormText = styled.span`
 const SubmitButton = styled(StyledButton)`
   margin-bottom: -20px;
 `;
+=======
+import {
+  StyledLoginP,
+  StyledLoginBox,
+  StyledButtonWrapper,
+  StyledFormText,
+  SubmitButton
+} from "../Styles/RegisterFormStyle";
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
 
 class RegisterForm extends Component {
   state = {
@@ -91,7 +99,7 @@ class RegisterForm extends Component {
     this.handleFormErrorsClear();
   };
   validateForm = () => {
-    let validateHasErrors;
+    let validatorHasErrors;
     const { firstName, lastName, email, login, password } = this.state;
     const validateRegisterForm = validateRegister(
       firstName,
@@ -100,25 +108,23 @@ class RegisterForm extends Component {
       login,
       password
     );
-    if (typeof validateRegisterForm === "boolean") {
-      validateHasErrors = false;
+    const isFormValidatedCorrectly = !Object.values(validateRegisterForm).some(
+      Boolean
+    );
+    if (isFormValidatedCorrectly) {
+      validatorHasErrors = false;
     } else {
       this.setState({
         errors: validateRegisterForm
       });
-      validateHasErrors = true;
+      validatorHasErrors = true;
     }
-    return validateHasErrors;
+    return validatorHasErrors;
   };
   handleFetchResponse = responseStatus => {
     this.setState({
       isUserRegistered: responseStatus
     });
-    setTimeout(() => {
-      this.setState({
-        isUserRegistered: !responseStatus
-      });
-    }, 3500);
   };
   handleSubmit = async e => {
     const { firstName, lastName, email, login, password } = this.state;
@@ -137,8 +143,8 @@ class RegisterForm extends Component {
         }
       };
 
-      const URL = `http://localhost:5001/Register`;
-      const responseStatus = await authenticationFetch(URL, obj);
+      const envURL = `Register`;
+      const responseStatus = await authenticationFetch(envURL, obj);
       this.handleFetchResponse(responseStatus);
       this.handleFormClear();
     }

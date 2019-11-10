@@ -1,96 +1,80 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import { StyledInput } from "./Elements/Input";
 import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
 import { SectionInfo } from "./Elements/SectionInfo";
-import { StyledButton } from "./Elements/Button";
+import { StyledButton } from "../Shared/Button";
 import { addNewToDoList } from "../Fetches/AddNewToDoList";
-import BrowseToDoList from "./BrowseToDoList";
-const StyledWrapper = styled.div`
-  width: 100%;
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const StyledHeading = styled.h1`
-  color: ${({ theme }) => theme.lightgreen};
-  padding: 10px;
-  font-family: ${({ theme }) => theme.font.family.Didact};
-  border-bottom: 2px solid ${({ theme }) => theme.lightgreen};
-  text-align: center;
-  font-weight: 100;
-  width: 200px;
-  margin: 20px auto;
-`;
-const StyledDescription = styled.span`
-  color: ${({ theme }) => theme.lightgreen};
-  font-family: ${({ theme }) => theme.font.family.Didact};
-  font-weight: bold;
-  text-align: center;
-  display: block;
-`;
-const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-`;
+import SingleToDoListItem from "./SingleToDoListItem";
+import { browseToDoLists } from "../Fetches/BrowseToDoLists";
+import { deleteToDoListTask } from "../Fetches/DeleteToDoListTask";
+import { deleteToDoList } from "../Fetches/DeleteToDoList";
 
-const StyledTaskWrapper = styled.div`
-  width: 250px;
-`;
-const ToDoListInput = styled(StyledInput)`
-  margin: 0px;
-`;
+import {
+  StyledWrapper,
+  StyledHeading,
+  StyledDescription,
+  StyledDiv,
+  StyledTaskWrapper,
+  ToDoListInput
+} from "../Styles/ToDoListStyle";
+
 class ToDoList extends Component {
   state = {
-    isToDoListBeingCreated: false,
-    toDoListName: ""
+    isListCreationFormDisplayed: false,
+    toDoListName: "",
+    toDoLists: []
   };
+  componentDidMount() {
+    this.getToDoListsFromApi();
+  }
+  async getToDoListsFromApi() {
+    try {
+      const toDoLists = await browseToDoLists(localStorage.getItem("token"));
+      this.setState({
+        toDoLists
+      });
+    } catch (e) {
+      this.props.history.push("/");
+    }
+  }
+
   handleChange = e => {
     const { value } = e.target;
     this.setState({
       toDoListName: value
     });
   };
-  handleSectionToggle = action => {
-    switch (action) {
-      case "addToDoList": {
-        this.handleSectionStateToggler("addToDoList");
-        break;
-      }
-      case "addTask": {
-        this.handleRecruitmentSectionStateUpdate("addTask");
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  };
-  handleSectionStateToggler = action => {
-    const property = {
-      addToDoList: "isToDoListBeingCreated",
-      addTask: "isTaskBeingCreated"
-    }[action];
+
+  toggleCreateListSection = () => {
     this.setState(prevState => ({
-      [property]: !prevState[property]
+      isListCreationFormDisplayed: !prevState.isListCreationFormDisplayed
     }));
   };
-
+  handleUpdateToDoListArray = async () => {
+    const token = localStorage.getItem("token");
+    const updateToDoListInfo = await browseToDoLists(token);
+    this.setState({
+      toDoLists: updateToDoListInfo
+    });
+  };
+  handleDeleteListTask = payload => {
+    deleteToDoListTask(payload, payload.id);
+    this.handleUpdateToDoListArray();
+  };
+  handleDeleteToDoList = async payload => {
+    deleteToDoList(payload);
+    await this.handleUpdateToDoListArray();
+  };
   render() {
+    const { toDoLists } = this.state;
     return (
       <StyledWrapper>
         <StyledHeading>To Do List</StyledHeading>
         <StyledTaskWrapper>
           <SectionInfo>
             Add To Do List
-            <StyledPlusIcon
-              onClick={() => this.handleSectionToggle("addToDoList")}
-            />
+            <StyledPlusIcon onClick={() => this.toggleCreateListSection()} />
           </SectionInfo>
-          {this.state.isToDoListBeingCreated ? (
+          {this.state.isListCreationFormDisplayed ? (
             <StyledDiv>
               <StyledDescription>To Do List Name</StyledDescription>
               <ToDoListInput
@@ -111,7 +95,17 @@ class ToDoList extends Component {
           ) : null}
         </StyledTaskWrapper>
         <StyledHeading>Your Lists</StyledHeading>
+<<<<<<< HEAD
         <BrowseToDoList history={this.props.history} />
+=======
+        {toDoLists.map(item => (
+          <SingleToDoListItem
+            toDoLists={item}
+            handleDeleteListTask={this.handleDeleteListTask}
+            handleDeleteToDoList={this.handleDeleteToDoList}
+          />
+        ))}
+>>>>>>> 23f0bfd237f41cf4d422a0751ea8632527e9f8e5
       </StyledWrapper>
     );
   }
