@@ -27,13 +27,13 @@ class LoginForm extends Component {
       [id]: value
     });
   };
-  handleFormInputsClear = () => {
+  clearFormInputs = () => {
     this.setState({
       login: "",
       password: ""
     });
   };
-  handleFormErrorsClear = () => {
+  clearFormErrors = () => {
     this.setState({
       errors: {
         loginError: false,
@@ -41,9 +41,9 @@ class LoginForm extends Component {
       }
     });
   };
-  handleFormClear = () => {
-    this.handleFormInputsClear();
-    this.handleFormErrorsClear();
+  clearForm = () => {
+    this.clearFormInputs();
+    this.clearFormErrors();
   };
   validateForm = (login, password) => {
     let validatorHasErrors;
@@ -75,7 +75,7 @@ class LoginForm extends Component {
       const responseStatus = await authenticationFetch(envURL, obj);
       if (responseStatus) {
         this.props.history.push("/user");
-        this.handleFormClear();
+        this.clearForm();
       } else {
         this.setState({
           validateError: true,

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { SectionInfo } from "./Elements/SectionInfo";
 import { StyledButton } from "../Shared/Button";
 import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
-import { addNewToDoListTask } from "../Fetches/AddNewToDoListTask";
+import { addNewToDoListTask } from "../Fetches/ToDoLists/AddNewToDoListTask";
 import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
 import { validateAddTask } from "./Validator";
 import {
@@ -26,9 +26,9 @@ class SingleToDoListItem extends Component {
       isTaskSectionExpanded: !prevState.isTaskSectionExpanded
     }));
   };
-  handleDeleteToDoList = () => {
+  deleteToDoList = () => {
     const toDoList = this.props.toDoLists;
-    this.props.handleDeleteToDoList(toDoList);
+    this.props.deleteToDoList(toDoList);
   };
   handleChange = e => {
     const { value } = e.target;
@@ -37,7 +37,7 @@ class SingleToDoListItem extends Component {
     });
   };
 
-  handleAddNewTask = () => {
+  addNewTask = () => {
     const { taskInputValue } = this.state;
     const fetchObjectPayload = {
       description: taskInputValue,
@@ -49,8 +49,8 @@ class SingleToDoListItem extends Component {
     }
   };
 
-  handleDeleteListTask = payload => {
-    this.props.handleDeleteListTask(payload, payload.id);
+  deleteTask = payload => {
+    this.props.deleteTask(payload, payload.id);
   };
   render() {
     const { isTaskSectionExpanded } = this.state;
@@ -71,10 +71,10 @@ class SingleToDoListItem extends Component {
               <StyledDescription>Add Task</StyledDescription>
               <TaskInput onChange={this.handleChange} />
               <StyledButtonWrapper>
-                <StyledButton onClick={() => this.handleAddNewTask()}>
+                <StyledButton onClick={() => this.addNewTask()}>
                   Add task
                 </StyledButton>
-                <StyledTrashIcon onClick={() => this.handleDeleteToDoList()} />
+                <StyledTrashIcon onClick={() => this.deleteToDoList()} />
               </StyledButtonWrapper>
 
               {this.props.toDoLists.length === 0 ? (
@@ -83,9 +83,7 @@ class SingleToDoListItem extends Component {
                 this.props.toDoLists.tasks.map(item => (
                   <StyledTaskDescription key={item.id}>
                     {item.description}
-                    <StyledTrashIcon
-                      onClick={() => this.handleDeleteListTask(item)}
-                    />
+                    <StyledTrashIcon onClick={() => this.deleteTask(item)} />
                   </StyledTaskDescription>
                 ))
               )}

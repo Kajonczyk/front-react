@@ -14,7 +14,7 @@ class LoginPage extends Component {
     isAccountCreated: false
   };
 
-  handleSwitchForm = () => {
+  switchForm = () => {
     this.setState({
       isAccountCreated: !this.state.isAccountCreated
     });
@@ -31,12 +31,12 @@ class LoginPage extends Component {
         <StyledLoginWrapper>
           {this.state.isAccountCreated ? (
             <LoginForm
-              switch={this.handleSwitchForm}
+              switch={this.switchForm}
               active={this.state.isAccountCreated}
               history={this.props.history}
             />
           ) : (
-            <RegisterForm switch={this.handleSwitchForm} />
+            <RegisterForm switch={this.switchForm} />
           )}
         </StyledLoginWrapper>
       </Wrapper>

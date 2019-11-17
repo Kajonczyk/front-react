@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { addRecruitmentFetch } from "../Fetches/AddRecruitmentFetch";
-import { updateRecruitmentFetch } from "../Fetches/UpdateRecruitmentFetch";
+import { addRecruitmentFetch } from "../Fetches/Recruitments/AddRecruitmentFetch";
+import { updateRecruitmentFetch } from "../Fetches/Recruitments/UpdateRecruitmentFetch";
 import { StatusMessage } from "./StatusMessage";
 import { validateAddRecruitment } from "./Validator";
 import {
@@ -44,18 +44,13 @@ class CreateRecruitment extends Component {
     isTaskSuccessfullyAdded: false
   };
   handleChange = e => {
-    const { id, value, type } = e.target;
-
+    const { id, value } = e.target;
     this.setState({
       [id]: value
     });
-    if (type === "date") {
-      this.setState({
-        [id]: value
-      });
-    }
   };
-  handlePopUpStatusChange = () => {
+
+  displayPopUp = () => {
     this.setState(prevState => ({
       isTaskSuccessfullyAdded: !prevState.isTaskSuccessfullyAdded
     }));
@@ -83,8 +78,9 @@ class CreateRecruitment extends Component {
     this.cleanFormInputs();
     this.cleanFormErrors();
   };
-  validateForm = (companyName, cityName, positionName, applicationDate) => {
-    let validateHasErrors;
+
+  validateForm = () => {
+    const { companyName, cityName, positionName, applicationDate } = this.state;
     const validateAddRecruitmentForm = validateAddRecruitment(
       companyName,
       cityName,
@@ -95,14 +91,13 @@ class CreateRecruitment extends Component {
       validateAddRecruitmentForm
     ).some(Boolean);
     if (isFormValidatedCorrectly) {
-      validateHasErrors = false;
+      return false;
     } else {
       this.setState({
         errors: validateAddRecruitmentForm
       });
-      validateHasErrors = true;
+      return true;
     }
-    return validateHasErrors;
   };
 
   handleSubmit = async () => {
@@ -125,24 +120,17 @@ class CreateRecruitment extends Component {
       linkToApplication: "",
       ownerId: 1
     };
-    const validatorHasErrors = this.validateForm(
-      companyName,
-      cityName,
-      positionName,
-      applicationDate
-    );
+    const validatorHasErrors = this.validateForm();
     if (!validatorHasErrors) {
-      const token = localStorage.getItem("token");
       const { editRecruitment, recruitmentId } = this.props;
       //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
       //That's why I'm using two different fetches below \/
       if (editRecruitment) {
-        updateRecruitmentFetch(obj, recruitmentId);
+        await updateRecruitmentFetch(obj, recruitmentId);
       } else {
-        addRecruitmentFetch(obj, token);
-        this.handlePopUpStatusChange();
+        addRecruitmentFetch(obj);
+        this.displayPopUp();
       }
-      //After adding a new recruitment there's a need to update ShowRecruitment component to make newly created recruitment visible
       this.cleanForm();
     }
   };
@@ -191,10 +179,11 @@ class CreateRecruitment extends Component {
             <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
           </ButtonWrapper>
         </StyledWrapper>
+        )
         {this.state.isTaskSuccessfullyAdded && (
           <StatusMessage
             descriptionText="Task was successfully added!"
-            closeAction={this.handlePopUpStatusChange}
+            closeAction={this.displayPopUp}
           />
         )}
       </>

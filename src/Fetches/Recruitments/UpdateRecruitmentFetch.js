@@ -1,4 +1,4 @@
-import { fetchRequestBody } from "./fetchTemplates";
+import { fetchRequestBody } from "../fetchTemplates";
 
 export const updateRecruitmentFetch = async (payload, id) => {
   const response = await fetch(

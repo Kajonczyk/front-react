@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
 import { SectionInfo } from "./Elements/SectionInfo";
 import { StyledButton } from "../Shared/Button";
-import { addNewToDoList } from "../Fetches/AddNewToDoList";
+import { addNewToDoList } from "../Fetches/ToDoLists/AddNewToDoList";
 import SingleToDoListItem from "./SingleToDoListItem";
-import { browseToDoLists } from "../Fetches/BrowseToDoLists";
-import { deleteToDoListTask } from "../Fetches/DeleteToDoListTask";
-import { deleteToDoList } from "../Fetches/DeleteToDoList";
+import { browseToDoLists } from "../Fetches/ToDoLists/BrowseToDoLists";
+import { deleteToDoListTask } from "../Fetches/ToDoLists/DeleteToDoListTask";
+import { deleteToDoList } from "../Fetches/ToDoLists/DeleteToDoList";
 
 import {
   StyledWrapper,
@@ -28,7 +28,7 @@ class ToDoList extends Component {
   }
   async getToDoListsFromApi() {
     try {
-      const toDoLists = await browseToDoLists(localStorage.getItem("token"));
+      const toDoLists = await browseToDoLists();
       this.setState({
         toDoLists
       });
@@ -49,20 +49,19 @@ class ToDoList extends Component {
       isListCreationFormDisplayed: !prevState.isListCreationFormDisplayed
     }));
   };
-  handleUpdateToDoListArray = async () => {
-    const token = localStorage.getItem("token");
-    const updateToDoListInfo = await browseToDoLists(token);
+  updateToDoListArray = async () => {
+    const updateToDoListInfo = await browseToDoLists();
     this.setState({
       toDoLists: updateToDoListInfo
     });
   };
-  handleDeleteListTask = payload => {
+  deleteTask = payload => {
     deleteToDoListTask(payload, payload.id);
-    this.handleUpdateToDoListArray();
+    this.updateToDoListArray();
   };
-  handleDeleteToDoList = async payload => {
+  deleteToDoList = async payload => {
     deleteToDoList(payload);
-    await this.handleUpdateToDoListArray();
+    await this.updateToDoListArray();
   };
   render() {
     const { toDoLists } = this.state;
@@ -82,12 +81,7 @@ class ToDoList extends Component {
                 onChange={this.handleChange}
               />
               <StyledButton
-                onClick={() =>
-                  addNewToDoList(
-                    this.state.toDoListName,
-                    localStorage.getItem("token")
-                  )
-                }
+                onClick={() => addNewToDoList(this.state.toDoListName)}
               >
                 Add new List
               </StyledButton>
@@ -98,8 +92,8 @@ class ToDoList extends Component {
         {toDoLists.map(item => (
           <SingleToDoListItem
             toDoLists={item}
-            handleDeleteListTask={this.handleDeleteListTask}
-            handleDeleteToDoList={this.handleDeleteToDoList}
+            deleteTask={this.deleteTask}
+            deleteToDoList={this.deleteToDoList}
           />
         ))}
       </StyledWrapper>

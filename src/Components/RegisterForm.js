@@ -34,12 +34,12 @@ class RegisterForm extends Component {
       [id]: value
     });
   };
-  handleClosePopUp = () => {
+  closePopUp = () => {
     this.setState({
       isUserRegistered: false
     });
   };
-  handleFormInputsClear = () => {
+  clearFormInputs = () => {
     this.setState({
       firstName: "",
       lastName: "",
@@ -48,7 +48,7 @@ class RegisterForm extends Component {
       password: ""
     });
   };
-  handleFormErrorsClear = () => {
+  clearFormErrors = () => {
     this.setState({
       errors: {
         firstNameError: false,
@@ -60,8 +60,8 @@ class RegisterForm extends Component {
     });
   };
   handleFormClear = () => {
-    this.handleFormInputsClear();
-    this.handleFormErrorsClear();
+    this.clearFormInputs();
+    this.clearFormErrors();
   };
   validateForm = () => {
     let validatorHasErrors;
@@ -86,7 +86,8 @@ class RegisterForm extends Component {
     }
     return validatorHasErrors;
   };
-  handleFetchResponse = responseStatus => {
+
+  fetchResponse = responseStatus => {
     this.setState({
       isUserRegistered: responseStatus
     });
@@ -95,7 +96,6 @@ class RegisterForm extends Component {
     const { firstName, lastName, email, login, password } = this.state;
     e.preventDefault();
     const validatorHasErrors = this.validateForm();
-
     if (!validatorHasErrors) {
       const obj = {
         user: {
@@ -110,7 +110,7 @@ class RegisterForm extends Component {
 
       const envURL = `Register`;
       const responseStatus = await authenticationFetch(envURL, obj);
-      this.handleFetchResponse(responseStatus);
+      this.fetchResponse(responseStatus);
       this.handleFormClear();
     }
   };
@@ -197,7 +197,7 @@ class RegisterForm extends Component {
           {isUserRegistered ? (
             <StatusMessage
               descriptionText="You were successfully registered!"
-              closeAction={this.handleClosePopUp}
+              closeAction={this.closePopUp}
             />
           ) : null}
         </StyledLoginBox>

@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
 import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
 import { StyledPencilIcon } from "./Elements/StyledPencilIcon";
-import { deleteRecruitmentFetch } from "../Fetches/DeleteRecruitmentFetch";
+import { deleteRecruitmentFetch } from "../Fetches/Recruitments/DeleteRecruitmentFetch";
 import CreateRecruitment from "./CreateRecruitment";
-import { StatusMessage } from "./StatusMessage";
 import {
   StyledDiv,
   StyledWrapper,
@@ -13,18 +12,15 @@ import {
   StyledP
 } from "../Styles/ShowRecruitmentStyle";
 
-const handleDeleteRecruitment = (item, updateRecruitmentsFunction) => {
-  const token = localStorage.getItem("token");
+const deleteRecruitment = (item, updateRecruitmentsFunction) => {
   deleteRecruitmentFetch(item, item.id);
   updateRecruitmentsFunction();
 };
 
 const ShowRecruitment = ({
   recruitments,
-  deleteRecruitmentStatus,
-  handleChangeDeleteRecruitmentStatus,
-  handleUpdateRecruitments,
-  handleFetchRecruitments
+  updateRecruitments,
+  fetchRecruitments
 }) => {
   const [isRecruitmentBeingEdited, setRecruitmentBeingEditedStatus] = useState(
     false
@@ -43,7 +39,7 @@ const ShowRecruitment = ({
                     id
                   ].isExpanded;
                   recruitmentItemsCopy[id].isBeingEdited = false;
-                  handleUpdateRecruitments(recruitmentItemsCopy);
+                  updateRecruitments(recruitmentItemsCopy);
                 }}
               />
             </SectionInfo>
@@ -59,10 +55,9 @@ const ShowRecruitment = ({
                 <StyledIconWrapper>
                   <StyledTrashIcon
                     onClick={() => {
-                      handleChangeDeleteRecruitmentStatus("delete");
-                      handleDeleteRecruitment(
+                      deleteRecruitment(
                         recruitmentItemsCopy[id],
-                        handleFetchRecruitments
+                        fetchRecruitments
                       );
                     }}
                   />
@@ -88,12 +83,6 @@ const ShowRecruitment = ({
           </StyledWrapper>
         ))}
       </StyledDiv>
-      {deleteRecruitmentStatus && (
-        <StatusMessage
-          descriptionText="Recruitment info was successfully deleted"
-          closeAction={() => handleChangeDeleteRecruitmentStatus("delete")}
-        />
-      )}
     </>
   );
 };

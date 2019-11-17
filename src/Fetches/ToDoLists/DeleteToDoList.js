@@ -1,4 +1,4 @@
-import { fetchRequestBody } from "./fetchTemplates";
+import { fetchRequestBody } from "../fetchTemplates";
 
 export const deleteToDoList = async payload => {
   const response = await fetch(

@@ -1,4 +1,4 @@
-import { fetchRequestBody } from "./fetchTemplates";
+import { fetchRequestBody } from "../fetchTemplates";
 
 export const addNewToDoListTask = payload => {
   const response = fetch(

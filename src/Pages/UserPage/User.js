@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import CreateRecruitment from "../../Components/CreateRecruitment";
 import ShowRecruitment from "../../Components/ShowRecruitment";
 import ToDoList from "../../Components/ToDoList";
-import { getRecruitmentFetch } from "../../Fetches/GetRecruitmentFetch";
+import { getRecruitmentFetch } from "../../Fetches/Recruitments/GetRecruitmentFetch";
 import { StyledPlusIcon } from "../../Components/Elements/StyledPlusIcon";
 import { StyledKeyboardArrowDownIcon } from "../../Components/Elements/StyledArrowIcon";
 import { withRouter } from "react-router";
@@ -17,15 +17,12 @@ import {
 
 class User extends Component {
   state = {
-    isRecruitmentBeingCreated: false,
-    isRecruitmentBeingBrowsed: false,
-    isRecruitmentArchiveBeingBrowsed: false,
-    recruitments: [],
-    isRecruitmentSuccessfullyDeleted: false,
-    isRecruitmentSuccessfullyEdited: false
+    displayCreateRecruitment: false,
+    displayBrowseRecruitments: false,
+    recruitments: []
   };
 
-  handleFetchRecruitments = async () => {
+  fetchRecruitments = async () => {
     try {
       const fetchResult = await getRecruitmentFetch();
       this.setState({
@@ -35,57 +32,25 @@ class User extends Component {
       this.props.history.push("/");
     }
   };
-  handleUpdateRecruitments = recruitments => {
+  updateRecruitments = recruitments => {
     this.setState({
       recruitments
     });
   };
 
   componentDidMount() {
-    this.handleFetchRecruitments();
+    this.fetchRecruitments();
   }
 
-  handleUpdateStateBasedOnPropertyName = actionType => {
+  toggleSectionExpansion = type => {
+    const property = {
+      add: "displayCreateRecruitment",
+      browse: "displayBrowseRecruitments"
+    }[type];
+
     this.setState(prevState => ({
-      [actionType]: !prevState[actionType]
+      [property]: !prevState[property]
     }));
-  };
-  handleChangeRecruitmentStatus = type => {
-    const property = {
-      delete: "isRecruitmentSuccessfullyDeleted",
-      edit: "isRecruitmentSuccessfullyEdited"
-    }[type];
-    this.handleUpdateStateBasedOnPropertyName(property);
-  };
-  handleRecruitmentSectionStateUpdate = type => {
-    const property = {
-      add: "isRecruitmentBeingCreated",
-      browse: "isRecruitmentBeingBrowsed",
-      archive: "isRecruitmentArchiveBeingBrowsed"
-    }[type];
-
-    this.handleUpdateStateBasedOnPropertyName(property);
-  };
-  handleToggleRecruitmentSection = type => {
-    switch (type) {
-      case "add": {
-        this.handleRecruitmentSectionStateUpdate("add");
-        break;
-      }
-      case "browse": {
-        this.handleRecruitmentSectionStateUpdate("browse");
-        this.handleFetchRecruitments();
-
-        break;
-      }
-      case "archive": {
-        this.handleRecruitmentSectionStateUpdate("archive");
-        break;
-      }
-      default: {
-        break;
-      }
-    }
   };
 
   render() {
@@ -100,50 +65,25 @@ class User extends Component {
             <SectionInfo>
               Add Recruitment
               <StyledPlusIcon
-                onClick={() => this.handleToggleRecruitmentSection("add")}
+                onClick={() => this.toggleSectionExpansion("add")}
               />
             </SectionInfo>
-            {this.state.isRecruitmentBeingCreated ? (
-              <CreateRecruitment
-                updateShowRecruitments={this.handleFetchRecruitments}
-                isRecruitmentSuccessfullyEdited={
-                  this.isRecruitmentSuccessfullyEdited
-                }
-                handleChangeEditRecruitmentStatus={
-                  this.handleChangeRecruitmentStatus
-                }
-              />
-            ) : null}
+            {this.state.displayCreateRecruitment && <CreateRecruitment />}
           </StyledRecruitmentWrapper>
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Show Recruitments
               <StyledKeyboardArrowDownIcon
-                onClick={() => this.handleToggleRecruitmentSection("browse")}
+                onClick={() => this.toggleSectionExpansion("browse")}
               />
             </SectionInfo>
-            {this.state.isRecruitmentBeingBrowsed ? (
+            {this.state.displayBrowseRecruitments && (
               <ShowRecruitment
                 recruitments={this.state.recruitments}
-                deleteRecruitmentStatus={
-                  this.state.isRecruitmentSuccessfullyDeleted
-                }
-                handleChangeDeleteRecruitmentStatus={
-                  this.handleChangeRecruitmentStatus
-                }
-                handleUpdateRecruitments={this.handleUpdateRecruitments}
-                handleFetchRecruitments={this.handleFetchRecruitments}
+                updateRecruitments={this.updateRecruitments}
+                fetchRecruitments={this.fetchRecruitments}
               />
-            ) : null}
-          </StyledRecruitmentWrapper>
-          <StyledRecruitmentWrapper>
-            <SectionInfo>
-              Show Archived Recruitments
-              <StyledKeyboardArrowDownIcon
-                onClick={() => this.handleToggleRecruitmentSection("archive")}
-              />
-            </SectionInfo>
-            {this.state.isRecruitmentArchiveBeingBrowsed ? true : null}
+            )}
           </StyledRecruitmentWrapper>
         </RecruitmentWrapper>
         <ToDoList history={this.props.history} />
