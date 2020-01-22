@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const StyledLoginP = styled.p`
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   text-align: center;
   font-family: ${({ theme }) => theme.font.family.Didact};
-  font-size: ${({ theme }) => theme.font.size.formMobile};
+  font-size: calc(${({ theme }) => theme.font.size.s} * 0.9);
   padding-top: 10px;
   margin-bottom: 20px;
 `;
@@ -22,8 +22,8 @@ export const StyledButtonWrapper = styled.div`
 `;
 export const StyledFormText = styled.span`
   font-size: ${({ theme }) => theme.font.size.formMobileText};
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   text-decoration: underline;
   cursor: pointer;
-  margin: 10px;
+  margin: 20px 0px 10px;
 `;

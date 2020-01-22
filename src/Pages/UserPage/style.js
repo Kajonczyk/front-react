@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
 export const StyledWrapper = styled.div`
-  background-image: linear-gradient(0deg, #093028, #237a57);
+  background-image: linear-gradient(
+    180deg,
+    ${({ theme }) => theme.gradientWhite} 0%,
+    ${({ theme }) => theme.gradientPink} 18%
+  );
   overflow: hidden;
   min-height: 100vh;
 `;
 export const StyledH1 = styled.h1`
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   text-align: center;
   font-family: ${({ theme }) => theme.font.family.Sofia};
   position: relative;
@@ -28,8 +32,8 @@ export const StyledGreeting = styled(StyledH1)`
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
-    opacity: 0.055;
-    font-size: calc(${({ theme }) => theme.font.size.juniorStartMobile} * 3);
+    opacity: 0.04;
+    font-size: calc(${({ theme }) => theme.font.size.juniorStartMobile} * 1.8);
   }
 `;
 
@@ -42,11 +46,11 @@ export const RecruitmentWrapper = styled.section`
 `;
 
 export const SectionInfo = styled(StyledH1)`
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   padding: 15px;
   font-family: ${({ theme }) => theme.font.family.Didact};
 
-  border: 2px solid ${({ theme }) => theme.lightgreen};
+  border: 2px solid ${({ theme }) => theme.purplePrimary};
   width: 100%;
   display: flex;
   justify-content: space-between;

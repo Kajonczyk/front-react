@@ -8,17 +8,18 @@ export const StyledWrapper = styled.div`
   align-items: center;
 `;
 export const StyledHeading = styled.h1`
-  color: ${({ theme }) => theme.lightgreen};
+  ${({ theme }) => theme.purplePrimary};
   padding: 10px;
   font-family: ${({ theme }) => theme.font.family.Didact};
-  border-bottom: 2px solid ${({ theme }) => theme.lightgreen};
+  border-bottom: 2px solid ${({ theme }) => theme.purplePrimary};
   text-align: center;
   font-weight: 100;
   width: 200px;
   margin: 20px auto;
+  color: ${({ theme }) => theme.purplePrimary};
 `;
 export const StyledDescription = styled.span`
-  color: ${({ theme }) => theme.lightgreen};
+  ${({ theme }) => theme.purplePrimary};
   font-family: ${({ theme }) => theme.font.family.Didact};
   font-weight: bold;
   text-align: center;

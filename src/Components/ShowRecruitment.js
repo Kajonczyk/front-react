@@ -12,9 +12,9 @@ import {
   StyledP
 } from "../Styles/ShowRecruitmentStyle";
 
-const deleteRecruitment = (item, updateRecruitmentsFunction) => {
-  deleteRecruitmentFetch(item, item.id);
-  updateRecruitmentsFunction();
+const deleteRecruitment = async (item, updateRecruitmentsFunction) => {
+  await deleteRecruitmentFetch(item, item.id);
+  await updateRecruitmentsFunction();
 };
 
 const ShowRecruitment = ({
@@ -22,9 +22,7 @@ const ShowRecruitment = ({
   updateRecruitments,
   fetchRecruitments
 }) => {
-  const [isRecruitmentBeingEdited, setRecruitmentBeingEditedStatus] = useState(
-    false
-  );
+  const [isRecruitmentBeingEdited, setRecruitmentEditStatus] = useState(false);
   const recruitmentItemsCopy = [...recruitments];
   return (
     <>
@@ -34,12 +32,12 @@ const ShowRecruitment = ({
             <SectionInfo>
               {item.companyName}
               <StyledKeyboardArrowDownIcon
-                onClick={() => {
+                onClick={async () => {
                   recruitmentItemsCopy[id].isExpanded = !recruitmentItemsCopy[
                     id
                   ].isExpanded;
                   recruitmentItemsCopy[id].isBeingEdited = false;
-                  updateRecruitments(recruitmentItemsCopy);
+                  await updateRecruitments(recruitmentItemsCopy);
                 }}
               />
             </SectionInfo>
@@ -50,12 +48,12 @@ const ShowRecruitment = ({
                 <StyledP>
                   Application date: {item.applicationDate.substr(0, 10)}
                 </StyledP>
-                <StyledP>Company Reply: {item.companyReply}</StyledP>
+                <StyledP>Company Reply: {String(item.companyReply)}</StyledP>
                 <StyledP>Notes: {item.notes}</StyledP>
                 <StyledIconWrapper>
                   <StyledTrashIcon
-                    onClick={() => {
-                      deleteRecruitment(
+                    onClick={async () => {
+                      await deleteRecruitment(
                         recruitmentItemsCopy[id],
                         fetchRecruitments
                       );
@@ -66,7 +64,7 @@ const ShowRecruitment = ({
                       recruitmentItemsCopy[
                         id
                       ].isBeingEdited = !recruitmentItemsCopy[id].isBeingEdited;
-                      setRecruitmentBeingEditedStatus(
+                      setRecruitmentEditStatus(
                         recruitmentItemsCopy[id].isBeingEdited
                       );
                     }}
@@ -75,6 +73,7 @@ const ShowRecruitment = ({
                     <CreateRecruitment
                       editRecruitment={isRecruitmentBeingEdited}
                       recruitmentId={recruitmentItemsCopy[id].id}
+                      updateRecruitments={updateRecruitments}
                     />
                   ) : null}
                 </StyledIconWrapper>

@@ -10,7 +10,7 @@ export const StyledTaskWrapper = styled(StyledWrapper)`
   width: 250px;
 `;
 export const StyledDescription = styled.span`
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   font-family: ${({ theme }) => theme.font.family.Didact};
   font-weight: bold;
   text-align: center;

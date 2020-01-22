@@ -74,7 +74,10 @@ class User extends Component {
             <SectionInfo>
               Show Recruitments
               <StyledKeyboardArrowDownIcon
-                onClick={() => this.toggleSectionExpansion("browse")}
+                onClick={async () => {
+                  this.toggleSectionExpansion("browse");
+                  await this.fetchRecruitments();
+                }}
               />
             </SectionInfo>
             {this.state.displayBrowseRecruitments && (

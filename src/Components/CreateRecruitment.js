@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { addRecruitmentFetch } from "../Fetches/Recruitments/AddRecruitmentFetch";
+import { getRecruitmentFetch } from "../Fetches/Recruitments/GetRecruitmentFetch";
 import { updateRecruitmentFetch } from "../Fetches/Recruitments/UpdateRecruitmentFetch";
 import { StatusMessage } from "./StatusMessage";
 import { validateAddRecruitment } from "./Validator";
@@ -10,7 +11,9 @@ import {
   Input,
   ButtonWrapper,
   SubmitButton,
-  StyledTextArea
+  StyledTextArea,
+  StyledSpan,
+  InputCheck
 } from "../Styles/CreateRecruitmentStyle";
 
 const InputTextData = [
@@ -34,6 +37,7 @@ class CreateRecruitment extends Component {
     positionName: "",
     companyReplyDate: "",
     applicationDate: "",
+    companyReply: false,
     notes: "",
     errors: {
       companyNameError: false,
@@ -44,10 +48,16 @@ class CreateRecruitment extends Component {
     isTaskSuccessfullyAdded: false
   };
   handleChange = e => {
-    const { id, value } = e.target;
-    this.setState({
-      [id]: value
-    });
+    const { id, value, type, checked } = e.target;
+    if (type == "checkbox") {
+      this.setState({
+        [id]: checked
+      });
+    } else {
+      this.setState({
+        [id]: value
+      });
+    }
   };
 
   displayPopUp = () => {
@@ -61,6 +71,7 @@ class CreateRecruitment extends Component {
       cityName: "",
       positionName: "",
       applicationDate: "",
+      companyReply: true,
       notes: ""
     });
   };
@@ -106,7 +117,8 @@ class CreateRecruitment extends Component {
       cityName,
       positionName,
       applicationDate,
-      notes
+      notes,
+      companyReply
     } = this.state;
     const obj = {
       id: 1,
@@ -115,20 +127,22 @@ class CreateRecruitment extends Component {
       workPlace: positionName,
       dateOfCompanyReply: "",
       applicationDate,
-      companyReply: false,
+      companyReply,
       notes,
       linkToApplication: "",
       ownerId: 1
     };
     const validatorHasErrors = this.validateForm();
     if (!validatorHasErrors) {
-      const { editRecruitment, recruitmentId } = this.props;
+      const { editRecruitment, recruitmentId, updateRecruitments } = this.props;
       //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
       //That's why I'm using two different fetches below \/
       if (editRecruitment) {
         await updateRecruitmentFetch(obj, recruitmentId);
+        await updateRecruitments(await getRecruitmentFetch());
       } else {
-        addRecruitmentFetch(obj);
+        await addRecruitmentFetch(obj);
+        await getRecruitmentFetch();
         this.displayPopUp();
       }
       this.cleanForm();
@@ -163,6 +177,19 @@ class CreateRecruitment extends Component {
               />
             </label>
           </InputWrapper>
+          <InputWrapper>
+            <StyledSpan>
+              <StyledDescription checkbox>Company reply</StyledDescription>
+              <Input
+                type="checkbox"
+                id="companyReply"
+                onChange={this.handleChange}
+                value={this.state.companyReply}
+                inputCheckbox
+              />
+              <InputCheck inputChecked={this.state.companyReply} />
+            </StyledSpan>
+          </InputWrapper>
 
           <InputWrapper>
             <label>
@@ -179,10 +206,10 @@ class CreateRecruitment extends Component {
             <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
           </ButtonWrapper>
         </StyledWrapper>
-        )
+
         {this.state.isTaskSuccessfullyAdded && (
           <StatusMessage
-            descriptionText="Task was successfully added!"
+            descriptionText="Entry was successfully added!"
             closeAction={this.displayPopUp}
           />
         )}
