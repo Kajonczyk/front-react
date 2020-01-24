@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
 import { SectionInfo } from "./Elements/SectionInfo";
+import { StatusMessage } from "./StatusMessage";
 import { StyledButton } from "../Shared/Button";
 import { addNewToDoList } from "../Fetches/ToDoLists/AddNewToDoList";
 import SingleToDoListItem from "./SingleToDoListItem";
 import { browseToDoLists } from "../Fetches/ToDoLists/BrowseToDoLists";
 import { deleteToDoListTask } from "../Fetches/ToDoLists/DeleteToDoListTask";
 import { deleteToDoList } from "../Fetches/ToDoLists/DeleteToDoList";
+import history from "../Utils/history";
 
 import {
   StyledWrapper,
@@ -19,9 +21,13 @@ import {
 
 class ToDoList extends Component {
   state = {
-    isListCreationFormDisplayed: false,
+    isCreateTaskFieldActive: false,
     toDoListName: "",
-    toDoLists: []
+    toDoLists: [],
+    isPopUpDisplayed: false,
+    errors: {
+      listName: false
+    }
   };
   componentDidMount() {
     this.getToDoListsFromApi();
@@ -33,9 +39,22 @@ class ToDoList extends Component {
         toDoLists
       });
     } catch (e) {
-      this.props.history.push("/");
+      history.push("/");
     }
   }
+  clearInputField = () => {
+    this.setState({
+      toDoListName: ""
+    });
+    this.cleanInputErrors();
+  };
+  cleanInputErrors = () => {
+    this.setState({
+      errors: {
+        listName: false
+      }
+    });
+  };
 
   handleChange = e => {
     const { value } = e.target;
@@ -43,10 +62,33 @@ class ToDoList extends Component {
       toDoListName: value
     });
   };
+  togglePopUp = () => {
+    this.setState(prevState => ({
+      isPopUpDisplayed: !prevState.isPopUpDisplayed
+    }));
+  };
+  validateInput = () => {
+    const { toDoListName } = this.state;
+    return toDoListName.length > 2;
+  };
+  handleSubmit = async item => {
+    if (this.validateInput()) {
+      await addNewToDoList(item);
+      this.clearInputField();
+      this.togglePopUp();
+      await this.getToDoListsFromApi();
+    } else {
+      this.setState({
+        errors: {
+          listName: true
+        }
+      });
+    }
+  };
 
   toggleCreateListSection = () => {
     this.setState(prevState => ({
-      isListCreationFormDisplayed: !prevState.isListCreationFormDisplayed
+      isCreateTaskFieldActive: !prevState.isCreateTaskFieldActive
     }));
   };
   updateToDoListArray = async () => {
@@ -55,16 +97,20 @@ class ToDoList extends Component {
       toDoLists: updateToDoListInfo
     });
   };
-  deleteTask = payload => {
-    deleteToDoListTask(payload, payload.id);
-    this.updateToDoListArray();
+  deleteTask = async payload => {
+    await deleteToDoListTask(payload, payload.id);
+    await this.updateToDoListArray();
   };
   deleteToDoList = async payload => {
-    deleteToDoList(payload);
+    await deleteToDoList(payload);
     await this.updateToDoListArray();
   };
   render() {
-    const { toDoLists } = this.state;
+    const {
+      toDoLists,
+      isPopUpDisplayed,
+      errors: { listName }
+    } = this.state;
     return (
       <StyledWrapper>
         <StyledHeading>To Do List</StyledHeading>
@@ -73,15 +119,18 @@ class ToDoList extends Component {
             Add To Do List
             <StyledPlusIcon onClick={() => this.toggleCreateListSection()} />
           </SectionInfo>
-          {this.state.isListCreationFormDisplayed ? (
+          {this.state.isCreateTaskFieldActive ? (
             <StyledDiv>
               <StyledDescription>To Do List Name</StyledDescription>
               <ToDoListInput
                 value={this.state.toDoListName}
                 onChange={this.handleChange}
               />
+              {listName && (
+                <StyledDescription error>Name is too short!</StyledDescription>
+              )}
               <StyledButton
-                onClick={() => addNewToDoList(this.state.toDoListName)}
+                onClick={() => this.handleSubmit(this.state.toDoListName)}
               >
                 Add new List
               </StyledButton>
@@ -94,8 +143,15 @@ class ToDoList extends Component {
             toDoLists={item}
             deleteTask={this.deleteTask}
             deleteToDoList={this.deleteToDoList}
+            updateLists={async () => await this.getToDoListsFromApi()}
           />
         ))}
+        {isPopUpDisplayed && (
+          <StatusMessage
+            descriptionText="List successfully added"
+            closeAction={this.togglePopUp}
+          />
+        )}
       </StyledWrapper>
     );
   }

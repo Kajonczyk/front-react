@@ -11,6 +11,7 @@ import {
   SectionInfo,
   StyledP
 } from "../Styles/ShowRecruitmentStyle";
+import StatusMessage from "./StatusMessage";
 
 const deleteRecruitment = async (item, updateRecruitmentsFunction) => {
   await deleteRecruitmentFetch(item, item.id);
@@ -23,6 +24,7 @@ const ShowRecruitment = ({
   fetchRecruitments
 }) => {
   const [isRecruitmentBeingEdited, setRecruitmentEditStatus] = useState(false);
+  const [isPopUpActive, setPopUpActive] = useState(false);
   const recruitmentItemsCopy = [...recruitments];
   return (
     <>
@@ -57,6 +59,7 @@ const ShowRecruitment = ({
                         recruitmentItemsCopy[id],
                         fetchRecruitments
                       );
+                      setPopUpActive(true);
                     }}
                   />
                   <StyledPencilIcon
@@ -74,6 +77,7 @@ const ShowRecruitment = ({
                       editRecruitment={isRecruitmentBeingEdited}
                       recruitmentId={recruitmentItemsCopy[id].id}
                       updateRecruitments={updateRecruitments}
+                      updatePopUpStatus={setPopUpActive}
                     />
                   ) : null}
                 </StyledIconWrapper>
@@ -81,6 +85,12 @@ const ShowRecruitment = ({
             ) : null}
           </StyledWrapper>
         ))}
+        {isPopUpActive && (
+          <StatusMessage
+            descriptionText="Action successful"
+            closeAction={() => setPopUpActive(false)}
+          />
+        )}
       </StyledDiv>
     </>
   );

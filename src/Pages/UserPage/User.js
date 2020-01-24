@@ -5,6 +5,7 @@ import ToDoList from "../../Components/ToDoList";
 import { getRecruitmentFetch } from "../../Fetches/Recruitments/GetRecruitmentFetch";
 import { StyledPlusIcon } from "../../Components/Elements/StyledPlusIcon";
 import { StyledKeyboardArrowDownIcon } from "../../Components/Elements/StyledArrowIcon";
+import history from "../../Utils/history";
 import { withRouter } from "react-router";
 import {
   StyledWrapper,
@@ -89,7 +90,7 @@ class User extends Component {
             )}
           </StyledRecruitmentWrapper>
         </RecruitmentWrapper>
-        <ToDoList history={this.props.history} />
+        <ToDoList history={history} />
       </StyledWrapper>
     );
   }

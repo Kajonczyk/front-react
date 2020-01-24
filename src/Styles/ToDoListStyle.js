@@ -19,11 +19,17 @@ export const StyledHeading = styled.h1`
   color: ${({ theme }) => theme.purplePrimary};
 `;
 export const StyledDescription = styled.span`
-  ${({ theme }) => theme.purplePrimary};
+  color: ${({ theme }) => theme.purplePrimary};
   font-family: ${({ theme }) => theme.font.family.Didact};
   font-weight: bold;
   text-align: center;
   display: block;
+  ${({ error }) =>
+    error &&
+    `
+    margin-top:10px;
+    color:red;
+  `}
 `;
 export const StyledDiv = styled.div`
   display: flex;

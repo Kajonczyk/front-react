@@ -134,12 +134,18 @@ class CreateRecruitment extends Component {
     };
     const validatorHasErrors = this.validateForm();
     if (!validatorHasErrors) {
-      const { editRecruitment, recruitmentId, updateRecruitments } = this.props;
+      const {
+        editRecruitment,
+        recruitmentId,
+        updateRecruitments,
+        updatePopUpStatus
+      } = this.props;
       //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
       //That's why I'm using two different fetches below \/
       if (editRecruitment) {
-        await updateRecruitmentFetch(obj, recruitmentId);
-        await updateRecruitments(await getRecruitmentFetch());
+        await updateRecruitmentFetch(obj, recruitmentId); // updates single recruitment
+        await updateRecruitments(await getRecruitmentFetch()); // refreshes recruitments data
+        updatePopUpStatus(true);
       } else {
         await addRecruitmentFetch(obj);
         await getRecruitmentFetch();
