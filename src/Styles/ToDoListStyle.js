@@ -2,10 +2,14 @@ import styled from "styled-components";
 import { StyledInput } from "../Shared/Input";
 export const StyledWrapper = styled.div`
   width: 100%;
-  margin-top: 50px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  ${({ theme }) => theme.mq.tablet} {
+    margin-top: 0px;
+    width: auto;
+  }
 `;
 export const StyledHeading = styled.h1`
   ${({ theme }) => theme.purplePrimary};
@@ -13,10 +17,14 @@ export const StyledHeading = styled.h1`
   font-family: ${({ theme }) => theme.font.family.Didact};
   border-bottom: 2px solid ${({ theme }) => theme.purplePrimary};
   text-align: center;
-  font-weight: 100;
-  width: 200px;
+  font-weight: bold;
+  width: 100px;
   margin: 20px auto;
   color: ${({ theme }) => theme.purplePrimary};
+
+  ${({ theme }) => theme.mq.tablet} {
+    margin: 30px auto 0px;
+  }
 `;
 export const StyledDescription = styled.span`
   color: ${({ theme }) => theme.purplePrimary};
@@ -29,6 +37,13 @@ export const StyledDescription = styled.span`
     `
     margin-top:10px;
     color:red;
+  `}
+  ${({ emptyLists, theme }) =>
+    emptyLists &&
+    `
+  margin-top:10px;
+  text-decoration:underline;
+  font-size: calc(${theme.font.size.xs} * 0.8)
   `}
 `;
 export const StyledDiv = styled.div`

@@ -43,6 +43,12 @@ export const RecruitmentWrapper = styled.section`
   flex-direction: column;
   align-items: center;
   margin-top: -20px;
+  ${({ theme }) => theme.mq.tablet} {
+    flex-direction: row;
+    justify-content: space-evenly;
+    max-width: 1024px;
+    margin: 0px auto;
+  }
 `;
 
 export const SectionInfo = styled(StyledH1)`
@@ -60,7 +66,24 @@ export const SectionInfo = styled(StyledH1)`
   &:nth-child(1) {
     margin-top: 40px;
   }
+  ${({ theme }) => theme.mq.tablet} {
+    &:nth-child(1) {
+      margin-top: 20px;
+    }
+    min-width: 30%;
+    max-width: 300px;
+  }
 `;
 export const StyledRecruitmentWrapper = styled.div`
-  width: 250px;
+  width: 280px;
+  ${({ theme }) => theme.mq.tablet} {
+    width: 30%;
+    max-width: 300px;
+  }
+`;
+export const StyledContentWrapper = styled.div`
+  ${({ theme }) => theme.mq.tablet} {
+    max-width: 768px;
+    margin: 0px auto;
+  }
 `;

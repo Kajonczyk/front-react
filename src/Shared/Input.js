@@ -31,4 +31,15 @@ export const StyledInput = styled.input`
   border:2px solid ${theme.purplePrimary};
   z-index:14;
 `}
+  ${({ theme }) => theme.mq.tablet} {
+    font-size: ${({ theme }) => theme.font.size.xs};
+    margin-top: 0px;
+    ${({ inputCheckbox }) =>
+      inputCheckbox &&
+      `
+    margin-top:10px;
+    width: 17px;
+  height: 17px;
+    `}
+  }
 `;

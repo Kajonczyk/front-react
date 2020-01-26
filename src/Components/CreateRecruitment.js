@@ -13,7 +13,8 @@ import {
   SubmitButton,
   StyledTextArea,
   StyledSpan,
-  InputCheck
+  InputCheck,
+  StyledFieldsWrapper
 } from "../Styles/CreateRecruitmentStyle";
 
 const InputTextData = [
@@ -158,32 +159,46 @@ class CreateRecruitment extends Component {
     return (
       <>
         <StyledWrapper>
-          {InputTextData.map(data => (
-            <InputWrapper key={data.desc}>
+          <StyledFieldsWrapper>
+            {InputTextData.map(data => (
+              <InputWrapper key={data.desc}>
+                <label>
+                  <StyledDescription>{data.desc}</StyledDescription>
+                  <Input
+                    type="text"
+                    id={data.id}
+                    placeholder={data.desc}
+                    onChange={this.handleChange}
+                    value={this.state[data.id]}
+                  />
+                </label>
+              </InputWrapper>
+            ))}
+
+            <InputWrapper>
               <label>
-                <StyledDescription>{data.desc}</StyledDescription>
+                <StyledDescription>Application date</StyledDescription>
                 <Input
-                  type="text"
-                  id={data.id}
-                  placeholder={data.desc}
+                  type="date"
+                  id="applicationDate"
                   onChange={this.handleChange}
-                  value={this.state[data.id]}
+                  value={this.state.applicationDate}
                 />
               </label>
             </InputWrapper>
-          ))}
+          </StyledFieldsWrapper>
           <InputWrapper>
             <label>
-              <StyledDescription>Application date</StyledDescription>
-              <Input
-                type="date"
-                id="applicationDate"
+              <StyledDescription>Notes</StyledDescription>
+              <StyledTextArea
+                id="notes"
+                placeholder="Your text goes here"
                 onChange={this.handleChange}
-                value={this.state.applicationDate}
+                value={this.state.notes}
               />
             </label>
           </InputWrapper>
-          <InputWrapper>
+          <InputWrapper checkbox>
             <StyledSpan>
               <StyledDescription checkbox>Company reply</StyledDescription>
               <Input
@@ -195,18 +210,6 @@ class CreateRecruitment extends Component {
               />
               <InputCheck inputChecked={this.state.companyReply} />
             </StyledSpan>
-          </InputWrapper>
-
-          <InputWrapper>
-            <label>
-              <StyledDescription>Notes</StyledDescription>
-              <StyledTextArea
-                id="notes"
-                placeholder="Your text goes here"
-                onChange={this.handleChange}
-                value={this.state.notes}
-              />
-            </label>
           </InputWrapper>
           <ButtonWrapper>
             <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>

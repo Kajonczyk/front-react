@@ -9,6 +9,7 @@ const theme = {
   purpleSecondary: "#D0BDEF",
   font: {
     size: {
+      xxs: ".7rem",
       xs: "1rem",
       s: "1.3rem",
       m: "1.9rem",

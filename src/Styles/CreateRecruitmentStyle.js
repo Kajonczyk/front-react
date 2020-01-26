@@ -14,14 +14,30 @@ export const StyledDescription = styled.span`
   padding-right: 20px;
   margin-left: -20px;
   font-weight:100;`}
+  ${({ theme }) => theme.mq.tablet} {
+    font-size: ${({ theme }) => theme.font.size.xxs};
+    ${({ checkbox, theme }) =>
+      checkbox &&
+      `
+    font-size: ${theme.font.size.xs};
+    `}
+  }
 `;
 export const InputWrapper = styled.div`
-  margin: 20px;
+  margin: 20px 20px 10px;
+  ${({ checkbox }) =>
+    checkbox &&
+    `
+    margin: 0px 20px 30px;
+    `}
 `;
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  ${({ theme }) => theme.mq.tablet} {
+    margin-top: 60px;
+  }
 `;
 export const Input = styled(StyledInput)`
   margin-bottom: 5px;
@@ -51,6 +67,22 @@ export const StyledTextArea = styled.textarea`
     color: ${({ theme }) => theme.purplePrimary};
     font-size: calc(${({ theme }) => theme.font.size.formMobileText} * 0.93);
   }
+  ${({ theme }) => theme.mq.tablet} {
+    font-size: ${({ theme }) => theme.font.size.xs};
+    width: 560px;
+    height: 100px;
+    margin-top: 10px;
+    &::placeholder {
+      font-size: ${({ theme }) => theme.font.size.xs};
+    }
+  }
+`;
+export const StyledFieldsWrapper = styled.div`
+  ${({ theme }) => theme.mq.tablet} {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
 `;
 export const StyledSpan = styled.span`
   display: flex;
@@ -75,5 +107,14 @@ export const InputCheck = styled.span`
       z-index:1;
       
     }
+    ${theme.mq.tablet} {
+      &:before{
+        width:11px;
+        height:11px;
+        left: -14px;
+        top: -5px;
+      }
+    }
+
 `}
 `;

@@ -21,7 +21,6 @@ import {
 
 class ToDoList extends Component {
   state = {
-    isCreateTaskFieldActive: false,
     toDoListName: "",
     toDoLists: [],
     isPopUpDisplayed: false,
@@ -32,6 +31,7 @@ class ToDoList extends Component {
   componentDidMount() {
     this.getToDoListsFromApi();
   }
+
   async getToDoListsFromApi() {
     try {
       const toDoLists = await browseToDoLists();
@@ -42,12 +42,14 @@ class ToDoList extends Component {
       history.push("/");
     }
   }
+
   clearInputField = () => {
     this.setState({
       toDoListName: ""
     });
     this.cleanInputErrors();
   };
+
   cleanInputErrors = () => {
     this.setState({
       errors: {
@@ -62,15 +64,18 @@ class ToDoList extends Component {
       toDoListName: value
     });
   };
+
   togglePopUp = () => {
     this.setState(prevState => ({
       isPopUpDisplayed: !prevState.isPopUpDisplayed
     }));
   };
+
   validateInput = () => {
     const { toDoListName } = this.state;
     return toDoListName.length > 2;
   };
+
   handleSubmit = async item => {
     if (this.validateInput()) {
       await addNewToDoList(item);
@@ -86,25 +91,23 @@ class ToDoList extends Component {
     }
   };
 
-  toggleCreateListSection = () => {
-    this.setState(prevState => ({
-      isCreateTaskFieldActive: !prevState.isCreateTaskFieldActive
-    }));
-  };
   updateToDoListArray = async () => {
     const updateToDoListInfo = await browseToDoLists();
     this.setState({
       toDoLists: updateToDoListInfo
     });
   };
+
   deleteTask = async payload => {
     await deleteToDoListTask(payload, payload.id);
     await this.updateToDoListArray();
   };
+
   deleteToDoList = async payload => {
     await deleteToDoList(payload);
     await this.updateToDoListArray();
   };
+
   render() {
     const {
       toDoLists,
@@ -113,13 +116,8 @@ class ToDoList extends Component {
     } = this.state;
     return (
       <StyledWrapper>
-        <StyledHeading>To Do List</StyledHeading>
         <StyledTaskWrapper>
-          <SectionInfo>
-            Add To Do List
-            <StyledPlusIcon onClick={() => this.toggleCreateListSection()} />
-          </SectionInfo>
-          {this.state.isCreateTaskFieldActive ? (
+          <>
             <StyledDiv>
               <StyledDescription>To Do List Name</StyledDescription>
               <ToDoListInput
@@ -135,17 +133,24 @@ class ToDoList extends Component {
                 Add new List
               </StyledButton>
             </StyledDiv>
-          ) : null}
+            <StyledHeading>Your Lists</StyledHeading>
+            {toDoLists.length > 0 ? (
+              toDoLists.map(item => (
+                <SingleToDoListItem
+                  toDoLists={item}
+                  deleteTask={this.deleteTask}
+                  deleteToDoList={this.deleteToDoList}
+                  updateLists={async () => await this.getToDoListsFromApi()}
+                />
+              ))
+            ) : (
+              <StyledDescription emptyLists={true}>
+                You have no lists
+              </StyledDescription>
+            )}
+          </>
         </StyledTaskWrapper>
-        <StyledHeading>Your Lists</StyledHeading>
-        {toDoLists.map(item => (
-          <SingleToDoListItem
-            toDoLists={item}
-            deleteTask={this.deleteTask}
-            deleteToDoList={this.deleteToDoList}
-            updateLists={async () => await this.getToDoListsFromApi()}
-          />
-        ))}
+
         {isPopUpDisplayed && (
           <StatusMessage
             descriptionText="List successfully added"
