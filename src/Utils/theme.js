@@ -3,12 +3,17 @@ const theme = {
   lightergreen: "#CEF5C7",
   lightgreen: "#BDEFE5",
   green: "#2EB041",
-
+  gradientWhite: "#F1F1F6",
+  gradientPink: "#ECE2EE",
+  purplePrimary: "#7A458C",
+  purpleSecondary: "#D0BDEF",
   font: {
     size: {
+      xxs: ".7rem",
+      xs: "1rem",
       s: "1.3rem",
       m: "1.9rem",
-      juniorStartMobile: "3.8rem",
+      juniorStartMobile: "3rem",
       formMobile: "1rem",
       formMobileText: ".85rem",
       taskMobileDescription: "0.75rem",

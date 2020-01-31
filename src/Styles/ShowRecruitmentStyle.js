@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledDiv = styled.div`
-  height: 200px;
+  min-height: 200px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -18,11 +18,11 @@ export const StyledIconWrapper = styled.div`
   margin-top: 20px;
 `;
 export const SectionInfo = styled.h1`
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   margin: 0px auto;
   padding: 10px;
   font-family: ${({ theme }) => theme.font.family.Didact};
-  border: 2px solid ${({ theme }) => theme.lightgreen};
+  border: 2px solid ${({ theme }) => theme.purplePrimary};
 
   width: 100%;
   display: flex;
@@ -31,7 +31,7 @@ export const SectionInfo = styled.h1`
   font-weight: 100;
 `;
 export const StyledP = styled.p`
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   font-family: ${({ theme }) => theme.font.family.Didact};
   font-size: ${({ theme }) => theme.font.size.formMobileText};
   margin-top: 30px;

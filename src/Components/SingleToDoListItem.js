@@ -4,21 +4,26 @@ import { StyledButton } from "../Shared/Button";
 import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
 import { addNewToDoListTask } from "../Fetches/ToDoLists/AddNewToDoListTask";
 import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
+import { StatusMessage } from "./StatusMessage";
 import { validateAddTask } from "./Validator";
+import { browseToDoLists } from "../Fetches/ToDoLists/BrowseToDoLists";
+
 import {
   StyledWrapper,
   StyledTaskWrapper,
   TaskInput,
   StyledDescription,
   StyledTaskDescription,
-  StyledButtonWrapper
+  StyledButtonWrapper,
+  StyledSpan
 } from "../Styles/SingleToDoListItemStyle";
 
 class SingleToDoListItem extends Component {
   state = {
     taskInputValue: "",
     isTaskSectionExpanded: false,
-    tasks: []
+    tasks: [],
+    inputFieldError: false
   };
 
   toggleCreateTaskSection = () => {
@@ -26,9 +31,14 @@ class SingleToDoListItem extends Component {
       isTaskSectionExpanded: !prevState.isTaskSectionExpanded
     }));
   };
-  deleteToDoList = () => {
+  deleteList = async () => {
     const toDoList = this.props.toDoLists;
-    this.props.deleteToDoList(toDoList);
+    await this.props.deleteToDoList(toDoList);
+  };
+  setInputValue = value => {
+    this.setState({
+      taskInputValue: ""
+    });
   };
   handleChange = e => {
     const { value } = e.target;
@@ -36,24 +46,44 @@ class SingleToDoListItem extends Component {
       taskInputValue: value
     });
   };
-
-  addNewTask = () => {
+  toggleError = value => {
+    this.setState({
+      inputFieldError: value
+    });
+  };
+  cleanInputField = () => {
+    this.setState({
+      taskInputValue: ""
+    });
+    this.toggleError(false);
+  };
+  addNewTask = async () => {
     const { taskInputValue } = this.state;
     const fetchObjectPayload = {
       description: taskInputValue,
       todoListId: this.props.toDoLists.id
     };
+
     const validationError = validateAddTask(fetchObjectPayload.description);
     if (!validationError) {
-      addNewToDoListTask(fetchObjectPayload);
+      await addNewToDoListTask(fetchObjectPayload);
+      this.cleanInputField();
+      await this.props.updateLists();
+    } else {
+      this.toggleError(true);
     }
   };
 
-  deleteTask = payload => {
-    this.props.deleteTask(payload, payload.id);
+  deleteTask = async payload => {
+    await this.props.deleteTask(payload, payload.id);
+    await this.props.updateLists();
   };
   render() {
-    const { isTaskSectionExpanded } = this.state;
+    const {
+      isTaskSectionExpanded,
+      inputFieldError,
+      taskInputValue
+    } = this.state;
     const { id, name } = this.props.toDoLists;
     return (
       <div>
@@ -69,12 +99,16 @@ class SingleToDoListItem extends Component {
           {isTaskSectionExpanded && (
             <StyledWrapper>
               <StyledDescription>Add Task</StyledDescription>
-              <TaskInput onChange={this.handleChange} />
+              <TaskInput onChange={this.handleChange} value={taskInputValue} />
+              {inputFieldError && (
+                <StyledDescription error>Name is too short!</StyledDescription>
+              )}
               <StyledButtonWrapper>
                 <StyledButton onClick={() => this.addNewTask()}>
                   Add task
                 </StyledButton>
-                <StyledTrashIcon onClick={() => this.deleteToDoList()} />
+
+                <StyledTrashIcon onClick={() => this.deleteList()} />
               </StyledButtonWrapper>
 
               {this.props.toDoLists.length === 0 ? (
@@ -82,7 +116,7 @@ class SingleToDoListItem extends Component {
               ) : (
                 this.props.toDoLists.tasks.map(item => (
                   <StyledTaskDescription key={item.id}>
-                    {item.description}
+                    <StyledSpan>{item.description}</StyledSpan>
                     <StyledTrashIcon onClick={() => this.deleteTask(item)} />
                   </StyledTaskDescription>
                 ))

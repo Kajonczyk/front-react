@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledTrashIcon = styled(Trash2)`
   height: 30px;
   width: 30px;
-  color: ${({ theme }) => theme.lightgreen};
+  color: ${({ theme }) => theme.purplePrimary};
   transition: all 1s;
   &:hover {
     cursor: pointer;

@@ -5,6 +5,7 @@ import ToDoList from "../../Components/ToDoList";
 import { getRecruitmentFetch } from "../../Fetches/Recruitments/GetRecruitmentFetch";
 import { StyledPlusIcon } from "../../Components/Elements/StyledPlusIcon";
 import { StyledKeyboardArrowDownIcon } from "../../Components/Elements/StyledArrowIcon";
+import history from "../../Utils/history";
 import { withRouter } from "react-router";
 import {
   StyledWrapper,
@@ -12,13 +13,16 @@ import {
   StyledGreeting,
   RecruitmentWrapper,
   SectionInfo,
-  StyledRecruitmentWrapper
+  StyledRecruitmentWrapper,
+  StyledContentWrapper
 } from "./style";
 
 class User extends Component {
   state = {
     displayCreateRecruitment: false,
     displayBrowseRecruitments: false,
+    displayToDoLists: false,
+    isMobile: false,
     recruitments: []
   };
 
@@ -40,12 +44,26 @@ class User extends Component {
 
   componentDidMount() {
     this.fetchRecruitments();
+    this.getBrowserWidth();
+    window.addEventListener("resize", this.getBrowserWidth.bind(this));
   }
+  getBrowserWidth() {
+    this.setState({
+      isMobile: window.innerWidth < 768
+    });
+  }
+  toggleDropdowns = () => {
+    this.setState({
+      displayCreateRecruitment: false,
+      displayBrowseRecruitments: false
+    });
+  };
 
   toggleSectionExpansion = type => {
     const property = {
       add: "displayCreateRecruitment",
-      browse: "displayBrowseRecruitments"
+      browse: "displayBrowseRecruitments",
+      toDo: "displayToDoLists"
     }[type];
 
     this.setState(prevState => ({
@@ -54,6 +72,12 @@ class User extends Component {
   };
 
   render() {
+    const {
+      displayCreateRecruitment,
+      displayBrowseRecruitments,
+      displayToDoLists,
+      isMobile
+    } = this.state;
     return (
       <StyledWrapper>
         <StyledGreetingWrapper>
@@ -65,19 +89,24 @@ class User extends Component {
             <SectionInfo>
               Add Recruitment
               <StyledPlusIcon
-                onClick={() => this.toggleSectionExpansion("add")}
+                onClick={() => {
+                  this.toggleSectionExpansion("add");
+                }}
               />
             </SectionInfo>
-            {this.state.displayCreateRecruitment && <CreateRecruitment />}
+            {displayCreateRecruitment && isMobile && <CreateRecruitment />}
           </StyledRecruitmentWrapper>
           <StyledRecruitmentWrapper>
             <SectionInfo>
               Show Recruitments
               <StyledKeyboardArrowDownIcon
-                onClick={() => this.toggleSectionExpansion("browse")}
+                onClick={async () => {
+                  this.toggleSectionExpansion("browse");
+                  await this.fetchRecruitments();
+                }}
               />
             </SectionInfo>
-            {this.state.displayBrowseRecruitments && (
+            {displayBrowseRecruitments && isMobile && (
               <ShowRecruitment
                 recruitments={this.state.recruitments}
                 updateRecruitments={this.updateRecruitments}
@@ -85,8 +114,29 @@ class User extends Component {
               />
             )}
           </StyledRecruitmentWrapper>
+          <StyledRecruitmentWrapper>
+            <SectionInfo>
+              To Do Lists
+              <StyledKeyboardArrowDownIcon
+                onClick={() => {
+                  this.toggleSectionExpansion("toDo");
+                }}
+              />
+            </SectionInfo>
+            {displayToDoLists && isMobile && <ToDoList history={history} />}
+          </StyledRecruitmentWrapper>
         </RecruitmentWrapper>
-        <ToDoList history={this.props.history} />
+        <StyledContentWrapper>
+          {displayCreateRecruitment && !isMobile && <CreateRecruitment />}
+          {displayBrowseRecruitments && !isMobile && (
+            <ShowRecruitment
+              recruitments={this.state.recruitments}
+              updateRecruitments={this.updateRecruitments}
+              fetchRecruitments={this.fetchRecruitments}
+            />
+          )}
+          {displayToDoLists && <ToDoList history={history} />}
+        </StyledContentWrapper>
       </StyledWrapper>
     );
   }

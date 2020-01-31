@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { addRecruitmentFetch } from "../Fetches/Recruitments/AddRecruitmentFetch";
+import { getRecruitmentFetch } from "../Fetches/Recruitments/GetRecruitmentFetch";
 import { updateRecruitmentFetch } from "../Fetches/Recruitments/UpdateRecruitmentFetch";
 import { StatusMessage } from "./StatusMessage";
 import { validateAddRecruitment } from "./Validator";
@@ -10,7 +11,10 @@ import {
   Input,
   ButtonWrapper,
   SubmitButton,
-  StyledTextArea
+  StyledTextArea,
+  StyledSpan,
+  InputCheck,
+  StyledFieldsWrapper
 } from "../Styles/CreateRecruitmentStyle";
 
 const InputTextData = [
@@ -34,6 +38,7 @@ class CreateRecruitment extends Component {
     positionName: "",
     companyReplyDate: "",
     applicationDate: "",
+    companyReply: false,
     notes: "",
     errors: {
       companyNameError: false,
@@ -44,10 +49,16 @@ class CreateRecruitment extends Component {
     isTaskSuccessfullyAdded: false
   };
   handleChange = e => {
-    const { id, value } = e.target;
-    this.setState({
-      [id]: value
-    });
+    const { id, value, type, checked } = e.target;
+    if (type == "checkbox") {
+      this.setState({
+        [id]: checked
+      });
+    } else {
+      this.setState({
+        [id]: value
+      });
+    }
   };
 
   displayPopUp = () => {
@@ -61,6 +72,7 @@ class CreateRecruitment extends Component {
       cityName: "",
       positionName: "",
       applicationDate: "",
+      companyReply: true,
       notes: ""
     });
   };
@@ -106,7 +118,8 @@ class CreateRecruitment extends Component {
       cityName,
       positionName,
       applicationDate,
-      notes
+      notes,
+      companyReply
     } = this.state;
     const obj = {
       id: 1,
@@ -115,20 +128,28 @@ class CreateRecruitment extends Component {
       workPlace: positionName,
       dateOfCompanyReply: "",
       applicationDate,
-      companyReply: false,
+      companyReply,
       notes,
       linkToApplication: "",
       ownerId: 1
     };
     const validatorHasErrors = this.validateForm();
     if (!validatorHasErrors) {
-      const { editRecruitment, recruitmentId } = this.props;
+      const {
+        editRecruitment,
+        recruitmentId,
+        updateRecruitments,
+        updatePopUpStatus
+      } = this.props;
       //CreateRecruitment component looks almost the same as EditRecruitment would look like so I'm using this component as an edit one not to create two very similar ones
       //That's why I'm using two different fetches below \/
       if (editRecruitment) {
-        await updateRecruitmentFetch(obj, recruitmentId);
+        await updateRecruitmentFetch(obj, recruitmentId); // updates single recruitment
+        await updateRecruitments(await getRecruitmentFetch()); // refreshes recruitments data
+        updatePopUpStatus(true);
       } else {
-        addRecruitmentFetch(obj);
+        await addRecruitmentFetch(obj);
+        await getRecruitmentFetch();
         this.displayPopUp();
       }
       this.cleanForm();
@@ -138,32 +159,34 @@ class CreateRecruitment extends Component {
     return (
       <>
         <StyledWrapper>
-          {InputTextData.map(data => (
-            <InputWrapper key={data.desc}>
+          <StyledFieldsWrapper>
+            {InputTextData.map(data => (
+              <InputWrapper key={data.desc}>
+                <label>
+                  <StyledDescription>{data.desc}</StyledDescription>
+                  <Input
+                    type="text"
+                    id={data.id}
+                    placeholder={data.desc}
+                    onChange={this.handleChange}
+                    value={this.state[data.id]}
+                  />
+                </label>
+              </InputWrapper>
+            ))}
+
+            <InputWrapper>
               <label>
-                <StyledDescription>{data.desc}</StyledDescription>
+                <StyledDescription>Application date</StyledDescription>
                 <Input
-                  type="text"
-                  id={data.id}
-                  placeholder={data.desc}
+                  type="date"
+                  id="applicationDate"
                   onChange={this.handleChange}
-                  value={this.state[data.id]}
+                  value={this.state.applicationDate}
                 />
               </label>
             </InputWrapper>
-          ))}
-          <InputWrapper>
-            <label>
-              <StyledDescription>Application date</StyledDescription>
-              <Input
-                type="date"
-                id="applicationDate"
-                onChange={this.handleChange}
-                value={this.state.applicationDate}
-              />
-            </label>
-          </InputWrapper>
-
+          </StyledFieldsWrapper>
           <InputWrapper>
             <label>
               <StyledDescription>Notes</StyledDescription>
@@ -175,14 +198,27 @@ class CreateRecruitment extends Component {
               />
             </label>
           </InputWrapper>
+          <InputWrapper checkbox>
+            <StyledSpan>
+              <StyledDescription checkbox>Company reply</StyledDescription>
+              <Input
+                type="checkbox"
+                id="companyReply"
+                onChange={this.handleChange}
+                value={this.state.companyReply}
+                inputCheckbox
+              />
+              <InputCheck inputChecked={this.state.companyReply} />
+            </StyledSpan>
+          </InputWrapper>
           <ButtonWrapper>
             <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
           </ButtonWrapper>
         </StyledWrapper>
-        )
+
         {this.state.isTaskSuccessfullyAdded && (
           <StatusMessage
-            descriptionText="Task was successfully added!"
+            descriptionText="Entry was successfully added!"
             closeAction={this.displayPopUp}
           />
         )}
