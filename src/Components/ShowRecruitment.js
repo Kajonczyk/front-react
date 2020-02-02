@@ -9,7 +9,8 @@ import {
   StyledWrapper,
   StyledIconWrapper,
   SectionInfo,
-  StyledP
+  StyledLabel,
+  StyledSpan
 } from "../Styles/ShowRecruitmentStyle";
 import StatusMessage from "./StatusMessage";
 
@@ -44,14 +45,24 @@ const ShowRecruitment = ({
               />
             </SectionInfo>
             {recruitmentItemsCopy[id].isExpanded ? (
-              <StyledWrapper>
-                <StyledP>City: {item.city}</StyledP>
-                <StyledP>Position: {item.workPlace}</StyledP>
-                <StyledP>
-                  Application date: {item.applicationDate.substr(0, 10)}
-                </StyledP>
-                <StyledP>Company Reply: {String(item.companyReply)}</StyledP>
-                <StyledP>Notes: {item.notes}</StyledP>
+              <StyledWrapper data>
+                <StyledLabel>
+                  City: <StyledSpan>{item.city}</StyledSpan>
+                </StyledLabel>
+                <StyledLabel>
+                  Position: <StyledSpan>{item.workPlace}</StyledSpan>
+                </StyledLabel>
+                <StyledLabel>
+                  Application date:{" "}
+                  <StyledSpan>{item.applicationDate.substr(0, 10)}</StyledSpan>
+                </StyledLabel>
+                <StyledLabel>
+                  Company Reply:{" "}
+                  <StyledSpan>{String(item.companyReply)}</StyledSpan>
+                </StyledLabel>
+                <StyledLabel>
+                  Notes: <StyledSpan>{item.notes}</StyledSpan>
+                </StyledLabel>
                 <StyledIconWrapper>
                   <StyledTrashIcon
                     onClick={async () => {
@@ -72,16 +83,16 @@ const ShowRecruitment = ({
                       );
                     }}
                   />
-                  {recruitmentItemsCopy[id].isBeingEdited ? (
-                    <CreateRecruitment
-                      editRecruitment={isRecruitmentBeingEdited}
-                      recruitmentId={recruitmentItemsCopy[id].id}
-                      updateRecruitments={updateRecruitments}
-                      updatePopUpStatus={setPopUpActive}
-                    />
-                  ) : null}
                 </StyledIconWrapper>
               </StyledWrapper>
+            ) : null}
+            {recruitmentItemsCopy[id].isBeingEdited ? (
+              <CreateRecruitment
+                editRecruitment={isRecruitmentBeingEdited}
+                recruitmentId={recruitmentItemsCopy[id].id}
+                updateRecruitments={updateRecruitments}
+                updatePopUpStatus={setPopUpActive}
+              />
             ) : null}
           </StyledWrapper>
         ))}

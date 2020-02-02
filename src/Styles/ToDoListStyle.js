@@ -45,6 +45,9 @@ export const StyledDescription = styled.span`
   text-decoration:underline;
   font-size: calc(${theme.font.size.xs} * 0.8)
   `}
+  ${({ theme }) => theme.mq.tablet} {
+    font-size: ${({ theme }) => theme.font.size.xxs};
+  }
 `;
 export const StyledDiv = styled.div`
   display: flex;
