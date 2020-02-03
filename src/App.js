@@ -1,5 +1,6 @@
 import React from "react";
 import LoginPage from "./Pages/LoginPage/LoginPage";
+import ErrorPage from "./Pages/ErrorPage/ErrorPage";
 import User from "./Pages/UserPage/User";
 import GlobalStyle from "./Utils/GlobalStyle";
 import theme from "./Utils/theme";
@@ -15,6 +16,7 @@ function App() {
           <Switch>
             <Route path="/user" render={() => <User />} />
             <Route exact path="/" render={() => <LoginPage />} />
+            <Route render={() => <ErrorPage />} />
           </Switch>
         </Router>
       </ThemeProvider>
