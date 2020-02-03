@@ -4,9 +4,7 @@ import { StyledButton } from "../Shared/Button";
 import { StyledKeyboardArrowDownIcon } from "./Elements/StyledArrowIcon";
 import { addNewToDoListTask } from "../Fetches/ToDoLists/AddNewToDoListTask";
 import { StyledTrashIcon } from "./Elements/StyledTrashIcon";
-import { StatusMessage } from "./StatusMessage";
 import { validateAddTask } from "./Validator";
-import { browseToDoLists } from "../Fetches/ToDoLists/BrowseToDoLists";
 
 import {
   StyledWrapper,

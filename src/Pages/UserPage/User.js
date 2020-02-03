@@ -55,15 +55,17 @@ class User extends Component {
   toggleDropdowns = () => {
     this.setState({
       displayCreateRecruitment: false,
-      displayBrowseRecruitments: false
+      displayBrowseRecruitments: false,
+      displayToDoLists: false
     });
   };
 
   toggleSectionExpansion = type => {
+    this.toggleDropdowns();
     const property = {
       add: "displayCreateRecruitment",
       browse: "displayBrowseRecruitments",
-      toDo: "displayToDoLists"
+      todo: "displayToDoLists"
     }[type];
 
     this.setState(prevState => ({
@@ -119,7 +121,7 @@ class User extends Component {
               To Do Lists
               <StyledKeyboardArrowDownIcon
                 onClick={() => {
-                  this.toggleSectionExpansion("toDo");
+                  this.toggleSectionExpansion("todo");
                 }}
               />
             </SectionInfo>

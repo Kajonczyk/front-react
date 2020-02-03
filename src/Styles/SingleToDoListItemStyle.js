@@ -8,6 +8,9 @@ export const StyledWrapper = styled.div`
 `;
 export const StyledTaskWrapper = styled(StyledWrapper)`
   width: 250px;
+  ${({ theme }) => theme.mq.tablet} {
+    width: 560px;
+  }
 `;
 export const StyledDescription = styled.span`
   color: ${({ theme }) => theme.purplePrimary};

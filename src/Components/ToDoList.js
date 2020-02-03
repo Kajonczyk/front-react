@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { StyledPlusIcon } from "./Elements/StyledPlusIcon";
-import { SectionInfo } from "./Elements/SectionInfo";
 import { StatusMessage } from "./StatusMessage";
 import { StyledButton } from "../Shared/Button";
 import { addNewToDoList } from "../Fetches/ToDoLists/AddNewToDoList";
@@ -123,6 +121,7 @@ class ToDoList extends Component {
               <ToDoListInput
                 value={this.state.toDoListName}
                 onChange={this.handleChange}
+                placeholder="Name..."
               />
               {listName && (
                 <StyledDescription error>Name is too short!</StyledDescription>
