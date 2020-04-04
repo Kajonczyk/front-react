@@ -9,7 +9,6 @@ const ErrorPage = props => {
     <StyledWrapper>
       <StyledHeading big>404</StyledHeading>
       <StyledHeading>
-        {console.log(history)}
         Apparently you got lost. Click{" "}
         <StyledSpan onClick={redirect}>here</StyledSpan> to return to the main
         page
