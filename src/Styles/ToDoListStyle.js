@@ -7,7 +7,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   ${({ theme }) => theme.mq.tablet} {
-    margin-top: 0px;
+    margin-top: 40px;
     width: auto;
   }
 `;
@@ -23,7 +23,8 @@ export const StyledHeading = styled.h1`
   color: ${({ theme }) => theme.purplePrimary};
 
   ${({ theme }) => theme.mq.tablet} {
-    margin: 30px auto 0px;
+    margin: 20px auto 0px;
+    width: 105px;
   }
 `;
 export const StyledDescription = styled.span`
@@ -45,6 +46,11 @@ export const StyledDescription = styled.span`
   text-decoration:underline;
   font-size: calc(${theme.font.size.xs} * 0.8)
   `}
+  ${({ theme }) => theme.mq.tablet} {
+    font-size: ${({ theme }) => theme.font.size.xxs};
+    width:220px;
+    text-align:left;
+  }
 `;
 export const StyledDiv = styled.div`
   display: flex;
@@ -55,7 +61,14 @@ export const StyledDiv = styled.div`
 
 export const StyledTaskWrapper = styled.div`
   width: 250px;
+  ${({ theme }) => theme.mq.tablet} {
+    width: auto;
+  }
 `;
 export const ToDoListInput = styled(StyledInput)`
   margin: 0px;
+  margin-bottom: 15px;
+  ${({ theme }) => theme.mq.tablet} {
+    margin-bottom: 20px;
+  }
 `;

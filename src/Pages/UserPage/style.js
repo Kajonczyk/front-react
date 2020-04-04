@@ -26,6 +26,8 @@ export const StyledGreetingWrapper = styled.div`
 `;
 export const StyledGreeting = styled(StyledH1)`
   font-size: ${({ theme }) => theme.font.size.juniorStartMobile};
+  font-family: ${({ theme }) => theme.font.family.Didact};
+
   &::after {
     content: "DASHBOARD";
     position: absolute;

@@ -36,7 +36,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   ${({ theme }) => theme.mq.tablet} {
-    margin-top: 60px;
+    margin-top: 40px;
   }
 `;
 export const Input = styled(StyledInput)`
