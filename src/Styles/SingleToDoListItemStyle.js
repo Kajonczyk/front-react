@@ -28,6 +28,9 @@ export const StyledDescription = styled.span`
 `;
 export const TaskInput = styled(StyledInput)`
   margin: 0px;
+  ${({ theme }) => theme.mq.tablet} {
+    width: 300px;
+  }
 `;
 export const StyledTaskDescription = styled.p`
   color: ${({ theme }) => theme.purplePrimary};
@@ -40,6 +43,9 @@ export const StyledTaskDescription = styled.p`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  ${({ theme }) => theme.mq.tablet} {
+    width: 300px;
+  }
 `;
 export const StyledSpan = styled.span`
   width: 100%;

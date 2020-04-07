@@ -18,13 +18,12 @@ export const StyledHeading = styled.h1`
   border-bottom: 2px solid ${({ theme }) => theme.purplePrimary};
   text-align: center;
   font-weight: bold;
-  width: 100px;
-  margin: 20px auto;
+  width: 100%;
+  margin: 50px auto 10px;
   color: ${({ theme }) => theme.purplePrimary};
 
   ${({ theme }) => theme.mq.tablet} {
-    margin: 20px auto 0px;
-    width: 105px;
+    margin: 50px auto 20px;
   }
 `;
 export const StyledDescription = styled.span`
@@ -36,20 +35,27 @@ export const StyledDescription = styled.span`
   ${({ error }) =>
     error &&
     `
-    margin-top:10px;
     color:red;
   `}
-  ${({ emptyLists, theme }) =>
+  ${({ emptyLists }) =>
     emptyLists &&
     `
   margin-top:10px;
   text-decoration:underline;
-  font-size: calc(${theme.font.size.xs} * 0.8)
+
+  margin:0px auto;
   `}
   ${({ theme }) => theme.mq.tablet} {
     font-size: ${({ theme }) => theme.font.size.xxs};
     width:220px;
-    text-align:left;
+    text-align:center;
+    ${({ emptyLists, theme }) =>
+      emptyLists &&
+      `;
+  font-size: calc(${theme.font.size.xs} * 0.8)!important;
+  margin:0px auto;
+  `}
+
   }
 `;
 export const StyledDiv = styled.div`
@@ -57,6 +63,9 @@ export const StyledDiv = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
+  ${({ theme }) => theme.mq.tablet} {
+    width: 560px;
+  }
 `;
 
 export const StyledTaskWrapper = styled.div`
@@ -68,6 +77,7 @@ export const StyledTaskWrapper = styled.div`
 export const ToDoListInput = styled(StyledInput)`
   margin: 0px;
   margin-bottom: 15px;
+  width: 100%;
   ${({ theme }) => theme.mq.tablet} {
     margin-bottom: 20px;
   }
