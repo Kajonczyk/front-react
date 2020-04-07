@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import history from "../../Utils/history";
-const ErrorPage = props => {
+const ErrorPage = () => {
   const redirect = () => {
     history.push("/");
   };

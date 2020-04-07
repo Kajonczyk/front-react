@@ -14,7 +14,7 @@ import {
   StyledDescription,
   StyledDiv,
   StyledTaskWrapper,
-  ToDoListInput
+  ToDoListInput,
 } from "../Styles/ToDoListStyle";
 
 class ToDoList extends Component {
@@ -23,8 +23,8 @@ class ToDoList extends Component {
     toDoLists: [],
     isPopUpDisplayed: false,
     errors: {
-      listName: false
-    }
+      listName: false,
+    },
   };
   componentDidMount() {
     this.getToDoListsFromApi();
@@ -34,7 +34,7 @@ class ToDoList extends Component {
     try {
       const toDoLists = await browseToDoLists();
       this.setState({
-        toDoLists
+        toDoLists,
       });
     } catch (e) {
       history.push("/");
@@ -43,7 +43,7 @@ class ToDoList extends Component {
 
   clearInputField = () => {
     this.setState({
-      toDoListName: ""
+      toDoListName: "",
     });
     this.cleanInputErrors();
   };
@@ -51,21 +51,21 @@ class ToDoList extends Component {
   cleanInputErrors = () => {
     this.setState({
       errors: {
-        listName: false
-      }
+        listName: false,
+      },
     });
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     const { value } = e.target;
     this.setState({
-      toDoListName: value
+      toDoListName: value,
     });
   };
 
   togglePopUp = () => {
-    this.setState(prevState => ({
-      isPopUpDisplayed: !prevState.isPopUpDisplayed
+    this.setState((prevState) => ({
+      isPopUpDisplayed: !prevState.isPopUpDisplayed,
     }));
   };
 
@@ -74,7 +74,7 @@ class ToDoList extends Component {
     return toDoListName.length > 2;
   };
 
-  handleSubmit = async item => {
+  handleSubmit = async (item) => {
     if (this.validateInput()) {
       await addNewToDoList(item);
       this.clearInputField();
@@ -83,8 +83,8 @@ class ToDoList extends Component {
     } else {
       this.setState({
         errors: {
-          listName: true
-        }
+          listName: true,
+        },
       });
     }
   };
@@ -92,16 +92,16 @@ class ToDoList extends Component {
   updateToDoListArray = async () => {
     const updateToDoListInfo = await browseToDoLists();
     this.setState({
-      toDoLists: updateToDoListInfo
+      toDoLists: updateToDoListInfo,
     });
   };
 
-  deleteTask = async payload => {
+  deleteTask = async (payload) => {
     await deleteToDoListTask(payload, payload.id);
     await this.updateToDoListArray();
   };
 
-  deleteToDoList = async payload => {
+  deleteToDoList = async (payload) => {
     await deleteToDoList(payload);
     await this.updateToDoListArray();
   };
@@ -110,7 +110,7 @@ class ToDoList extends Component {
     const {
       toDoLists,
       isPopUpDisplayed,
-      errors: { listName }
+      errors: { listName },
     } = this.state;
     return (
       <StyledWrapper>
@@ -134,12 +134,13 @@ class ToDoList extends Component {
             </StyledDiv>
             <StyledHeading>Your Lists</StyledHeading>
             {toDoLists.length > 0 ? (
-              toDoLists.map(item => (
+              toDoLists.map((item, index) => (
                 <SingleToDoListItem
+                  key={index}
                   toDoLists={item}
                   deleteTask={this.deleteTask}
                   deleteToDoList={this.deleteToDoList}
-                  updateLists={async () => await this.getToDoListsFromApi()}
+                  updateLists={() => this.getToDoListsFromApi()}
                 />
               ))
             ) : (

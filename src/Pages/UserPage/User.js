@@ -14,7 +14,7 @@ import {
   RecruitmentWrapper,
   SectionInfo,
   StyledRecruitmentWrapper,
-  StyledContentWrapper
+  StyledContentWrapper,
 } from "./style";
 
 class User extends Component {
@@ -23,22 +23,22 @@ class User extends Component {
     displayBrowseRecruitments: false,
     displayToDoLists: false,
     isMobile: false,
-    recruitments: []
+    recruitments: [],
   };
 
   fetchRecruitments = async () => {
     try {
       const fetchResult = await getRecruitmentFetch();
       this.setState({
-        recruitments: fetchResult
+        recruitments: fetchResult,
       });
     } catch (e) {
       this.props.history.push("/");
     }
   };
-  updateRecruitments = recruitments => {
+  updateRecruitments = (recruitments) => {
     this.setState({
-      recruitments
+      recruitments,
     });
   };
 
@@ -49,27 +49,26 @@ class User extends Component {
   }
   getBrowserWidth() {
     this.setState({
-      isMobile: window.innerWidth < 768
+      isMobile: window.innerWidth < 768,
     });
   }
   toggleDropdowns = () => {
     this.setState({
       displayCreateRecruitment: false,
       displayBrowseRecruitments: false,
-      displayToDoLists: false
+      displayToDoLists: false,
     });
   };
 
-  toggleSectionExpansion = type => {
+  toggleSectionExpansion = (type) => {
     this.toggleDropdowns();
     const property = {
       add: "displayCreateRecruitment",
       browse: "displayBrowseRecruitments",
-      todo: "displayToDoLists"
+      todo: "displayToDoLists",
     }[type];
-
-    this.setState(prevState => ({
-      [property]: !prevState[property]
+    this.setState((prevState) => ({
+      [property]: !prevState[property],
     }));
   };
 
@@ -78,7 +77,7 @@ class User extends Component {
       displayCreateRecruitment,
       displayBrowseRecruitments,
       displayToDoLists,
-      isMobile
+      isMobile,
     } = this.state;
     return (
       <StyledWrapper>
@@ -137,7 +136,7 @@ class User extends Component {
               fetchRecruitments={this.fetchRecruitments}
             />
           )}
-          {displayToDoLists && <ToDoList history={history} />}
+          {displayToDoLists && !isMobile && <ToDoList history={history} />}
         </StyledContentWrapper>
       </StyledWrapper>
     );
